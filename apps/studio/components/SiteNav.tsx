@@ -28,6 +28,8 @@ export function SiteNav({ role, mode }: Props) {
       <Link href="/search">Search</Link>
       <Link href="/documents">Documents</Link>
       <Link href="/decisions">Decisions</Link>
+      <Link href="/research">Research</Link>
+      <Link href="/pilot/core10">Pilot Core10</Link>
       <Link href="/issues">Issues</Link>
       <Link href="/sanctions">Sanctions</Link>
       <Link href="/authorities">Authorities</Link>

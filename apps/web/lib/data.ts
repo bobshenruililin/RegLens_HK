@@ -37,7 +37,28 @@ export type DecisionRecord = {
   coverage?: { missing_fields?: string[]; warnings?: string[] };
   pages: Array<{ span_id: string; page_no: number; text: string }>;
   propositions: Proposition[];
+  run_key?: string;
 };
+
+function unwrap(raw: unknown): DecisionRecord {
+  if (
+    raw &&
+    typeof raw === "object" &&
+    "pointer_kind" in (raw as object) &&
+    "decision" in (raw as object)
+  ) {
+    const wrapped = raw as {
+      decision: DecisionRecord;
+      run_key?: string;
+    };
+    const decision = { ...wrapped.decision };
+    if (!decision.run_key && wrapped.run_key) {
+      decision.run_key = wrapped.run_key;
+    }
+    return decision;
+  }
+  return raw as DecisionRecord;
+}
 
 function roots(): string[] {
   const cwd = process.cwd();
@@ -54,12 +75,12 @@ export function loadDecision(id?: string): DecisionRecord | null {
     if (id) {
       const p = path.join(root, "decisions", `${id}.json`);
       if (fs.existsSync(p)) {
-        return JSON.parse(fs.readFileSync(p, "utf8")) as DecisionRecord;
+        return unwrap(JSON.parse(fs.readFileSync(p, "utf8")));
       }
     } else {
       const fallback = path.join(root, "decision.json");
       if (fs.existsSync(fallback)) {
-        return JSON.parse(fs.readFileSync(fallback, "utf8")) as DecisionRecord;
+        return unwrap(JSON.parse(fs.readFileSync(fallback, "utf8")));
       }
     }
   }
@@ -74,9 +95,9 @@ export function listDecisions(): DecisionRecord[] {
     if (!fs.existsSync(dir)) continue;
     for (const name of fs.readdirSync(dir)) {
       if (!name.endsWith(".json")) continue;
-      const decision = JSON.parse(
-        fs.readFileSync(path.join(dir, name), "utf8")
-      ) as DecisionRecord;
+      const decision = unwrap(
+        JSON.parse(fs.readFileSync(path.join(dir, name), "utf8"))
+      );
       if (seen.has(decision.id)) continue;
       seen.add(decision.id);
       out.push(decision);
@@ -96,11 +117,23 @@ function writableDecisionPath(id: string): string {
 export function saveDecision(decision: DecisionRecord): void {
   const target = writableDecisionPath(decision.id);
   fs.mkdirSync(path.dirname(target), { recursive: true });
-  fs.writeFileSync(target, JSON.stringify(decision, null, 2), "utf8");
+  let payload: unknown = decision;
+  if (fs.existsSync(target)) {
+    const existing = JSON.parse(fs.readFileSync(target, "utf8"));
+    if (
+      existing &&
+      typeof existing === "object" &&
+      "pointer_kind" in existing &&
+      "decision" in existing
+    ) {
+      payload = { ...existing, decision, decision_id: decision.id };
+    }
+  }
+  fs.writeFileSync(target, JSON.stringify(payload, null, 2), "utf8");
   const root = path.dirname(path.dirname(target));
   fs.writeFileSync(
     path.join(root, "decision.json"),
-    JSON.stringify(decision, null, 2),
+    JSON.stringify(payload, null, 2),
     "utf8"
   );
 }

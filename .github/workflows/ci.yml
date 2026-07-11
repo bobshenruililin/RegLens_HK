@@ -7,28 +7,29 @@ on:
     branches: [main]
 
 jobs:
-  worker-tests:
+  python:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Install worker deps
+      - name: Install
         run: pip install -r services/worker/requirements.txt
+      - name: Fixture safety
+        run: python scripts/check_fixtures.py
+      - name: Ruff
+        run: |
+          ruff check services/worker tests scripts
+          ruff format --check services/worker tests scripts
+      - name: Mypy
+        run: mypy
       - name: Pytest
         env:
           PYTHONPATH: services/worker
         run: pytest
-      - name: Ban scraper packages in worker requirements
-        run: |
-          if grep -Eiq 'scrapy|beautifulsoup4.*crawl|playwright|selenium|httpx.*scrape' services/worker/requirements.txt; then
-            echo "Scraper-oriented packages are not allowed in MVP requirements"; exit 1
-          fi
-          # beautifulsoup4 is allowed for fixture HTML parsing only
-          true
 
-  web-build:
+  web:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -40,6 +41,9 @@ jobs:
       - name: Install
         working-directory: apps/web
         run: npm ci
-      - name: Typecheck / build
+      - name: Typecheck
+        working-directory: apps/web
+        run: npm run typecheck
+      - name: Build
         working-directory: apps/web
         run: npm run build

@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0.0",
+  "spec_id": "core50.v1",
+  "title": "RegLens HK RC3 core 50 pilot selection plan",
+  "purpose": "Pilot extraction coverage, reviewer workflow, and source handling across MCHK and DCHK decisions.",
+  "statistical_note": "This is a planned judgment-review pilot, not a statistical sample. Counts and strata are operational targets only.",
+  "planned_total": 50,
+  "planned_cohorts": [
+    {
+      "regulator_code": "MCHK",
+      "planned_count": 25,
+      "source_id": "mchk_judgments",
+      "selection_notes": [
+        "Prefer decisions with extractable text and complete public metadata.",
+        "Cover charge, finding, sanction, factor, and authority patterns where available.",
+        "Exclude source PDFs or derived source text from git."
+      ]
+    },
+    {
+      "regulator_code": "DCHK",
+      "planned_count": 25,
+      "source_id": "dchk_judgments",
+      "selection_notes": [
+        "DCHK entries may be metadata-only where judgment text is unavailable or unsuitable for processing.",
+        "Track the 14 July 2018 publication coverage change as metadata, not as republication permission.",
+        "Exclude source PDFs or derived source text from git."
+      ]
+    }
+  ],
+  "inclusion_criteria": [
+    "Hong Kong professional disciplinary decision or published disciplinary metadata.",
+    "Source provenance can be recorded internally.",
+    "Processing is permitted by the active source automation and LLM policies."
+  ],
+  "exclusion_criteria": [
+    "Private patient/contact identifiers cannot be safely contained for the intended workflow.",
+    "Source licence or policy prohibits the planned processing mode.",
+    "Document exceeds configured page, byte, OCR, or review limits."
+  ],
+  "review_policy": {
+    "human_review_required": true,
+    "auto_accept_extractions": false,
+    "public_release_requires_separate_approval": true
+  }
+}

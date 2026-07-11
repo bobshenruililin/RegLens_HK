@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0.0",
+  "spec_id": "core10_eval.v1",
+  "title": "RegLens HK RC3 synthetic ten-decision CI eval placeholders",
+  "purpose": "Stable placeholder references for CI without committing real decisions or PDFs.",
+  "source_kind": "synthetic",
+  "statistical_note": "This list is for regression testing only and is not a statistical sample.",
+  "decisions": [
+    {
+      "ref": "SYN-EVAL-MCHK-001",
+      "regulator_code": "MCHK",
+      "expected_surface": ["charge", "finding", "sanction"]
+    },
+    {
+      "ref": "SYN-EVAL-MCHK-002",
+      "regulator_code": "MCHK",
+      "expected_surface": ["charge", "rule", "finding"]
+    },
+    {
+      "ref": "SYN-EVAL-MCHK-003",
+      "regulator_code": "MCHK",
+      "expected_surface": ["authority", "legal_test"]
+    },
+    {
+      "ref": "SYN-EVAL-MCHK-004",
+      "regulator_code": "MCHK",
+      "expected_surface": ["mitigating_factor", "sanction"]
+    },
+    {
+      "ref": "SYN-EVAL-MCHK-005",
+      "regulator_code": "MCHK",
+      "expected_surface": ["appeal_status"]
+    },
+    {
+      "ref": "SYN-EVAL-DCHK-001",
+      "regulator_code": "DCHK",
+      "expected_surface": ["metadata"]
+    },
+    {
+      "ref": "SYN-EVAL-DCHK-002",
+      "regulator_code": "DCHK",
+      "expected_surface": ["charge", "finding"]
+    },
+    {
+      "ref": "SYN-EVAL-DCHK-003",
+      "regulator_code": "DCHK",
+      "expected_surface": ["sanction"]
+    },
+    {
+      "ref": "SYN-EVAL-DCHK-004",
+      "regulator_code": "DCHK",
+      "expected_surface": ["metadata"]
+    },
+    {
+      "ref": "SYN-EVAL-DCHK-005",
+      "regulator_code": "DCHK",
+      "expected_surface": ["factor", "authority"]
+    }
+  ]
+}

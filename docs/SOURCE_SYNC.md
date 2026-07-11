@@ -55,3 +55,13 @@ make source-parser-tests
 
 Live sync/acquisition remains opt-in and policy-gated outside ordinary CI.
 If operator live contact is unset, do not run live sync.
+
+### MCHK live layout notes
+
+The official MCHK index lists years as `?type=j&year=YYYY` (plus a few legacy
+`.htm` year pages). Year pages use an unmarked table with columns
+`Date of Inquiry`, `Case Reference No.`, and `Judgment` (PDF download).
+The adapter follows year links under the shared HTTP request budget and stores
+inquiry dates as published; it does **not** invent judgment dates from inquiry
+dates. Meta `NOINDEX, NOFOLLOW` on the site is recorded as a robots signal, not
+as a licence.

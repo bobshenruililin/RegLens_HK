@@ -66,7 +66,7 @@ jobs:
           import os
           from pathlib import Path
 
-          from reglens_worker.sources.policy import LivePrerequisiteError, get_policy
+          from reglens_worker.sources.policy import LivePrerequisiteError
           from reglens_worker.sources.sync import SourceSyncError, sync_source
 
           raw_max = int(os.environ.get("MAX_REQUESTS") or "3")
@@ -83,18 +83,13 @@ jobs:
           errors = []
           for source_id in sources:
               try:
-                  policy = get_policy(source_id)
-                  # Force a tiny request budget for health checks.
-                  policy = dict(policy)
-                  policy["max_requests_per_run"] = max_requests
-                  # sync_source reloads policy from disk — set env budget via limit=1 item path
                   result = sync_source(
                       source_id,
                       dry_run=True,  # never persist from this workflow
                       live=True,
                       acquire=False,  # never download PDFs
                       fixture_dir="fixtures/source_html",
-                      limit=max_requests,
+                      max_requests_per_run=max_requests,
                   ).to_dict()
                   if result.get("acquired_count", 0) != 0:
                       raise SourceSyncError("live health must not acquire documents")

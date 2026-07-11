@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reglens.hk/schemas/extraction_result.v1.json",
+  "title": "RegLensHKExtractionResult",
+  "description": "Strict extraction output for a single disciplinary decision document. Every proposition requires evidence quotes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "document_sha256", "extractor", "propositions"],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "document_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "extractor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pipeline_version", "model_provider", "model_version", "prompt_version"],
+      "properties": {
+        "pipeline_version": { "type": "string", "minLength": 1 },
+        "model_provider": { "type": "string", "minLength": 1 },
+        "model_version": { "type": "string", "minLength": 1 },
+        "prompt_version": { "type": "string", "minLength": 1 }
+      }
+    },
+    "decision_metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "case_ref": { "type": ["string", "null"] },
+        "decision_date": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "regulator_code": { "enum": ["MCHK", "DCHK"] },
+        "profession": { "enum": ["doctor", "dentist"] },
+        "defendant_registration_no": { "type": ["string", "null"] },
+        "defendant_name_as_published": { "type": ["string", "null"] }
+      }
+    },
+    "propositions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "prop_type",
+          "epistemic_class",
+          "claim_text",
+          "confidence",
+          "evidence"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "prop_type": {
+            "enum": [
+              "charge",
+              "rule",
+              "finding",
+              "legal_test",
+              "aggravating_factor",
+              "mitigating_factor",
+              "sanction",
+              "costs",
+              "authority",
+              "appeal_status"
+            ]
+          },
+          "epistemic_class": {
+            "enum": ["fact", "interpretation"]
+          },
+          "claim_text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000
+          },
+          "structured": {
+            "type": ["object", "null"]
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["page_no", "quote"],
+              "properties": {
+                "span_id": { "type": ["string", "null"] },
+                "page_no": { "type": "integer", "minimum": 1 },
+                "quote": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2000
+                },
+                "char_start": { "type": ["integer", "null"], "minimum": 0 },
+                "char_end": { "type": ["integer", "null"], "minimum": 0 }
+              }
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": { "prop_type": { "const": "legal_test" } },
+              "required": ["prop_type"]
+            },
+            "then": {
+              "properties": { "epistemic_class": { "const": "interpretation" } }
+            }
+          }
+        ]
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "missing_fields": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "warnings": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}

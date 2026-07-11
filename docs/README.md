@@ -1,13 +1,15 @@
 # Documentation index — RegLens HK
 
 Phase 0 planning package plus MVP-RC1 Observatory, MVP-RC2 Studio data-plane,
-and MVP-RC3 internal source-sync / real-corpus pilot docs.
+MVP-RC3 internal source-sync / real-corpus pilot docs, and MVP-RC4 Core10
+research / public synthetic Observatory enrichment docs.
 
 ## Product and architecture
 
 | Document | Description |
 |----------|-------------|
 | [PRD.md](PRD.md) | Product requirements (Studio + Observatory; constraints retained) |
+| [PRODUCT_POSITIONING.md](PRODUCT_POSITIONING.md) | Mission, primary user, moat, Pages vs Studio |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Two-app architecture, modes, publication boundary |
 | [STUDIO.md](STUDIO.md) | Studio operator guide (demo vs postgres) |
 | [OPERATIONS.md](OPERATIONS.md) | Compose, workers, CI, demo pipeline |
@@ -22,6 +24,9 @@ and MVP-RC3 internal source-sync / real-corpus pilot docs.
 | [SOURCE_ADAPTERS.md](SOURCE_ADAPTERS.md) | MCHK/DCHK adapter expectations |
 | [CRAWL_POLICY.md](CRAWL_POLICY.md) | Live-access and no-PDF CI policy |
 | [REAL_CORPUS_PILOT.md](REAL_CORPUS_PILOT.md) | Internal Core 50 pilot posture |
+| [CORE10_OPERATIONS.md](CORE10_OPERATIONS.md) | Core10 operator sequence before Core50 |
+| [RESEARCH_COLLECTIONS.md](RESEARCH_COLLECTIONS.md) | Synthetic demo, Core10, Core50, and future public collection gates |
+| [USER_RESEARCH.md](USER_RESEARCH.md) | Five-user interview protocol template |
 
 ## Trust, licensing, privacy
 
@@ -45,6 +50,7 @@ and MVP-RC3 internal source-sync / real-corpus pilot docs.
 |----------|-------------|
 | [SCHEMA.md](SCHEMA.md) | Relational + local artifacts; points to `publications/schemas` |
 | [EXTRACTION_SCHEMA.md](EXTRACTION_SCHEMA.md) | Extraction JSON schema notes |
+| [EDITORIAL_HANDBOOK.md](EDITORIAL_HANDBOOK.md) | RC4 codebook with synthetic examples only |
 | [EVALUATION.md](EVALUATION.md) | Gold eval; public site = corpus description not prevalence |
 | [EXTRACTION_EVALUATION.md](EXTRACTION_EVALUATION.md) | RC3 Core 10/Core 50 evaluation notes |
 | [LOCAL_SETUP.md](LOCAL_SETUP.md) | Dev setup, `apps/studio` vs `apps/site`, make targets |
@@ -61,6 +67,7 @@ and MVP-RC3 internal source-sync / real-corpus pilot docs.
 | [approvals/MVP_RC2_APPROVAL.md](approvals/MVP_RC2_APPROVAL.md) | MVP-RC2 approval |
 | [approvals/MVP_RC3_APPROVAL.md](approvals/MVP_RC3_APPROVAL.md) | MVP-RC3 approval |
 | [approvals/MVP_RC3_BASELINE.md](approvals/MVP_RC3_BASELINE.md) | MVP-RC3 baseline |
+| [approvals/MVP_RC4_BASELINE.md](approvals/MVP_RC4_BASELINE.md) | MVP-RC4 baseline |
 | [adr/0001-extraction-contract-v2.md](adr/0001-extraction-contract-v2.md) | Extraction contract v2 |
 | [adr/0002-immutable-run-identity.md](adr/0002-immutable-run-identity.md) | Immutable run identity |
 | [adr/0003-synthetic-private-data-boundary.md](adr/0003-synthetic-private-data-boundary.md) | Synthetic vs private-data |
@@ -78,11 +85,16 @@ and MVP-RC3 internal source-sync / real-corpus pilot docs.
 | [adr/0015-ocr-text-variants.md](adr/0015-ocr-text-variants.md) | OCR text variants |
 | [adr/0016-bounded-extractor-critic.md](adr/0016-bounded-extractor-critic.md) | Bounded extractor/critic |
 | [adr/0017-core50-pilot.md](adr/0017-core50-pilot.md) | Core 50 internal pilot |
+| [adr/0018-internal-research-observatory.md](adr/0018-internal-research-observatory.md) | Public Observatory enrichment with internal real research boundary |
+| [adr/0019-core10-before-scale.md](adr/0019-core10-before-scale.md) | Core10 before Core50 scale |
+| [adr/0020-editorial-codebook.md](adr/0020-editorial-codebook.md) | Editorial codebook |
 
 RC3 standing caveats: public availability is not reuse permission; robots.txt is
 not a licence; MCHK remains internal-only; DCHK needs the July 14, 2018 caveat;
 there is no public real release or complete de-identification claim; and
-student-research letters do not unlock Pages.
+student-research letters do not unlock Pages. RC4 adds that GitHub Pages is
+publicly accessible and real Core10/Core50 corpus work stays in Studio/private
+storage unless a later approval changes source policy.
 
 ## Licensing outreach
 

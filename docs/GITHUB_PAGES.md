@@ -1,13 +1,14 @@
 # GitHub Pages — RegLens Observatory
 
 Observatory is deployed as a **static** site from `apps/site/out`. Studio is
-never part of the Pages artifact.
+never part of the Pages artifact. GitHub Pages is publicly accessible.
 
 ## What Pages may contain
 
 - Static HTML/CSS/JS from the Next.js export
 - Checked publication release files under `/data/release/` (JSON/CSV/checksums)
 - Public UI copy and methodology text
+- Synthetic-only RC4 pages: guided tour, research questions, and roadmap
 
 ## What Pages must not contain
 
@@ -16,6 +17,7 @@ never part of the Pages artifact.
 - Full page-text arrays, model `confidence`, extractor metadata
 - Secrets (`AUTH_PASSWORD`, `REGLENS_SESSION_SECRET`, DB/MinIO credentials)
 - Next.js API routes or middleware (export guards assert their absence)
+- Internal research routes for Core10/Core50 real-corpus work
 
 ## Workflow
 
@@ -53,8 +55,9 @@ human configuration:
 7. After the deploy job succeeds, copy the environment URL from the workflow
    summary / Pages settings. First enablement may require approving the
    `github-pages` environment if protection rules are configured.
-8. Verify: home, explore, analytics, methodology, data, compare, a decision
-   slug, and that no PDF judgment files are reachable under `/data/release/`.
+8. Verify: home, explore, analytics, methodology, data, compare, tour,
+   questions, roadmap, a decision slug, and that no PDF judgment files are
+   reachable under `/data/release/`.
 9. Click in-site nav (Explore, Data, Compare, etc.) and confirm the URL keeps
    `/RegLens_HK/` in the path. If links jump to `github.io/data/` (missing the
    repo segment), the build was missing `basePath` — re-run Pages after the
@@ -76,3 +79,5 @@ make site-build
 
 Any public-scan failure, presence of raw sources, or missing static routes must
 fail the build. Do not “deploy anyway” with an unchecked `data/` tree.
+Real corpus material stays in Studio/private storage until legal approval and
+source policy permit a public real release.

@@ -2,6 +2,8 @@
 
 RC3 adds policy-aware metadata sync for official MCHK and DCHK judgment indexes.
 It is an internal research capability, not a public-corpus release path.
+RC4 Core10 uses source sync as the first internal step before acquisition,
+extraction, review, and internal research.
 
 ## What sync may do
 
@@ -18,6 +20,7 @@ It is an internal research capability, not a public-corpus release path.
 - Treat robots.txt as a licence or consent record.
 - Download PDFs in ordinary CI or source-health checks.
 - Publish real MCHK/DCHK judgments, excerpts, OCR text, or page text to Pages.
+- Use GitHub Pages as a controlled research environment; Pages is public.
 - Claim complete de-identification; scans reduce risk but do not eliminate it.
 
 ## Source posture
@@ -40,3 +43,4 @@ make source-parser-tests
 ```
 
 Live sync/acquisition remains opt-in and policy-gated outside ordinary CI.
+If operator live contact is unset, do not run live sync.

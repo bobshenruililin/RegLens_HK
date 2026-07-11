@@ -1,4 +1,4 @@
-# Studio operator guide (MVP-RC2)
+# Studio operator guide (MVP-RC2 / RC4)
 
 RegLens Studio (`apps/studio`) is the **internal** review and operations UI.
 It never deploys to GitHub Pages. Observatory (`apps/site`) remains a separate
@@ -54,10 +54,27 @@ permission; robots.txt is not a licence; MCHK remains internal-only; DCHK record
 need the July 14, 2018 caveat; privacy scans are not complete de-identification;
 and student-research letters do not unlock Pages.
 
+## RC4 Core10 posture
+
+Core10 is the internal readiness loop before Core50 scale:
+
+1. metadata sync;
+2. acquire;
+3. extract;
+4. review;
+5. internal research.
+
+Real Core10 materials stay in Studio/private storage. GitHub Pages is publicly
+accessible and may only show synthetic/demo release data plus explanatory
+synthetic pages. Use [`CORE10_OPERATIONS.md`](CORE10_OPERATIONS.md) for operator
+steps and [`EDITORIAL_HANDBOOK.md`](EDITORIAL_HANDBOOK.md) for coding guidance.
+
 ## Related
 
 - [`OPERATIONS.md`](OPERATIONS.md) — Compose, workers, backups
 - [`REVIEW_WORKFLOW.md`](REVIEW_WORKFLOW.md) — accept / edit / reject / publish
 - [`ARCHITECTURE.md`](ARCHITECTURE.md) — two-app overview
 - [`SOURCE_SYNC.md`](SOURCE_SYNC.md) — RC3 source sync
+- [`CORE10_OPERATIONS.md`](CORE10_OPERATIONS.md) — Core10 internal sequence
+- [`EDITORIAL_HANDBOOK.md`](EDITORIAL_HANDBOOK.md) — editorial codebook
 - [`REAL_CORPUS_PILOT.md`](REAL_CORPUS_PILOT.md) — Core 50 internal pilot

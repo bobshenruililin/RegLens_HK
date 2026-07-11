@@ -8,7 +8,8 @@
 | Milestone 2B–2D experimental scaffolding | Superseded by RC2 data plane (archived migrations) |
 | **MVP-RC1 — RegLens Observatory** | **Complete** |
 | **MVP-RC2 — Studio trusted data plane** | **Complete** |
-| **MVP-RC3 — Live source sync and real corpus pilot** | **This delivery** |
+| **MVP-RC3 — Live source sync and real corpus pilot** | **Complete** |
+| **MVP-RC4 — Core10 research and public Observatory enrichment** | **This delivery** |
 
 ## Milestone 2A (complete)
 
@@ -46,7 +47,7 @@ search, NCHK, Studio-on-Pages, or breaking `publication_release.v1`.
 `make verify` remains the **RC2 demo-mode gate** (no `DATABASE_URL` required).
 Postgres path is gated by `make integration` / CI `postgres-integration`.
 
-## MVP-RC3 — Source sync and internal pilot (this delivery)
+## MVP-RC3 — Source sync and internal pilot (complete)
 
 RC3 adds policy-aware source metadata sync, MCHK/DCHK adapters, local OCR text
 variants, bounded extractor/critic tests, and the Core 50 internal pilot plan.
@@ -57,3 +58,17 @@ Continuing restrictions: public availability is not reuse permission; robots.txt
 is not a licence; MCHK remains internal-only; DCHK carries the July 14, 2018
 caveat; no public real release; no complete de-identification claim; and
 student-research letters do not unlock Pages.
+
+## MVP-RC4 — Core10 research and public Observatory enrichment (this delivery)
+
+RC4 adds an editorial codebook, Core10 operations before Core50 scale, five-user
+research protocol, product positioning, and research-collection definitions. The
+public Observatory gains synthetic-only tour, questions, and roadmap pages.
+
+Focused checks: `make core10-report`, `make rc4-verify`, and
+`pytest tests/test_rc4_public_pages.py`.
+
+Continuing restrictions: GitHub Pages is publicly accessible; real Core10/Core50
+corpus material, OCR text, reviewer notes, and internal research outputs stay in
+Studio/private storage until legal approval and source policy permit a public
+real release.

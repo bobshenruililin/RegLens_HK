@@ -1,0 +1,4 @@
+synthetic_label,slug,public_id,regulator_code,profession,year,issue_categories,finding_outcomes,sanction_categories,factor_categories,proposition_count,human_interpretation
+SYNTHETIC DEMO ONLY - NOT REAL CORPUS,syn-dchk-2023-014,demo-0.1.0:syn-dchk-2023-014,DCHK,dentist,2023,premises_equipment,proved,removal_suspended,remorse,6,PLACEHOLDER - reviewer synthesis required
+SYNTHETIC DEMO ONLY - NOT REAL CORPUS,syn-mchk-2024-001,demo-0.1.0:syn-mchk-2024-001,MCHK,doctor,2024,recordkeeping,proved|admitted,warning|costs,clear_prior_record|admission,8,PLACEHOLDER - reviewer synthesis required
+SYNTHETIC DEMO ONLY - NOT REAL CORPUS,syn-mchk-pdf-001,demo-0.1.0:syn-mchk-pdf-001,MCHK,doctor,,recordkeeping,proved,warning,,3,PLACEHOLDER - reviewer synthesis required

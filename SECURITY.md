@@ -12,6 +12,10 @@ capabilities. Public availability is not reuse permission, robots.txt is not a
 licence, MCHK remains internal-only, DCHK requires the July 14, 2018 coverage
 caveat, and student-research letters do not unlock Pages.
 
+RC4 public Observatory enrichment pages are synthetic-only. Core10/Core50 real
+research stays in Studio/private storage until legal approval and
+`source_publication_policy` explicitly allow a public real release.
+
 ## Reporting
 
 Report suspected security or privacy issues to the repository maintainers privately.
@@ -34,6 +38,7 @@ demo mode (default): data/objects + data/meta + file queue → same release gate
 
 - **Studio** may touch raw bytes, run artifacts, review state, and secrets.
 - **Observatory / Pages** may touch only release JSON/CSV and static UI assets.
+  Pages is publicly accessible; do not treat it as a controlled research room.
 - Crossing that boundary without release build + `scripts/check_public_release.py`
   is a security defect.
 - See [`docs/THREAT_MODEL.md`](docs/THREAT_MODEL.md).
@@ -59,3 +64,5 @@ demo mode (default): data/objects + data/meta + file queue → same release gate
 - Public release artifacts must not contain raw PDF/HTML, full page text, model
   `confidence`, or patient-style tokens that fail the privacy scan.
 - Demo auto-accept / `postgres_demo_pipeline` must reject `fixture_kind=real`.
+- Core10 report tooling in this repository must refuse real/public-mode
+  decisions and clearly label synthetic/demo outputs.

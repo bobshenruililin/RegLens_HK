@@ -38,25 +38,48 @@ jobs:
           python scripts/check_public_release.py generated/public-release
       - name: Assert no private/raw sources in release
         run: |
-          ! rg -n "private-data|Patient [A-Z0-9]|AUTH_PASSWORD|REGLENS_SESSION" generated/public-release || true
           python - <<'PY'
           from pathlib import Path
-          import re, sys
+          import json
+          import re
+          import sys
+
           root = Path("generated/public-release")
-          bad = []
-          for p in root.rglob("*"):
-              if p.is_file() and p.suffix.lower() in {".pdf", ".html", ".htm"}:
-                  bad.append(f"raw source file in release: {p}")
-              if p.suffix == ".json":
-                  text = p.read_text(encoding="utf-8")
-                  if '"pages"' in text and '"text"' in text and "page_no" in text:
-                      # public decisions must not embed full page text arrays
-                      if re.search(r'"pages"\s*:\s*\[', text) and re.search(r'"text"\s*:', text):
-                          bad.append(f"possible raw page text in {p}")
-                  if "confidence" in text:
-                      bad.append(f"confidence leaked in {p}")
-                  if re.search(r"\bPatient\s+[A-Z0-9]\b", text):
-                      bad.append(f"patient token in {p}")
+          bad: list[str] = []
+          secret_re = re.compile(
+              r"private-data|AUTH_PASSWORD|REGLENS_SESSION|reglens_session",
+              re.I,
+          )
+          patient_re = re.compile(r"\bPatient\s+[A-Z0-9]\b")
+          confidence_key_re = re.compile(r'"confidence"\s*:')
+
+          for path in root.rglob("*"):
+              if not path.is_file():
+                  continue
+              if path.suffix.lower() in {".pdf", ".html", ".htm"}:
+                  bad.append(f"raw source file in release: {path}")
+                  continue
+              text = path.read_text(encoding="utf-8", errors="replace")
+              if secret_re.search(text):
+                  bad.append(f"secret/path token in {path}")
+              if patient_re.search(text):
+                  bad.append(f"patient token in {path}")
+              if path.suffix == ".json":
+                  if confidence_key_re.search(text):
+                      bad.append(f"confidence JSON key leaked in {path}")
+                  # Reject full page-text arrays on public decisions
+                  if path.parent.name == "decisions" or path.name.endswith(".json"):
+                      try:
+                          payload = json.loads(text)
+                      except json.JSONDecodeError:
+                          continue
+                      if isinstance(payload, dict) and isinstance(payload.get("pages"), list):
+                          if any(
+                              isinstance(page, dict) and "text" in page
+                              for page in payload["pages"]
+                          ):
+                              bad.append(f"raw page text array in {path}")
+
           if bad:
               print("\n".join(bad))
               sys.exit(1)
@@ -79,7 +102,6 @@ jobs:
           test -f apps/site/out/data/index.html
           test -f apps/site/out/compare/index.html
           test -f apps/site/out/404.html || test -f apps/site/out/404/index.html
-          # decision routes from release
           python - <<'PY'
           import json
           from pathlib import Path

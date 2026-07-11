@@ -83,7 +83,7 @@ jobs:
         run: npm run build
       - name: Guard Studio not in site output
         run: |
-          if [ -d apps/site/out ] && rg -q "RegLens Studio|AUTH_PASSWORD|reglens_session" apps/site/out -g '*.html' ; then
+          if [ -d apps/site/out ] && grep -R -E -q "RegLens Studio|AUTH_PASSWORD|reglens_session" apps/site/out --include='*.html' ; then
             echo "Studio/auth leakage in site output" >&2
             exit 1
           fi

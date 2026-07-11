@@ -90,6 +90,7 @@ def sync_source(
     fixture_dir: str | Path = DEFAULT_FIXTURE_DIR,
     http_client_factory: Callable[[Policy], SafeHttpClient] | None = None,
     conn: psycopg.Connection | None = None,
+    limit: int | None = None,
 ) -> SyncResult:
     """
     Run metadata discovery and optional acquisition for one source.
@@ -115,6 +116,10 @@ def sync_source(
     )
     fetch_html = _fixture_fetcher(adapter, Path(fixture_dir), index_url) if not live else None
     items = list(adapter.discover(index_html, base_url=index_url, fetch_html=fetch_html))
+    if limit is not None:
+        if limit < 0:
+            raise SourceSyncError("--limit must be >= 0")
+        items = items[:limit]
     health = check_parser_health(
         index_html,
         items,

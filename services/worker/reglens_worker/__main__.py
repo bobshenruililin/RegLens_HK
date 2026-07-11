@@ -14,6 +14,8 @@ from .mode import require_postgres_dsn
 from .publication import pending_review_queue, set_proposition_review
 from .release import ReleaseError, build_release
 from .search import search
+from .sources.policy import PolicyError, get_policy, load_policy_document
+from .sources.sync import SourceSyncError, sync_source
 from .store import LocalArtifactStore
 from .worker_loop import (
     default_worker_id,
@@ -352,6 +354,109 @@ def cmd_db_status(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_sources_status(args: argparse.Namespace) -> int:
+    try:
+        doc = load_policy_document()
+    except PolicyError as exc:
+        print(f"sources status FAILED: {exc}", file=sys.stderr)
+        return 1
+    rows = []
+    for p in doc.get("policies") or []:
+        rows.append(
+            {
+                "source_id": p.get("source_id"),
+                "regulator_code": p.get("regulator_code"),
+                "enabled": p.get("enabled"),
+                "discovery_mode": p.get("discovery_mode"),
+                "document_acquisition": p.get("document_acquisition"),
+                "content_use_posture": p.get("content_use_posture"),
+                "last_robots_result": p.get("last_robots_result"),
+                "public_visibility_policy_ref": p.get("public_visibility_policy_ref"),
+                "require_user_agent_contact": p.get("require_user_agent_contact"),
+            }
+        )
+    print(json.dumps({"schema_version": doc.get("schema_version"), "policies": rows}, indent=2))
+    return 0
+
+
+def cmd_sources_sync(args: argparse.Namespace) -> int:
+    mode = (args.mode or "metadata").strip().lower()
+    acquire = mode == "acquire" or bool(args.acquire)
+    dry_run = not bool(args.no_dry_run)
+    if args.dry_run:
+        dry_run = True
+    try:
+        # Fail closed on unknown source before network/DB work.
+        get_policy(args.source)
+        result = sync_source(
+            args.source,
+            dry_run=dry_run,
+            acquire=acquire,
+            live=bool(args.live),
+            fixture_dir=args.fixture_dir,
+            limit=args.limit,
+        )
+    except (PolicyError, SourceSyncError, ValueError, RuntimeError) as exc:
+        print(f"sources sync FAILED: {exc}", file=sys.stderr)
+        return 1
+    print(json.dumps(result.to_dict(), indent=2))
+    return 0
+
+
+def cmd_sources_diff(args: argparse.Namespace) -> int:
+    """Show discovered-item counts since a sync run (postgres)."""
+    import psycopg
+
+    try:
+        dsn = require_postgres_dsn()
+        with psycopg.connect(dsn) as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    SELECT id::text, status, items_discovered, items_persisted,
+                           documents_acquired, started_at, finished_at
+                    FROM source_sync_runs
+                    WHERE source_id = %s AND id = %s::uuid
+                    """,
+                    (args.source, args.since),
+                )
+                run = cur.fetchone()
+                if run is None:
+                    print("sources diff FAILED: sync run not found", file=sys.stderr)
+                    return 1
+                cur.execute(
+                    """
+                    SELECT status, COUNT(*) FROM discovered_source_items
+                    WHERE source_id = %s
+                    GROUP BY status ORDER BY status
+                    """,
+                    (args.source,),
+                )
+                counts = {row[0]: int(row[1]) for row in cur.fetchall()}
+    except Exception as exc:  # noqa: BLE001
+        print(f"sources diff FAILED: {exc}", file=sys.stderr)
+        return 1
+    print(
+        json.dumps(
+            {
+                "source_id": args.source,
+                "since_run": {
+                    "id": run[0],
+                    "status": run[1],
+                    "items_discovered": run[2],
+                    "items_persisted": run[3],
+                    "documents_acquired": run[4],
+                    "started_at": str(run[5]),
+                    "finished_at": str(run[6]) if run[6] else None,
+                },
+                "current_status_counts": counts,
+            },
+            indent=2,
+        )
+    )
+    return 0
+
+
 def _add_ingest_common_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--manifest", default="fixtures/manifests/m1.jsonl")
     parser.add_argument("--data-root", default="data")
@@ -527,6 +632,45 @@ def main(argv: list[str] | None = None) -> int:
     p_db_migrate.set_defaults(func=cmd_db_migrate)
     p_db_status = db_sub.add_parser("status", help="Show SQL migration status")
     p_db_status.set_defaults(func=cmd_db_status)
+
+    p_sources = sub.add_parser("sources", help="RC3 policy-aware source sync")
+    sources_sub = p_sources.add_subparsers(dest="sources_cmd", required=True)
+    p_src_status = sources_sub.add_parser("status", help="Show source automation policies")
+    p_src_status.set_defaults(func=cmd_sources_status)
+
+    p_src_sync = sources_sub.add_parser("sync", help="Discover metadata or acquire documents")
+    p_src_sync.add_argument("--source", required=True, help="source_id, e.g. mchk_judgments")
+    p_src_sync.add_argument(
+        "--mode",
+        default="metadata",
+        choices=["metadata", "acquire"],
+        help="metadata discovery or document acquisition",
+    )
+    p_src_sync.add_argument(
+        "--dry-run",
+        action="store_true",
+        default=False,
+        help="Parse/show without persisting (default unless --no-dry-run)",
+    )
+    p_src_sync.add_argument(
+        "--no-dry-run",
+        action="store_true",
+        help="Persist to PostgreSQL (requires REGLENS_MODE=postgres)",
+    )
+    p_src_sync.add_argument(
+        "--live",
+        action="store_true",
+        help="Fetch official indexes over HTTPS (requires contact UA env)",
+    )
+    p_src_sync.add_argument("--acquire", action="store_true", help="Alias for --mode acquire")
+    p_src_sync.add_argument("--limit", type=int, default=None, help="Max items to process")
+    p_src_sync.add_argument("--fixture-dir", default="fixtures/source_html")
+    p_src_sync.set_defaults(func=cmd_sources_sync)
+
+    p_src_diff = sources_sub.add_parser("diff", help="Compare corpus state since a sync run")
+    p_src_diff.add_argument("--source", required=True)
+    p_src_diff.add_argument("--since", required=True, help="source_sync_runs UUID")
+    p_src_diff.set_defaults(func=cmd_sources_diff)
 
     args = parser.parse_args(argv)
     return args.func(args)

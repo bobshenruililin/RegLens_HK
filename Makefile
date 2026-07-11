@@ -234,10 +234,12 @@ sources-status:
 	fi
 
 source-sync-mchk-dry:
-	python -m reglens_worker.sources.sync --source-id mchk_judgments --fixture-dir fixtures/source_html
+	python -m reglens_worker sources sync --source mchk_judgments --mode metadata --dry-run \
+	  --fixture-dir fixtures/source_html
 
 source-sync-dchk-dry:
-	python -m reglens_worker.sources.sync --source-id dchk_judgments --fixture-dir fixtures/source_html
+	python -m reglens_worker sources sync --source dchk_judgments --mode metadata --dry-run \
+	  --fixture-dir fixtures/source_html
 
 source-parser-tests:
 	pytest tests/sources

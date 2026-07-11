@@ -89,7 +89,10 @@ def resolve_evidence(
         for evidence in prop.get("evidence", []):
             if not isinstance(evidence, dict):
                 continue
-            span = page_to_span.get(evidence.get("page_no"))
+            page_no = evidence.get("page_no")
+            if not isinstance(page_no, int):
+                continue
+            span = page_to_span.get(page_no)
             if span is None:
                 continue
             evidence.setdefault("span_id", span_stable_id(document_sha256, span))

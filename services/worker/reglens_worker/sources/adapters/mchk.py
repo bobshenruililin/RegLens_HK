@@ -147,7 +147,12 @@ def _cell_text(row: Tag, index: int) -> str | None:
 
 
 def _split_values(value: str) -> list[str]:
-    return [_clean(part) for part in _SPLIT_RE.split(value) if _clean(part)]
+    out: list[str] = []
+    for part in _SPLIT_RE.split(value):
+        cleaned = _clean(part)
+        if cleaned:
+            out.append(cleaned)
+    return out
 
 
 def _clean(value: object) -> str | None:

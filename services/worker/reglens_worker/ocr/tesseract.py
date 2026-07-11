@@ -70,9 +70,7 @@ def ocr_document(
         raise FileNotFoundError(str(input_path))
 
     limit = (
-        max_pages
-        if max_pages is not None
-        else _env_int("REGLENS_OCR_MAX_PAGES", DEFAULT_MAX_PAGES)
+        max_pages if max_pages is not None else _env_int("REGLENS_OCR_MAX_PAGES", DEFAULT_MAX_PAGES)
     )
     if page_count is not None and page_count > limit:
         raise OCRConfigurationError(f"OCR page count {page_count} exceeds max page limit {limit}")

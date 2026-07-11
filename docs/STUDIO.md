@@ -45,8 +45,19 @@ Create an admin user via the demo pipeline or `reglens_worker.pg.users.create_us
   `build_release_from_postgres` after `scripts/check_public_release.py`.
 - Do not point Studio at a public host or bake secrets into `apps/site`.
 
+## RC3 source and pilot posture
+
+Studio is the internal surface for RC3 source metadata, OCR text variants,
+bounded extractor/critic output, corrections, and Core 50 pilot review. These
+features do not authorize public real releases. Public availability is not reuse
+permission; robots.txt is not a licence; MCHK remains internal-only; DCHK records
+need the July 14, 2018 caveat; privacy scans are not complete de-identification;
+and student-research letters do not unlock Pages.
+
 ## Related
 
 - [`OPERATIONS.md`](OPERATIONS.md) — Compose, workers, backups
 - [`REVIEW_WORKFLOW.md`](REVIEW_WORKFLOW.md) — accept / edit / reject / publish
 - [`ARCHITECTURE.md`](ARCHITECTURE.md) — two-app overview
+- [`SOURCE_SYNC.md`](SOURCE_SYNC.md) — RC3 source sync
+- [`REAL_CORPUS_PILOT.md`](REAL_CORPUS_PILOT.md) — Core 50 internal pilot

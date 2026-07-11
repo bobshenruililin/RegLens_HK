@@ -28,6 +28,11 @@ export function SiteNav({ role, mode }: Props) {
       <Link href="/search">Search</Link>
       <Link href="/documents">Documents</Link>
       <Link href="/decisions">Decisions</Link>
+      <Link href="/issues">Issues</Link>
+      <Link href="/sanctions">Sanctions</Link>
+      <Link href="/authorities">Authorities</Link>
+      <Link href="/research-pack">Research pack</Link>
+      <Link href="/sync">Sync</Link>
       <Link href="/source-policies">Policies</Link>
       {role === "admin" && <Link href="/admin/users">Admin</Link>}
       {mode && (

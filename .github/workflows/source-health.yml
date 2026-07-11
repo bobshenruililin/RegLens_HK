@@ -1,0 +1,79 @@
+name: Source health
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  metadata-only:
+    name: Metadata-only source health
+    runs-on: ubuntu-latest
+    if: ${{ !github.event.repository.fork }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Python deps
+        run: pip install -r services/worker/requirements.txt
+      - name: Build sanitized source-health summary
+        env:
+          PYTHONPATH: services/worker
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          from reglens_worker.sources.sync import sync_source
+
+          results = []
+          for source_id in ("mchk_judgments", "dchk_judgments"):
+              result = sync_source(
+                  source_id,
+                  dry_run=True,
+                  live=False,
+                  acquire=False,
+                  fixture_dir="fixtures/source_html",
+              ).to_dict()
+              results.append(
+                  {
+                      "source_id": result["source_id"],
+                      "mode": result["mode"],
+                      "dry_run": result["dry_run"],
+                      "live": result["live"],
+                      "discovered_count": result["discovered_count"],
+                      "persisted_count": result["persisted_count"],
+                      "acquired_count": result["acquired_count"],
+                      "parser_health": result["parser_health"],
+                  }
+              )
+
+          summary = {
+              "note": (
+                  "Manual metadata-only source health. Uses offline fixtures, "
+                  "does not fetch live sites, does not download PDFs, and "
+                  "does not create public real-release artifacts."
+              ),
+              "licensing_caveat": (
+                  "Public availability is not reuse permission; robots.txt is "
+                  "not a licence. MCHK remains internal-only; DCHK carries the "
+                  "July 14, 2018 caveat. Student-research letters do not unlock Pages."
+              ),
+              "deidentification_caveat": (
+                  "No complete de-identification claim is made by this check."
+              ),
+              "results": results,
+          }
+          Path("source-health-summary.json").write_text(
+              json.dumps(summary, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          PY
+      - name: Upload sanitized summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-health-summary
+          path: source-health-summary.json
+          if-no-files-found: error

@@ -173,6 +173,20 @@ export async function listDecisionsPg(limit = 100): Promise<DecisionListItem[]> 
   return rows;
 }
 
+export async function listDecisionNavigationPg(): Promise<DecisionListItem[]> {
+  const { rows } = await query<DecisionListItem>(
+    `
+    SELECT d.id, d.external_ref, d.title, d.profession, d.fixture_kind,
+           r.code AS regulator_code, sc.source_id, d.created_at
+    FROM decisions d
+    JOIN regulators r ON r.id = d.regulator_id
+    JOIN source_collections sc ON sc.id = d.source_collection_id
+    ORDER BY r.code, d.external_ref, d.created_at DESC
+    `
+  );
+  return rows;
+}
+
 export type ReviewQueueItem = {
   review_id: string;
   decision_id: string;
@@ -241,6 +255,7 @@ export type DecisionReviewBundle = {
     profession: string;
     regulator_code: string;
     defendant_name_as_published: string | null;
+    source_id?: string | null;
   };
   spans: Array<{
     id: string;
@@ -257,7 +272,9 @@ export type DecisionReviewBundle = {
     revision_id: string;
     revision_number: number;
     latest_review_status: string | null;
-    evidence: Array<{ page_no: number; quote_text: string }>;
+    structured_json: unknown;
+    critic_result?: unknown;
+    evidence: Array<{ page_no: number; quote_text: string; text_variant?: string | null }>;
   }>;
 };
 
@@ -271,12 +288,15 @@ export async function getDecisionReviewBundle(
     profession: string;
     regulator_code: string;
     defendant_name_as_published: string | null;
+    source_id: string | null;
   }>(
     `
     SELECT d.id, d.external_ref, d.title, d.profession,
-           r.code AS regulator_code, d.defendant_name_as_published
+           r.code AS regulator_code, d.defendant_name_as_published,
+           sc.source_id
     FROM decisions d
     JOIN regulators r ON r.id = d.regulator_id
+    JOIN source_collections sc ON sc.id = d.source_collection_id
     WHERE d.id = $1
     `,
     [decisionId]
@@ -310,6 +330,8 @@ export async function getDecisionReviewBundle(
     revision_id: string;
     revision_number: number;
     latest_review_status: string | null;
+    structured_json: unknown;
+    critic_result: unknown;
   }>(
     `
     SELECT DISTINCT ON (pr.extracted_proposition_id)
@@ -320,6 +342,12 @@ export async function getDecisionReviewBundle(
       pr.claim_text,
       pr.id AS revision_id,
       pr.revision_number,
+      pr.structured_json,
+      COALESCE(
+        pr.structured_json->'critic_result',
+        pr.structured_json->'critic',
+        pr.structured_json->'critic_output'
+      ) AS critic_result,
       (
         SELECT rv.review_status
         FROM reviews rv
@@ -337,9 +365,9 @@ export async function getDecisionReviewBundle(
 
   const propositions = [];
   for (const p of props.rows) {
-    const ev = await query<{ page_no: number; quote_text: string }>(
+    const ev = await query<{ page_no: number; quote_text: string; text_variant: string | null }>(
       `
-      SELECT page_no, quote_text
+      SELECT page_no, quote_text, NULL::text AS text_variant
       FROM proposition_evidence
       WHERE extracted_proposition_id = $1
       ORDER BY page_no
@@ -354,6 +382,172 @@ export async function getDecisionReviewBundle(
     spans: spans.rows,
     propositions,
   };
+}
+
+export type PgResearchAnnotation = {
+  decision_id: string | null;
+  external_ref: string;
+  regulator_code: string;
+  profession: string | null;
+  title: string | null;
+  issue_categories: unknown;
+  finding_outcomes: unknown;
+  sanction_categories: unknown;
+  factor_categories: unknown;
+  summary: string;
+  takeaway: string;
+  supporting_client_refs: unknown;
+  reviewer_status: string;
+};
+
+export async function listResearchAnnotationsPg(): Promise<PgResearchAnnotation[]> {
+  const { rows } = await query<PgResearchAnnotation>(
+    `
+    SELECT
+      d.id AS decision_id,
+      ea.external_ref,
+      ea.regulator_code,
+      d.profession,
+      d.title,
+      ea.issue_categories,
+      ea.finding_outcomes,
+      ea.sanction_categories,
+      ea.factor_categories,
+      ea.summary,
+      ea.takeaway,
+      ea.supporting_client_refs,
+      ea.reviewer_status
+    FROM editorial_annotations ea
+    LEFT JOIN decisions d ON d.id = ea.decision_id OR d.external_ref = ea.external_ref
+    ORDER BY ea.regulator_code, ea.external_ref
+    `
+  );
+  return rows;
+}
+
+export type PgResearchProposition = {
+  decision_id: string;
+  external_ref: string;
+  title: string | null;
+  regulator_code: string;
+  profession: string | null;
+  client_ref: string;
+  prop_type: string;
+  epistemic_class: string;
+  claim_text: string;
+  latest_review_status: string | null;
+  evidence: Array<{ page_no: number; quote_text: string }>;
+};
+
+export async function listResearchPropositionsPg(
+  decisionIds?: string[]
+): Promise<PgResearchProposition[]> {
+  const params: unknown[] = [];
+  const filter = decisionIds && decisionIds.length > 0
+    ? `AND pr.decision_id = ANY($1::uuid[])`
+    : "";
+  if (decisionIds && decisionIds.length > 0) {
+    params.push(decisionIds);
+  }
+  const { rows } = await query<Omit<PgResearchProposition, "evidence"> & {
+    extracted_proposition_id: string;
+  }>(
+    `
+    SELECT DISTINCT ON (pr.extracted_proposition_id)
+      pr.extracted_proposition_id,
+      pr.decision_id,
+      d.external_ref,
+      d.title,
+      r.code AS regulator_code,
+      d.profession,
+      ep.client_ref,
+      pr.prop_type,
+      pr.epistemic_class,
+      pr.claim_text,
+      (
+        SELECT rv.review_status
+        FROM reviews rv
+        WHERE rv.proposition_revision_id = pr.id
+        ORDER BY rv.created_at DESC
+        LIMIT 1
+      ) AS latest_review_status
+    FROM proposition_revisions pr
+    JOIN extracted_propositions ep ON ep.id = pr.extracted_proposition_id
+    JOIN decisions d ON d.id = pr.decision_id
+    JOIN regulators r ON r.id = d.regulator_id
+    WHERE 1 = 1
+      ${filter}
+    ORDER BY pr.extracted_proposition_id, pr.revision_number DESC
+    `,
+    params
+  );
+
+  const out: PgResearchProposition[] = [];
+  for (const row of rows) {
+    const ev = await query<{ page_no: number; quote_text: string }>(
+      `
+      SELECT page_no, quote_text
+      FROM proposition_evidence
+      WHERE extracted_proposition_id = $1
+      ORDER BY page_no
+      `,
+      [row.extracted_proposition_id]
+    );
+    const { extracted_proposition_id: _id, ...rest } = row;
+    out.push({ ...rest, evidence: ev.rows });
+  }
+  return out;
+}
+
+export type SourceSyncStatusRow = {
+  source_id: string;
+  collection_name: string;
+  regulator_code: string;
+  visibility: string;
+  consent_status: string;
+  document_count: number;
+  latest_document_created_at: Date | null;
+  pending_jobs: number;
+  running_jobs: number;
+  failed_jobs: number;
+};
+
+export async function listSourceSyncStatusPg(): Promise<SourceSyncStatusRow[]> {
+  const { rows } = await query<
+    Omit<SourceSyncStatusRow, "document_count" | "pending_jobs" | "running_jobs" | "failed_jobs"> & {
+      document_count: string;
+      pending_jobs: string;
+      running_jobs: string;
+      failed_jobs: string;
+    }
+  >(
+    `
+    SELECT
+      sc.source_id,
+      sc.collection_name,
+      r.code AS regulator_code,
+      sc.visibility,
+      sc.consent_status,
+      COUNT(DISTINCT d.id)::text AS document_count,
+      MAX(d.created_at) AS latest_document_created_at,
+      COUNT(DISTINCT j.id) FILTER (WHERE j.status = 'pending')::text AS pending_jobs,
+      COUNT(DISTINCT j.id) FILTER (WHERE j.status = 'running')::text AS running_jobs,
+      COUNT(DISTINCT j.id) FILTER (WHERE j.status = 'failed')::text AS failed_jobs
+    FROM source_collections sc
+    JOIN regulators r ON r.id = sc.regulator_id
+    LEFT JOIN documents d ON d.source_collection_id = sc.id
+    LEFT JOIN jobs j ON j.dedupe_key LIKE sc.source_id || ':%'
+    GROUP BY sc.source_id, sc.collection_name, r.code, sc.visibility, sc.consent_status
+    ORDER BY r.code, sc.source_id
+    `
+  );
+  return rows.map((row) => ({
+    ...row,
+    document_count: Number(row.document_count || 0),
+    pending_jobs: Number(row.pending_jobs || 0),
+    running_jobs: Number(row.running_jobs || 0),
+    failed_jobs: Number(row.failed_jobs || 0),
+  }));
 }
 
 export async function submitReviewAction(opts: {

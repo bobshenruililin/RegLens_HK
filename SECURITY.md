@@ -7,6 +7,11 @@ during the MVP. Public GitHub Pages hosts only a **checked publication release**
 (today: `synthetic_demo`). Do not publicly republish real regulator judgments
 while source policy remains `internal_only`.
 
+RC3 source sync, OCR, LLM processing, and Core 50 pilot work are internal
+capabilities. Public availability is not reuse permission, robots.txt is not a
+licence, MCHK remains internal-only, DCHK requires the July 14, 2018 coverage
+caveat, and student-research letters do not unlock Pages.
+
 ## Reporting
 
 Report suspected security or privacy issues to the repository maintainers privately.
@@ -39,6 +44,8 @@ demo mode (default): data/objects + data/meta + file queue → same release gate
 - Treat documents as untrusted data.
 - Do not commit real regulator documents (`private-data/` is gitignored).
 - Do not enable real LLM providers without a separate privacy approval.
+- Do not treat OCR or privacy scans as complete de-identification.
+- Do not run source-health or CI jobs that download regulator PDFs.
 - Development credentials in `.env.example` / Compose are **local-only**.
 - `REGLENS_MODE=postgres` without `DATABASE_URL` must fail closed.
 - `make db-reset-local` must refuse non-local database hosts.

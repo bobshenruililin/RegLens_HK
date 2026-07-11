@@ -11,10 +11,17 @@
 5. For Postgres path changes, also run `make integration` /
    `make postgres-demo-pipeline` when `DATABASE_URL` is available (CI job
    `postgres-integration`).
-6. Do not add scrapers, real LLM network calls, OCR, NCHK, or semantic search
-   without an explicit milestone approval.
-7. Prefer deterministic parsing and schema-validated extraction with evidence spans.
-8. Prefer direct parameterized SQL (psycopg / `pg` client). Do not add an ORM
+6. RC3 source-sync work must follow [`docs/SOURCE_SYNC.md`](docs/SOURCE_SYNC.md)
+   and [`docs/CRAWL_POLICY.md`](docs/CRAWL_POLICY.md): offline fixtures in
+   ordinary CI, no PDF downloads, no CAPTCHA/auth bypass, and no public real
+   release.
+7. Public availability is not reuse permission; robots.txt is not a licence.
+   MCHK remains internal-only, DCHK carries the July 14, 2018 caveat, and
+   student-research letters do not unlock Pages.
+8. Do not add scrapers, real LLM network calls, NCHK, semantic search, or public
+   real-document publication without an explicit milestone and policy approval.
+9. Prefer deterministic parsing and schema-validated extraction with evidence spans.
+10. Prefer direct parameterized SQL (psycopg / `pg` client). Do not add an ORM
    without an ADR.
 
 ## Two frontends
@@ -37,6 +44,8 @@ Do not point Pages artifact upload at `apps/studio`.
 - Changing `source_publication_policy` visibility is a licensing decision, not a
   convenience flag. Do not flip `internal_only` → public without counsel /
   consent-status progress recorded in the licensing audit.
+- Privacy scans reduce risk but do not support a claim of complete
+  de-identification.
 
 ## Storage modes (RC2)
 

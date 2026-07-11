@@ -1,25 +1,12 @@
 # RegLens HK
 
-Evidence-linked database and analysis platform for Hong Kong regulatory and
-professional disciplinary decisions.
+Evidence-linked database for Hong Kong regulatory disciplinary decisions
+(internal / non-commercial research tool — not legal advice).
 
-**MVP Backbone (2A–2D)** is approved and implemented: contracts, determinism,
-private-data boundary, CI, Postgres/object-store/jobs interfaces, auth-gated
-review/publication, and keyword FTS with evidence UX.
+## Milestone 2A
 
-This is an internal research tool. It does **not** provide legal advice.
-
-## Restrictions
-
-- Internal / non-commercial
-- No live crawling
-- No public real-document republication
-- Mock LLM only (no real LLM without privacy approval)
-- No NCHK
-- No semantic search before FTS evaluation
-
-Read [AGENTS.md](AGENTS.md). Phase 0 package: [docs/README.md](docs/README.md).
-Backbone notes: [docs/MVP_BACKBONE.md](docs/MVP_BACKBONE.md).
+Trusted contracts (extraction v2), deterministic immutable runs, synthetic vs
+private-data boundary, parser safety, and CI.
 
 ## Quick start
 
@@ -27,10 +14,11 @@ Backbone notes: [docs/MVP_BACKBONE.md](docs/MVP_BACKBONE.md).
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r services/worker/requirements.txt
 export PYTHONPATH=services/worker
-python -m reglens_worker ingest --manifest fixtures/manifests/m1.jsonl --data-root data --accept
-pytest
-cd apps/web && npm install && npm run dev
-# http://localhost:3000  password: reglens-internal
+python -m reglens_worker ingest --manifest fixtures/manifests/m1.jsonl --data-root data
+# optional synthetic demo publish only:
+# python -m reglens_worker ingest --manifest fixtures/manifests/m1.jsonl --data-root data --demo-auto-approve-synthetic
+make verify
+cd apps/web && npm ci && npm run dev
 ```
 
-Full commands: [docs/LOCAL_SETUP.md](docs/LOCAL_SETUP.md).
+See [docs/LOCAL_SETUP.md](docs/LOCAL_SETUP.md), [AGENTS.md](AGENTS.md), and [docs/README.md](docs/README.md).

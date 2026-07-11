@@ -7,13 +7,20 @@ from typing import Any
 
 from . import PIPELINE_VERSION
 from .db import persist_ingest_to_postgres
-from .determinism import decision_id_for_sha256, document_id_for_sha256, job_dedupe_key, span_stable_id
+from .determinism import (
+    SCHEMA_VERSION,
+    decision_id_for_run,
+    document_id_for_sha256,
+    extraction_run_key,
+    job_dedupe_key,
+    proposition_id_for,
+    span_stable_id,
+)
 from .hashutil import sha256_file
 from .jobs import build_job_queue
 from .llm import MockLLMProvider
-from .privacy import redact_derived_text
-from .schema_validate import assert_valid_extraction, evidence_quotes_supported
-from .segment import segment_document, text_quality
+from .schema_validate import assert_valid_extraction_v2
+from .segment import segment_document_report
 from .store import LocalArtifactStore, mime_for, utc_now_iso
 
 
@@ -22,11 +29,16 @@ class ManifestRow:
     regulator_code: str
     source_id: str
     relative_path: str
+    fixture_kind: str
     external_ref: str | None = None
     title: str | None = None
     source_url: str | None = None
     downloaded_at: str | None = None
     notes: str | None = None
+
+
+class ManifestSafetyError(ValueError):
+    pass
 
 
 def load_manifest(path: Path) -> list[ManifestRow]:
@@ -36,11 +48,17 @@ def load_manifest(path: Path) -> list[ManifestRow]:
         if not line or line.startswith("#"):
             continue
         data = json.loads(line)
+        kind = data.get("fixture_kind")
+        if kind not in {"synthetic", "real"}:
+            raise ManifestSafetyError(
+                f"manifest row missing fixture_kind=synthetic|real: {data.get('relative_path')}"
+            )
         rows.append(
             ManifestRow(
                 regulator_code=data["regulator_code"],
                 source_id=data["source_id"],
                 relative_path=data["relative_path"],
+                fixture_kind=kind,
                 external_ref=data.get("external_ref"),
                 title=data.get("title"),
                 source_url=data.get("source_url"),
@@ -57,14 +75,18 @@ def ingest_fixture(
     store: LocalArtifactStore,
     row: ManifestRow,
     provider: MockLLMProvider | None = None,
-    review_accept: bool = False,
+    demo_auto_approve_synthetic: bool = False,
 ) -> dict[str, Any]:
     """
-    Idempotent fixture ingest:
-    hash → immutable blob → page spans → mock extract → schema/quote checks → decision catalog.
-
-    Default: propositions are pending (not published) until human review (Milestone 2C).
+    Idempotent fixture ingest with immutable run artifacts.
+    Default: propositions pending and unpublished.
     """
+    if demo_auto_approve_synthetic and row.fixture_kind != "synthetic":
+        raise ManifestSafetyError(
+            "--demo-auto-approve-synthetic rejected non-synthetic row: "
+            f"{row.relative_path} ({row.fixture_kind})"
+        )
+
     provider = provider or MockLLMProvider()
     src = fixtures_root / row.relative_path
     if not src.is_file():
@@ -72,8 +94,8 @@ def ingest_fixture(
 
     digest = sha256_file(src)
     storage_key = store.store_blob(src, digest)
-    spans = segment_document(src)
-    quality = text_quality(spans)
+    report = segment_document_report(src)
+    spans = report.spans
 
     doc_record = {
         "document_id": document_id_for_sha256(digest),
@@ -83,6 +105,7 @@ def ingest_fixture(
         "byte_size": src.stat().st_size,
         "regulator_code": row.regulator_code,
         "source_id": row.source_id,
+        "fixture_kind": row.fixture_kind,
         "external_ref": row.external_ref,
         "title": row.title or src.name,
         "relative_path": row.relative_path,
@@ -90,7 +113,10 @@ def ingest_fixture(
         "downloaded_at": row.downloaded_at,
         "notes": row.notes,
         "ingest_status": "segmented",
-        "text_quality": quality,
+        "text_quality": report.overall_quality,
+        "empty_page_ratio": report.empty_page_ratio,
+        "segmentation_warnings": report.warnings,
+        "page_qualities": [{"page_no": s.page_no, "quality": s.quality} for s in spans],
         "ocr_used": False,
         "immutable": True,
         "ingested_at": utc_now_iso(),
@@ -116,75 +142,86 @@ def ingest_fixture(
         },
     )
 
-    page_to_span = {s.page_no: span_stable_id(digest, s) for s in spans}
+    page_to_span_id = {s.page_no: span_stable_id(digest, s) for s in spans}
     for prop in extraction["propositions"]:
-        prop["claim_text"] = redact_derived_text(prop["claim_text"])
         for ev in prop["evidence"]:
-            ev["span_id"] = page_to_span.get(ev["page_no"])
-            # Quotes stay faithful to source; derived claim_text is redacted.
+            sid = page_to_span_id.get(ev["page_no"])
+            if not sid:
+                raise ValueError(f"no span for page {ev['page_no']}")
+            ev["span_id"] = sid
 
-    assert_valid_extraction(extraction)
-    page_texts = {s.page_no: s.text for s in spans}
-    unsupported = evidence_quotes_supported(extraction, page_texts)
-    if unsupported:
-        raise ValueError("Evidence quote alignment failed:\n- " + "\n- ".join(unsupported))
+    assert_valid_extraction_v2(
+        extraction,
+        spans=spans,
+        document_sha256=digest,
+        require_span_id=True,
+    )
 
-    store.write_extraction(digest, extraction)
+    run_key = extraction_run_key(
+        document_sha256=digest,
+        schema_version=SCHEMA_VERSION,
+        pipeline_version=extraction["extractor"]["pipeline_version"],
+        model_provider=extraction["extractor"]["model_provider"],
+        model_version=extraction["extractor"]["model_version"],
+        prompt_version=extraction["extractor"]["prompt_version"],
+        deterministic_settings={"fixture_kind": row.fixture_kind},
+    )
+    _, output_sha = store.write_run_extraction(run_key, extraction)
 
-    decision_id = decision_id_for_sha256(digest)
+    auto = bool(demo_auto_approve_synthetic and row.fixture_kind == "synthetic")
+    decision_id = decision_id_for_run(run_key)
     propositions_out = []
     for prop in extraction["propositions"]:
-        review_status = "accepted" if review_accept else "pending"
-        published = bool(review_accept)
-        evidence = [
-            {
-                "span_id": ev["span_id"],
-                "page_no": ev["page_no"],
-                "quote": ev["quote"],
-                "char_start": ev.get("char_start"),
-                "char_end": ev.get("char_end"),
-            }
-            for ev in prop["evidence"]
-        ]
-        if published and not evidence:
-            raise ValueError("Refusing to publish proposition without evidence")
+        prop_id = proposition_id_for(run_key, prop["client_ref"])
         propositions_out.append(
             {
-                "id": prop["id"],
+                "id": prop_id,
+                "client_ref": prop["client_ref"],
                 "prop_type": prop["prop_type"],
                 "epistemic_class": prop["epistemic_class"],
+                "derivation": prop["derivation"],
                 "claim_text": prop["claim_text"],
+                "structured": prop.get("structured"),
                 "confidence": prop["confidence"],
-                "review_status": review_status,
-                "published": published,
-                "evidence": evidence,
+                "review_status": "accepted" if auto else "pending",
+                "published": bool(auto),
+                "evidence": prop["evidence"],
             }
         )
 
+    meta = extraction["decision_metadata"]
     decision = {
         "id": decision_id,
+        "run_key": run_key,
+        "extraction_sha256": output_sha,
         "document_id": doc_record["document_id"],
         "document_sha256": digest,
         "regulator_code": row.regulator_code,
         "source_id": row.source_id,
+        "fixture_kind": row.fixture_kind,
         "title": doc_record["title"],
-        "case_ref": extraction.get("decision_metadata", {}).get("case_ref") or row.external_ref,
-        "decision_date": extraction.get("decision_metadata", {}).get("decision_date"),
-        "profession": extraction.get("decision_metadata", {}).get("profession"),
-        "defendant_name_as_published": extraction.get("decision_metadata", {}).get(
-            "defendant_name_as_published"
-        ),
-        "defendant_registration_no": extraction.get("decision_metadata", {}).get(
-            "defendant_registration_no"
-        ),
+        "case_refs": meta.get("case_refs") or [],
+        "case_ref": (meta.get("case_refs") or [row.external_ref])[0]
+        if (meta.get("case_refs") or row.external_ref)
+        else None,
+        "dates": meta.get("dates"),
+        "decision_date": (meta.get("dates") or {}).get("judgment"),
+        "profession": meta.get("profession"),
+        "defendant_name_as_published": meta.get("defendant_name_as_published"),
+        "defendant_registration_no": meta.get("defendant_registration_no"),
         "source_url": row.source_url,
         "coverage": extraction.get("coverage", {}),
-        "text_quality": quality,
+        "text_quality": report.overall_quality,
+        "segmentation_warnings": report.warnings,
         "extractor": extraction["extractor"],
+        "relations": extraction.get("relations") or [],
         "pages": [
             {
                 "span_id": span_stable_id(digest, s),
                 "page_no": s.page_no,
+                "source_page_no": s.source_page_no,
+                "printed_page_label": s.printed_page_label,
+                "quality": s.quality,
                 "text": s.text,
             }
             for s in spans
@@ -192,11 +229,14 @@ def ingest_fixture(
         "propositions": propositions_out,
         "licence_notice": (
             "Internal research use of fixture materials only. "
-            "Not legal advice. Not for public republication of real judgments."
+            "Not legal advice. Synthetic demo pointer is not the audit record."
         ),
         "generated_at": utc_now_iso(),
+        "pipeline_version": PIPELINE_VERSION,
     }
-    store.write_decision_seed(decision)
+    store.write_run_decision(run_key, decision)
+    # Demo pointer always updated for local UX; audit path is meta/runs/{run_key}/
+    store.write_demo_pointer(decision, run_key=run_key)
     persist_ingest_to_postgres(decision, doc_record)
     return decision
 
@@ -206,13 +246,20 @@ def ingest_manifest(
     fixtures_root: Path,
     manifest_path: Path,
     data_root: Path,
-    review_accept: bool = False,
+    demo_auto_approve_synthetic: bool = False,
     enqueue_jobs: bool = True,
 ) -> list[dict[str, Any]]:
     store = LocalArtifactStore(data_root)
     queue = build_job_queue(data_root)
     rows = load_manifest(manifest_path)
-    results = []
+    if demo_auto_approve_synthetic:
+        for row in rows:
+            if row.fixture_kind != "synthetic":
+                raise ManifestSafetyError(
+                    "demo auto-approve refused: manifest contains non-synthetic row "
+                    f"{row.relative_path}"
+                )
+    results: list[dict[str, Any]] = []
     for row in rows:
         src = fixtures_root / row.relative_path
         digest = sha256_file(src)
@@ -220,7 +267,7 @@ def ingest_manifest(
             job_type="ingest_fixture",
             document_sha256=digest,
             pipeline_version=PIPELINE_VERSION,
-            prompt_version="mock-prompt-1.0.0",
+            prompt_version="mock-prompt-2.0.0",
         )
         if enqueue_jobs:
             queue.enqueue(
@@ -230,6 +277,7 @@ def ingest_manifest(
                     "relative_path": row.relative_path,
                     "regulator_code": row.regulator_code,
                     "source_id": row.source_id,
+                    "fixture_kind": row.fixture_kind,
                 },
             )
         results.append(
@@ -237,16 +285,20 @@ def ingest_manifest(
                 fixtures_root=fixtures_root,
                 store=store,
                 row=row,
-                review_accept=review_accept,
+                demo_auto_approve_synthetic=demo_auto_approve_synthetic,
             )
         )
         if enqueue_jobs and hasattr(queue, "mark_succeeded_by_dedupe"):
             queue.mark_succeeded_by_dedupe(dedupe)
 
     preferred = next(
-        (d for d in results if d.get("regulator_code") == "MCHK" and "PDF" not in (d.get("title") or "")),
+        (
+            d
+            for d in results
+            if d.get("regulator_code") == "MCHK" and "PDF" not in (d.get("title") or "")
+        ),
         results[0] if results else None,
     )
     if preferred:
-        store.write_decision_seed(preferred)
+        store.write_demo_pointer(preferred, run_key=preferred["run_key"])
     return results

@@ -10,15 +10,15 @@ import json
 import os
 import uuid
 from dataclasses import asdict, dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from .contracts import JOB_STATUSES, JOB_TYPES
+from .contracts import JOB_TYPES
 
 
 def _utcnow() -> str:
-    return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+    return datetime.now(UTC).replace(microsecond=0).isoformat()
 
 
 @dataclass
@@ -140,6 +140,8 @@ class PostgresJobQueue:
                 )
                 row = cur.fetchone()
                 conn.commit()
+        if row is None:
+            raise RuntimeError("job enqueue returned no row")
         return self._row_to_job(row)
 
     def claim(self) -> Job | None:

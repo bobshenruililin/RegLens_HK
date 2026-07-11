@@ -1,73 +1,58 @@
-# Local setup — MVP Backbone
+# Local setup — Milestone 2A
 
-## Prerequisites
+## Baseline restrictions
 
-- Python 3.12+
-- Node.js 20+
-- Optional: Docker Compose for Postgres/pgvector + MinIO
+Internal/non-commercial; no crawl; no real LLM; no OCR; no semantic search; no NCHK;
+no real documents in Git.
 
-## Restrictions (still in force)
-
-- Internal / non-commercial
-- No live crawling
-- No public real-document republication
-- Mock LLM only
-- No NCHK
-- No semantic search
-
-## 1. Python
+## Python
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r services/worker/requirements.txt
+# optional lock refresh: make lock
 export PYTHONPATH=services/worker
 ```
 
-## 2. Ingest fixtures (pending review by default)
+## Ingest (default: pending / unpublished)
 
 ```bash
 python -m reglens_worker ingest --manifest fixtures/manifests/m1.jsonl --data-root data
-python -m reglens_worker jobs list --data-root data
-python -m reglens_worker review list --data-root data
 ```
 
-Auto-accept synthetic demo only:
+Synthetic demo auto-approve (rejects non-synthetic rows):
 
 ```bash
-python -m reglens_worker ingest --manifest fixtures/manifests/m1.jsonl --data-root data --accept
+python -m reglens_worker ingest --manifest fixtures/manifests/m1.jsonl --data-root data --demo-auto-approve-synthetic
 ```
 
-## 3. Tests
+Immutable audit artifacts: `data/meta/runs/<run_key>/extraction.json` (+ `.sha256`).
+Demo pointer only: `data/seed/decision.json`.
+
+## Verify everything
 
 ```bash
-pytest
+make verify
 ```
 
-## 4. Web (auth-gated)
+## Web
 
 ```bash
 cd apps/web
-npm install
-# optional: export AUTH_PASSWORD=... REGLENS_SESSION_SECRET=...
+npm ci
+npm run typecheck
+npm run build
 npm run dev
 ```
 
-Open http://localhost:3000 — password default `reglens-internal`.
+## Private data
 
-## 5. Optional Compose
+See `docs/PRIVATE_DATA.md`. The `private-data/` tree is gitignored.
+
+## Compose (optional; local-only credentials)
 
 ```bash
+docker compose config   # validate file
 docker compose up -d db minio
-export DATABASE_URL=postgresql://reglens:reglens@localhost:5432/reglens
-export OBJECT_STORE=minio
-# apply migrations 001 then 002
-psql "$DATABASE_URL" -f packages/db/migrations/001_init.sql
-psql "$DATABASE_URL" -f packages/db/migrations/002_proposition_fts.sql
-```
-
-## 6. Search CLI
-
-```bash
-python -m reglens_worker search "misconduct" --data-root data --regulator MCHK
 ```

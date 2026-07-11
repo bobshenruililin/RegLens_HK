@@ -1,9 +1,11 @@
 services:
   db:
+    # Pinned explicit tag reviewed for local-only development (Milestone 2A).
     image: pgvector/pgvector:pg16
     environment:
+      # LOCAL-ONLY development credentials — never use in production.
       POSTGRES_USER: reglens
-      POSTGRES_PASSWORD: reglens
+      POSTGRES_PASSWORD: reglens_local_only
       POSTGRES_DB: reglens
     ports:
       - "5432:5432"
@@ -17,19 +19,18 @@ services:
       retries: 10
 
   minio:
-    image: minio/minio:latest
+    # Pin mutable :latest — reviewed RELEASE tag for local-only object storage demos.
+    image: minio/minio:RELEASE.2024-12-18T13-15-44Z
     command: server /data --console-address ":9001"
     environment:
+      # LOCAL-ONLY development credentials — never use in production.
       MINIO_ROOT_USER: reglens
-      MINIO_ROOT_PASSWORD: reglenssecret
+      MINIO_ROOT_PASSWORD: reglenssecret_local_only
     ports:
       - "9000:9000"
       - "9001:9001"
     volumes:
       - miniodata:/data
-
-  # Optional: run after `docker compose up -d db minio`
-  # web and worker are commonly run on the host for Milestone 1.
 
 volumes:
   pgdata:

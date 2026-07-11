@@ -31,11 +31,12 @@ def cmd_ingest(args: argparse.Namespace) -> int:
         fixtures_root=fixtures_root,
         manifest_path=manifest,
         data_root=data_root,
-        review_accept=bool(args.accept),
+        demo_auto_approve_synthetic=bool(args.demo_auto_approve_synthetic),
     )
     summary = [
         {
             "id": r["id"],
+            "run_key": r["run_key"],
             "sha256": r["document_sha256"],
             "title": r["title"],
             "propositions": len(r["propositions"]),
@@ -111,9 +112,7 @@ def cmd_search(args: argparse.Namespace) -> int:
         profession=args.profession,
         prop_type=args.prop_type,
     )
-    print(
-        json.dumps([h.__dict__ for h in hits], indent=2)
-    )
+    print(json.dumps([h.__dict__ for h in hits], indent=2))
     return 0
 
 
@@ -126,9 +125,12 @@ def main(argv: list[str] | None = None) -> int:
     p_ingest.add_argument("--data-root", default="data")
     p_ingest.add_argument("--repo-root", default=None)
     p_ingest.add_argument(
-        "--accept",
+        "--demo-auto-approve-synthetic",
         action="store_true",
-        help="Auto-accept/publish propositions (synthetic demos only)",
+        help=(
+            "Synthetic fixtures only: mark propositions accepted/published for local demo. "
+            "Rejects any non-synthetic manifest row."
+        ),
     )
     p_ingest.set_defaults(func=cmd_ingest)
 
@@ -155,7 +157,11 @@ def main(argv: list[str] | None = None) -> int:
     p_rev_set.add_argument("--data-root", default="data")
     p_rev_set.add_argument("--decision-id", required=True)
     p_rev_set.add_argument("--proposition-id", required=True)
-    p_rev_set.add_argument("--status", required=True, choices=["pending", "accepted", "edited", "rejected"])
+    p_rev_set.add_argument(
+        "--status",
+        required=True,
+        choices=["pending", "accepted", "edited", "rejected"],
+    )
     p_rev_set.add_argument("--claim-text", default=None)
     p_rev_set.set_defaults(func=cmd_review_set)
 

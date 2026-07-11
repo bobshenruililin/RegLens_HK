@@ -51,7 +51,10 @@ def persist_ingest_to_postgres(decision: dict[str, Any], doc_record: dict[str, A
                     doc_record.get("text_quality"),
                 ),
             )
-            document_uuid = cur.fetchone()[0]
+            document_row = cur.fetchone()
+            if document_row is None:
+                raise RuntimeError("document upsert returned no row")
+            document_uuid = document_row[0]
 
             for span in doc_record.get("spans", []):
                 cur.execute(
@@ -100,7 +103,10 @@ def persist_ingest_to_postgres(decision: dict[str, Any], doc_record: dict[str, A
                     json.dumps(decision.get("coverage") or {}),
                 ),
             )
-            decision_uuid = cur.fetchone()[0]
+            decision_row = cur.fetchone()
+            if decision_row is None:
+                raise RuntimeError("decision upsert returned no row")
+            decision_uuid = decision_row[0]
 
             extractor = decision.get("extractor") or {}
             cur.execute(
@@ -121,7 +127,10 @@ def persist_ingest_to_postgres(decision: dict[str, Any], doc_record: dict[str, A
                     decision["document_sha256"],
                 ),
             )
-            run_id = cur.fetchone()[0]
+            run_row = cur.fetchone()
+            if run_row is None:
+                raise RuntimeError("extraction_run upsert returned no row")
+            run_id = run_row[0]
 
             # Map page_no -> span uuid
             cur.execute(

@@ -57,7 +57,8 @@ def local_search(
             hay = text.lower()
             if terms and not all(t in hay for t in terms):
                 # also allow page evidence quotes
-                evidence_blob = " ".join(ev.get("quote", "") for ev in prop.get("evidence", [])).lower()
+                quotes = [ev.get("quote", "") for ev in prop.get("evidence", [])]
+                evidence_blob = " ".join(quotes).lower()
                 if not all(t in evidence_blob or t in hay for t in terms):
                     continue
             score = sum(hay.count(t) for t in terms) + 1.0

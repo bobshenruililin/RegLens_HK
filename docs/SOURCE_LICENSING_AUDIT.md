@@ -52,7 +52,7 @@ shows only short cited quotes under fair-dealing advice from counsel
 | attribution_required | Yes — acknowledge the Council as copyright owner and source |
 | commercial_consent_required | **Yes** |
 | consent_contact | mchk@dh.gov.hk |
-| consent_status | `not_requested` — draft letter ready (`licensing/MCHK_CONSENT_REQUEST.md`) |
+| consent_status | `not_requested` — updated RC3 draft ready (`licensing/MCHK_CONSENT_REQUEST.md`); human must send; public real releases remain blocked |
 | robots_txt_url | https://www.mchk.org.hk/robots.txt (record fetch date when reviewed operationally) |
 | terms_reviewed_by | Phase 0 package / 2026-07-11 |
 | pii_profile | Practitioner names public; patients often redacted (e.g. Madam/Mr xxx); residual risk remains |
@@ -82,7 +82,7 @@ shows only short cited quotes under fair-dealing advice from counsel
 | attribution_required | Yes |
 | commercial_consent_required | **Yes** (assumed until confirmed otherwise) |
 | consent_contact | Dental Council secretariat / official site contact channels |
-| consent_status | `not_requested` — draft letter ready (`licensing/DCHK_CONSENT_REQUEST.md`) |
+| consent_status | `not_requested` — updated RC3 draft ready (`licensing/DCHK_CONSENT_REQUEST.md`); human must send; public real releases remain blocked |
 | robots_txt_url | Record when reviewed |
 | terms_reviewed_by | Phase 0 package / 2026-07-11 |
 | pii_profile | Similar to MCHK |

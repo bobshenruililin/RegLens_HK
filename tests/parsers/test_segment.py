@@ -15,7 +15,8 @@ def test_form_feed_split(tmp_path: Path):
         "<html><body><p>Page one charge</p>\f<p>Page two finding</p></body></html>",
         encoding="utf-8",
     )
-    spans = segment_html(p)
+    report = segment_html(p)
+    spans = report.spans
     assert len(spans) == 2
     assert spans[0].page_no == 1
     assert "Page one" in spans[0].text

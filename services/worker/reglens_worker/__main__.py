@@ -5,8 +5,8 @@ import json
 import sys
 from pathlib import Path
 
-from .ingest import ingest_manifest
 from .hashutil import sha256_file
+from .ingest import ingest_manifest
 
 
 def _repo_root() -> Path:
@@ -27,13 +27,16 @@ def cmd_ingest(args: argparse.Namespace) -> int:
         fixtures_root=fixtures_root,
         manifest_path=manifest,
         data_root=data_root,
+        demo_auto_approve_synthetic=bool(args.demo_auto_approve_synthetic),
     )
     summary = [
         {
             "id": r["id"],
+            "run_key": r["run_key"],
             "sha256": r["document_sha256"],
             "title": r["title"],
             "propositions": len(r["propositions"]),
+            "published": sum(1 for p in r["propositions"] if p["published"]),
             "pages": len(r["pages"]),
         }
         for r in results
@@ -43,8 +46,7 @@ def cmd_ingest(args: argparse.Namespace) -> int:
 
 
 def cmd_hash(args: argparse.Namespace) -> int:
-    path = Path(args.path)
-    print(sha256_file(path))
+    print(sha256_file(Path(args.path)))
     return 0
 
 
@@ -53,13 +55,17 @@ def main(argv: list[str] | None = None) -> int:
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_ingest = sub.add_parser("ingest", help="Ingest fixture manifest (idempotent)")
-    p_ingest.add_argument(
-        "--manifest",
-        default="fixtures/manifests/m1.jsonl",
-        help="Path to manifest JSONL",
-    )
-    p_ingest.add_argument("--data-root", default="data", help="Local artifact root")
+    p_ingest.add_argument("--manifest", default="fixtures/manifests/m1.jsonl")
+    p_ingest.add_argument("--data-root", default="data")
     p_ingest.add_argument("--repo-root", default=None)
+    p_ingest.add_argument(
+        "--demo-auto-approve-synthetic",
+        action="store_true",
+        help=(
+            "Synthetic fixtures only: mark propositions accepted/published for local demo. "
+            "Rejects any non-synthetic manifest row."
+        ),
+    )
     p_ingest.set_defaults(func=cmd_ingest)
 
     p_hash = sub.add_parser("hash", help="SHA-256 a file")

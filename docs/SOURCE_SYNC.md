@@ -18,7 +18,17 @@ extraction, review, and internal research.
 
 - Treat public availability as reuse permission.
 - Treat robots.txt as a licence or consent record.
-- Download PDFs in ordinary CI or source-health checks.
+## Workflow ladder (do not conflate)
+
+| Workflow / command | What it does | Network | PDFs | Postgres |
+|--------------------|--------------|---------|------|----------|
+| **Source adapter smoke test — offline** (Actions) | Parse synthetic fixtures | No | No | No |
+| **Live source health — metadata only** (Actions, manual) | Few index GETs | Yes (allow-listed) | No | No (dry-run forced) |
+| `sources sync --mode metadata --live --no-dry-run` | Full metadata sync | Yes | No | Yes |
+| `sources sync --mode acquire …` | Document acquisition | Yes | Yes (policy-gated) | Yes |
+
+Ordinary CI must not require live health. External site outages must not fail PR checks.
+
 - Publish real MCHK/DCHK judgments, excerpts, OCR text, or page text to Pages.
 - Use GitHub Pages as a controlled research environment; Pages is public.
 - Claim complete de-identification; scans reduce risk but do not eliminate it.

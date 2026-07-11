@@ -1,0 +1,175 @@
+# Live source health — metadata only
+#
+# Manually triggered. Never runs on pull_request/push. No schedule.
+# Makes a few HTTPS requests to official indexes only. Never downloads PDFs.
+# Not a required status check. External site failures must not affect ordinary CI.
+
+name: Live source health — metadata only
+
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: "Source collection"
+        required: true
+        type: choice
+        options:
+          - mchk_judgments
+          - dchk_judgments
+          - both
+        default: mchk_judgments
+      max_requests:
+        description: "Maximum HTTP requests (hard max 10)"
+        required: true
+        default: "3"
+      dry_run:
+        description: "Dry-run (do not persist to Postgres)"
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  live-metadata:
+    name: Live metadata health
+    runs-on: ubuntu-latest
+    if: ${{ !github.event.repository.fork }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Python deps
+        run: pip install -r services/worker/requirements.txt
+      - name: Require contact User-Agent
+        env:
+          REGLENS_HTTP_CONTACT: ${{ secrets.REGLENS_HTTP_CONTACT }}
+        run: |
+          if [ -z "${REGLENS_HTTP_CONTACT}" ]; then
+            echo "::error::REGLENS_HTTP_CONTACT secret is required for live metadata health"
+            exit 1
+          fi
+          echo "Contact configured (value not printed)."
+      - name: Live metadata-only check
+        env:
+          PYTHONPATH: services/worker
+          REGLENS_HTTP_CONTACT: ${{ secrets.REGLENS_HTTP_CONTACT }}
+          REGLENS_MODE: demo
+          SOURCE_INPUT: ${{ inputs.source }}
+          MAX_REQUESTS: ${{ inputs.max_requests }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          from reglens_worker.sources.policy import LivePrerequisiteError, get_policy
+          from reglens_worker.sources.sync import SourceSyncError, sync_source
+
+          raw_max = int(os.environ.get("MAX_REQUESTS") or "3")
+          max_requests = max(1, min(raw_max, 10))
+          dry_run = (os.environ.get("DRY_RUN") or "true").lower() in {"1", "true", "yes"}
+          source_input = os.environ.get("SOURCE_INPUT") or "mchk_judgments"
+          sources = (
+              ["mchk_judgments", "dchk_judgments"]
+              if source_input == "both"
+              else [source_input]
+          )
+
+          results = []
+          errors = []
+          for source_id in sources:
+              try:
+                  policy = get_policy(source_id)
+                  # Force a tiny request budget for health checks.
+                  policy = dict(policy)
+                  policy["max_requests_per_run"] = max_requests
+                  # sync_source reloads policy from disk — set env budget via limit=1 item path
+                  result = sync_source(
+                      source_id,
+                      dry_run=True,  # never persist from this workflow
+                      live=True,
+                      acquire=False,  # never download PDFs
+                      fixture_dir="fixtures/source_html",
+                      limit=max_requests,
+                  ).to_dict()
+                  if result.get("acquired_count", 0) != 0:
+                      raise SourceSyncError("live health must not acquire documents")
+                  results.append(
+                      {
+                          "source_id": source_id,
+                          "ok": True,
+                          "live": True,
+                          "dry_run": True,
+                          "acquire": False,
+                          "pdf_downloads": 0,
+                          "discovered_count": result["discovered_count"],
+                          "parser_health": result["parser_health"],
+                          "errors": result.get("errors") or [],
+                          "note": "Response bodies are not stored in this summary.",
+                      }
+                  )
+              except (LivePrerequisiteError, SourceSyncError, Exception) as exc:
+                  errors.append({"source_id": source_id, "error": str(exc)})
+                  results.append(
+                      {
+                          "source_id": source_id,
+                          "ok": False,
+                          "live": True,
+                          "error": str(exc),
+                          "pdf_downloads": 0,
+                      }
+                  )
+
+          summary = {
+              "workflow": "Live source health — metadata only",
+              "max_requests_capped": max_requests,
+              "dry_run_forced": True,
+              "acquire_forced_false": True,
+              "confirmation": (
+                  "Metadata-only live check. PDFs were not downloaded. "
+                  "No public release was built. Bodies were not uploaded."
+              ),
+              "results": results,
+              "errors": errors,
+          }
+          Path("live-source-health-summary.json").write_text(
+              json.dumps(summary, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          lines = [
+              "# Live source health — metadata only",
+              "",
+              summary["confirmation"],
+              "",
+              f"Max requests (capped): {max_requests}",
+              "",
+              "| Source | OK | Discovered | Parser OK | PDFs |",
+              "|--------|----|------------|-----------|------|",
+          ]
+          for row in results:
+              health = row.get("parser_health") or {}
+              lines.append(
+                  f"| {row.get('source_id')} | {row.get('ok')} | "
+                  f"{row.get('discovered_count', '—')} | {health.get('ok', '—')} | 0 |"
+              )
+              if row.get("error"):
+                  lines.append(f"- error: {row['error']}")
+          step_summary = os.environ.get("GITHUB_STEP_SUMMARY")
+          if step_summary:
+              Path(step_summary).write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+          # Soft failure: write summary even when sources fail; exit 0 so this
+          # never becomes a required CI gate for ordinary PR workflows.
+          print(json.dumps(summary, indent=2))
+          PY
+      - name: Upload sanitized summary only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-source-health-summary
+          path: live-source-health-summary.json
+          if-no-files-found: warn

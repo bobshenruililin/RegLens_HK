@@ -43,15 +43,22 @@ human configuration:
 4. Confirm the `GitHub Pages` environment exists (created automatically on first
    successful `deploy-pages` run, or create **Settings → Environments →
    github-pages**).
-5. Optional: set repository variable **`PAGES_BASE_PATH`** if the site is served
-   from a project-pages subpath (e.g. `/RegLens_HK`). Leave empty for a custom
-   domain or user/org root site.
+5. Optional: set repository variable **`PAGES_BASE_PATH`** only if you need to
+   override the default. By default the Pages workflow uses
+   `/<repository-name>` (for this repo: `/RegLens_HK`), which matches
+   `https://<user>.github.io/RegLens_HK/`. For a custom domain at the site root,
+   set `PAGES_BASE_PATH` to an empty value via a dedicated root-site workflow or
+   ask an engineer to adjust the default.
 6. Push to `main` or run **Actions → GitHub Pages → Run workflow**.
 7. After the deploy job succeeds, copy the environment URL from the workflow
    summary / Pages settings. First enablement may require approving the
    `github-pages` environment if protection rules are configured.
 8. Verify: home, explore, analytics, methodology, data, compare, a decision
    slug, and that no PDF judgment files are reachable under `/data/release/`.
+9. Click in-site nav (Explore, Data, Compare, etc.) and confirm the URL keeps
+   `/RegLens_HK/` in the path. If links jump to `github.io/data/` (missing the
+   repo segment), the build was missing `basePath` — re-run Pages after the
+   base-path fix is on `main`.
 
 If the workflow is skipped or the deploy job waits on approval, check environment
 protection rules and that the acting actor has rights to approve.

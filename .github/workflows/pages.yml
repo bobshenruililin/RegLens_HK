@@ -85,14 +85,30 @@ jobs:
               sys.exit(1)
           print("public release artifact guards OK")
           PY
+      - name: Resolve Pages base path
+        id: basepath
+        run: |
+          # Project Pages live at https://<user>.github.io/<repo>/
+          # Optional override: repository variable PAGES_BASE_PATH
+          OVERRIDE="${{ vars.PAGES_BASE_PATH }}"
+          if [ -n "$OVERRIDE" ]; then
+            echo "value=$OVERRIDE" >> "$GITHUB_OUTPUT"
+            echo "Using configured PAGES_BASE_PATH=$OVERRIDE"
+          else
+            echo "value=/${{ github.event.repository.name }}" >> "$GITHUB_OUTPUT"
+            echo "Using default project Pages base path=/${{ github.event.repository.name }}"
+          fi
       - name: Build Observatory
         working-directory: apps/site
         env:
-          NEXT_PUBLIC_BASE_PATH: ${{ vars.PAGES_BASE_PATH }}
+          NEXT_PUBLIC_BASE_PATH: ${{ steps.basepath.outputs.value }}
         run: |
           npm ci
           npm run typecheck
           npm run build
+          test -f out/index.html
+          # Asset URLs and script prefixes must include the project base path.
+          grep -E -q "${NEXT_PUBLIC_BASE_PATH}/_next/|\"${NEXT_PUBLIC_BASE_PATH}\"" out/index.html
       - name: Verify static routes
         run: |
           test -f apps/site/out/index.html

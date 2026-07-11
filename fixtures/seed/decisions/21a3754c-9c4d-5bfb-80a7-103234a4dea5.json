@@ -1,0 +1,227 @@
+{
+  "decision": {
+    "case_ref": "SYN-DCHK-2023-014",
+    "case_refs": [
+      "SYN-DCHK-2023-014"
+    ],
+    "coverage": {
+      "missing_fields": [],
+      "warnings": []
+    },
+    "dates": {
+      "conduct": null,
+      "inquiry": "2023-11-08",
+      "judgment": "2023-11-08",
+      "order_effective": null,
+      "publication": null
+    },
+    "decision_date": "2023-11-08",
+    "defendant_name_as_published": "Dr John Specimen",
+    "defendant_registration_no": "D12345",
+    "document_id": "0c79f929-40bb-5e34-b014-d2c654d8c9c6",
+    "document_sha256": "17086bbf83aa8f73662388bd6cd0e846094df23a83c92bdbb9b6305f0b1c629b",
+    "extraction_sha256": "bf571825082916ef7c53f4c6b9f83baa2edbe7cba1413819fafdeb0ced04738b",
+    "extractor": {
+      "model_provider": "mock",
+      "model_version": "mock-2.0.0",
+      "pipeline_version": "m2a.0.0",
+      "prompt_version": "mock-prompt-2.0.0"
+    },
+    "fixture_kind": "synthetic",
+    "generated_at": "2026-07-11T11:37:53+00:00",
+    "id": "21a3754c-9c4d-5bfb-80a7-103234a4dea5",
+    "licence_notice": "Internal research use of fixture materials only. Not legal advice. Synthetic demo pointer is not the audit record.",
+    "pages": [
+      {
+        "page_no": 1,
+        "printed_page_label": null,
+        "quality": "good",
+        "source_page_no": 1,
+        "span_id": "0f920b47fef2d5c89377190acaf38a54",
+        "text": "The Dental Council of Hong Kong (Synthetic)\nDISCIPLINARY INQUIRY\nDentists Registration Ordinance\nCase Reference: SYN-DCHK-2023-014\nDefendant: Dr John Specimen (Reg. No.: D12345)\nDate of hearing: 8 November 2023\nCharge: That he, being a registered dentist, practised dentistry at premises that were not suitably equipped, and was guilty of misconduct in a professional respect."
+      },
+      {
+        "page_no": 2,
+        "printed_page_label": null,
+        "quality": "good",
+        "source_page_no": 2,
+        "span_id": "18f7bf4e1c1083342f037f4f47e2c12c",
+        "text": "Findings and Order\nFinding: The Council finds the charge proved.\nMitigation included genuine remorse.\nOrder: That the Defendant be removed from the register for a period of 1 month, suspended for 12 months.\nAppeal status: no appeal lodged within the stated period in this synthetic fixture."
+      }
+    ],
+    "pipeline_version": "m2a.0.0",
+    "profession": "dentist",
+    "propositions": [
+      {
+        "claim_text": "That he, being a registered dentist, practised dentistry at premises that were not suitably equipped, and was guilty of misconduct in a professional respect.",
+        "client_ref": "charge-1",
+        "confidence": 0.85,
+        "derivation": "normalized",
+        "epistemic_class": "fact",
+        "evidence": [
+          {
+            "char_end": 376,
+            "char_start": 219,
+            "page_no": 1,
+            "quote": "That he, being a registered dentist, practised dentistry at premises that were not suitably equipped, and was guilty of misconduct in a professional respect.",
+            "span_id": "0f920b47fef2d5c89377190acaf38a54"
+          }
+        ],
+        "id": "f4afecbd-2cfd-50db-95db-ec136d51e047",
+        "prop_type": "charge",
+        "published": true,
+        "review_status": "accepted",
+        "structured": {
+          "charge_text": "That he, being a registered dentist, practised dentistry at premises that were not suitably equipped, and was guilty of misconduct in a professional respect."
+        }
+      },
+      {
+        "claim_text": "Dentists Registration Ordinance",
+        "client_ref": "rule-1",
+        "confidence": 0.8,
+        "derivation": "verbatim",
+        "epistemic_class": "fact",
+        "evidence": [
+          {
+            "char_end": 96,
+            "char_start": 65,
+            "page_no": 1,
+            "quote": "Dentists Registration Ordinance",
+            "span_id": "0f920b47fef2d5c89377190acaf38a54"
+          }
+        ],
+        "id": "83433402-fab4-54dc-bbd6-70ec14a79e21",
+        "prop_type": "rule",
+        "published": true,
+        "review_status": "accepted",
+        "structured": {
+          "instrument": "Dentists Registration Ordinance"
+        }
+      },
+      {
+        "claim_text": "The Council finds the charge proved.",
+        "client_ref": "finding-1",
+        "confidence": 0.82,
+        "derivation": "normalized",
+        "epistemic_class": "fact",
+        "evidence": [
+          {
+            "char_end": 64,
+            "char_start": 28,
+            "page_no": 2,
+            "quote": "The Council finds the charge proved.",
+            "span_id": "18f7bf4e1c1083342f037f4f47e2c12c"
+          }
+        ],
+        "id": "bf4f92ec-ad22-5f83-9487-50b847be3a4a",
+        "prop_type": "finding",
+        "published": true,
+        "review_status": "accepted",
+        "structured": {
+          "outcome": "proved"
+        }
+      },
+      {
+        "claim_text": "That the Defendant be removed from the register for a period of 1 month, suspended for 12 months.",
+        "client_ref": "sanction-1",
+        "confidence": 0.84,
+        "derivation": "normalized",
+        "epistemic_class": "fact",
+        "evidence": [
+          {
+            "char_end": 206,
+            "char_start": 109,
+            "page_no": 2,
+            "quote": "That the Defendant be removed from the register for a period of 1 month, suspended for 12 months.",
+            "span_id": "18f7bf4e1c1083342f037f4f47e2c12c"
+          }
+        ],
+        "id": "b490eaf6-2785-55e8-a54d-6df9a8b836b8",
+        "prop_type": "sanction",
+        "published": true,
+        "review_status": "accepted",
+        "structured": {
+          "order_text": "That the Defendant be removed from the register for a period of 1 month, suspended for 12 months."
+        }
+      },
+      {
+        "claim_text": "genuine remorse",
+        "client_ref": "mitigating-factor-1",
+        "confidence": 0.75,
+        "derivation": "verbatim",
+        "epistemic_class": "fact",
+        "evidence": [
+          {
+            "char_end": 100,
+            "char_start": 85,
+            "page_no": 2,
+            "quote": "genuine remorse",
+            "span_id": "18f7bf4e1c1083342f037f4f47e2c12c"
+          }
+        ],
+        "id": "64e34b85-8edf-57a2-acd3-208ef325c683",
+        "prop_type": "mitigating_factor",
+        "published": true,
+        "review_status": "accepted",
+        "structured": {
+          "polarity": "mitigating"
+        }
+      },
+      {
+        "claim_text": "no appeal",
+        "client_ref": "appeal-status-1",
+        "confidence": 0.7,
+        "derivation": "normalized",
+        "epistemic_class": "fact",
+        "evidence": [
+          {
+            "char_end": 231,
+            "char_start": 222,
+            "page_no": 2,
+            "quote": "no appeal",
+            "span_id": "18f7bf4e1c1083342f037f4f47e2c12c"
+          }
+        ],
+        "id": "a1d13fdb-30a9-57e2-94d1-1a4ad8902424",
+        "prop_type": "appeal_status",
+        "published": true,
+        "review_status": "accepted",
+        "structured": null
+      }
+    ],
+    "regulator_code": "DCHK",
+    "relations": [
+      {
+        "from_ref": "finding-1",
+        "relation_type": "finding_resolves_charge",
+        "to_ref": "charge-1"
+      },
+      {
+        "from_ref": "sanction-1",
+        "relation_type": "sanction_applies_to_charge",
+        "to_ref": "charge-1"
+      },
+      {
+        "from_ref": "rule-1",
+        "relation_type": "rule_governs_charge",
+        "to_ref": "charge-1"
+      },
+      {
+        "from_ref": "mitigating-factor-1",
+        "relation_type": "factor_affects_sanction",
+        "to_ref": "sanction-1"
+      }
+    ],
+    "run_key": "52040428df474268ec8a4af19ee9de5900d303047f0686ab1fe976d6a722b72c",
+    "segmentation_warnings": [],
+    "source_id": "dchk_judgments",
+    "source_url": null,
+    "text_quality": "good",
+    "title": "Synthetic DCHK decision SYN-DCHK-2023-014"
+  },
+  "decision_id": "21a3754c-9c4d-5bfb-80a7-103234a4dea5",
+  "immutable_decision_path": "meta/runs/52040428df474268ec8a4af19ee9de5900d303047f0686ab1fe976d6a722b72c/decision.json",
+  "immutable_extraction_path": "meta/runs/52040428df474268ec8a4af19ee9de5900d303047f0686ab1fe976d6a722b72c/extraction.json",
+  "pointer_kind": "synthetic_demo",
+  "run_key": "52040428df474268ec8a4af19ee9de5900d303047f0686ab1fe976d6a722b72c"
+}

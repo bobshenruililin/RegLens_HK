@@ -1,4 +1,4 @@
-"""RegLens HK document worker (Milestone 1)."""
+"""RegLens HK document worker."""
 
-__version__ = "0.1.0"
-PIPELINE_VERSION = "m1.0.0"
+__version__ = "0.2.0"
+PIPELINE_VERSION = "m2a.0.0"

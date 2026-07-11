@@ -5,10 +5,11 @@ export default function HomePage() {
   const decision = loadDecision();
   return (
     <section className="panel">
-      <h1>Milestone 1 demo</h1>
+      <h1>Milestone 2A demo</h1>
       <p>
-        Fixture ingest produces a source-linked decision seed. Open the decision
-        detail page to inspect each proposition against its page span.
+        Synthetic fixture ingest produces an immutable run artifact and a demo
+        pointer. Open the decision detail page to inspect propositions against
+        source spans. Default ingest is pending/unpublished.
       </p>
       {decision ? (
         <p>
@@ -21,6 +22,7 @@ export default function HomePage() {
           No seed found. Run{" "}
           <code>
             python -m reglens_worker ingest --manifest fixtures/manifests/m1.jsonl
+            --demo-auto-approve-synthetic
           </code>{" "}
           from the repo root (with <code>PYTHONPATH=services/worker</code>).
         </p>

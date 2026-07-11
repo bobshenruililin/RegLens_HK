@@ -3,14 +3,13 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .mypy_cache/
+.ruff_cache/
 node_modules/
 apps/web/.next/
 apps/web/out/
 apps/web/tsconfig.tsbuildinfo
-.venv/
-data/objects/
-data/meta/
-data/seed/
+data/
+private-data/
 .env
 .DS_Store
 *.egg-info/

@@ -1,60 +1,30 @@
 # Extraction JSON Schema
 
-Source of truth: [`packages/extraction-schema/extraction_result.v1.json`](../packages/extraction-schema/extraction_result.v1.json).
+## Current contract (v2)
 
-Validated in Python with `jsonschema` (Draft 2020-12) before any persistence of extraction output.
-
-## Design rules
+Source of truth: [`packages/extraction-schema/extraction_result.v2.json`](../packages/extraction-schema/extraction_result.v2.json).
 
 | Rule | Detail |
 |------|--------|
-| Version pin | `schema_version` must be `"1.0.0"` |
-| Document binding | `document_sha256` must be 64 lowercase hex chars |
-| Extractor audit | `pipeline_version`, `model_provider`, `model_version`, `prompt_version` required |
-| Evidence mandatory | Every proposition has `evidence` with `minItems: 1` (`page_no` + `quote`) |
-| Epistemic split | `epistemic_class` ∈ {`fact`, `interpretation`} |
-| Legal tests | If `prop_type=legal_test` then `epistemic_class` **must** be `interpretation` |
-| Prop types | charge, rule, finding, legal_test, aggravating_factor, mitigating_factor, sanction, costs, authority, appeal_status |
-| Regulators (MVP) | `decision_metadata.regulator_code` ∈ {`MCHK`, `DCHK`} |
-| Professions (MVP) | `doctor`, `dentist` |
+| Version | `schema_version` = `2.0.0` |
+| Identity | Providers emit `client_ref` only — **no** database UUIDs |
+| Required | `decision_metadata`, `coverage`, `propositions` |
+| Case refs | `decision_metadata.case_refs` array |
+| Dates | typed: inquiry, judgment, publication, conduct, order_effective (`format: date`) |
+| Derivation | `verbatim` \| `normalized` \| `inferred` |
+| Epistemic | `fact` \| `interpretation` (`legal_test` ⇒ interpretation) |
+| Relations | by `client_ref` (finding_resolves_charge, sanction_applies_to_charge, rule_governs_charge, authority_supports_legal_test, factor_affects_sanction) |
+| Evidence | `page_no` + `quote`; `span_id` required after resolution; offsets only as a pair with `char_end >= char_start` |
+| Additional properties | rejected |
 
-## Post-validation (application layer)
+## Domain invariants
 
-Every `evidence.quote` must exact- or whitespace-collapsed-match the corresponding page span text. Failures quarantine the proposition — never auto-publish.
+Implemented in `reglens_worker.schema_validate.domain_validate_extraction` with an explicit JSON Schema `FormatChecker` for dates.
 
-## Conceptual shape
+## Migration from v1
 
-```json
-{
-  "schema_version": "1.0.0",
-  "document_sha256": "<64-hex>",
-  "extractor": {
-    "pipeline_version": "...",
-    "model_provider": "...",
-    "model_version": "...",
-    "prompt_version": "..."
-  },
-  "decision_metadata": {
-    "case_ref": null,
-    "decision_date": "YYYY-MM-DD",
-    "regulator_code": "MCHK",
-    "profession": "doctor",
-    "defendant_registration_no": null,
-    "defendant_name_as_published": null
-  },
-  "propositions": [
-    {
-      "id": "<uuid>",
-      "prop_type": "charge",
-      "epistemic_class": "fact",
-      "claim_text": "...",
-      "structured": null,
-      "confidence": 0.0,
-      "evidence": [
-        { "span_id": null, "page_no": 1, "quote": "...", "char_start": 0, "char_end": 10 }
-      ]
-    }
-  ],
-  "coverage": { "missing_fields": [], "warnings": [] }
-}
-```
+`migrate_v1_to_v2()` maps `case_ref`/`decision_date`/`id` → `case_refs`/`dates.judgment`/`client_ref`. v1 schema file is retained for validation of legacy fixtures.
+
+## Post-validation
+
+Missing or mismatched evidence fails validation — the mock provider does **not** substitute the first line of a page.

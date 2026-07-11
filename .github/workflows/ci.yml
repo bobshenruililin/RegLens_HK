@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main, "cursor/**"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: pip install -r services/worker/requirements.txt
+      - name: Fixture safety
+        run: python scripts/check_fixtures.py
+      - name: Ruff
+        run: |
+          ruff check services/worker tests scripts
+          ruff format --check services/worker tests scripts
+      - name: Mypy
+        run: mypy
+      - name: Pytest
+        env:
+          PYTHONPATH: services/worker
+        run: pytest
+
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - name: Install
+        working-directory: apps/web
+        run: npm ci
+      - name: Typecheck
+        working-directory: apps/web
+        run: npm run typecheck
+      - name: Build
+        working-directory: apps/web
+        run: npm run build

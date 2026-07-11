@@ -1,9 +1,30 @@
 "use client";
 
 import { useEffect } from "react";
-import type { DecisionSeed } from "../lib/decision";
+import type { DecisionRecord } from "../lib/data";
 
-export function DecisionView({ decision }: { decision: DecisionSeed }) {
+function highlightQuote(text: string, quote: string): string {
+  if (!quote) return escapeHtml(text);
+  const idx = text.indexOf(quote);
+  if (idx < 0) return escapeHtml(text);
+  return (
+    escapeHtml(text.slice(0, idx)) +
+    '<mark class="evidence-mark">' +
+    escapeHtml(quote) +
+    "</mark>" +
+    escapeHtml(text.slice(idx + quote.length))
+  );
+}
+
+function escapeHtml(s: string): string {
+  return s
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+export function DecisionView({ decision }: { decision: DecisionRecord }) {
   useEffect(() => {
     const hash = window.location.hash.replace("#", "");
     if (!hash) return;
@@ -15,6 +36,16 @@ export function DecisionView({ decision }: { decision: DecisionSeed }) {
   }, []);
 
   const published = decision.propositions.filter((p) => p.published);
+  const unpublished = decision.propositions.filter((p) => !p.published);
+  const quotesByPage = new Map<number, string[]>();
+  for (const prop of published) {
+    for (const ev of prop.evidence) {
+      const list = quotesByPage.get(ev.page_no) || [];
+      list.push(ev.quote);
+      quotesByPage.set(ev.page_no, list);
+    }
+  }
+
   const missing = decision.coverage?.missing_fields ?? [];
   const warnings = decision.coverage?.warnings ?? [];
 
@@ -44,18 +75,6 @@ export function DecisionView({ decision }: { decision: DecisionSeed }) {
             <dt>Registration no.</dt>
             <dd>{decision.defendant_registration_no || "—"}</dd>
           </div>
-          <div>
-            <dt>Official source</dt>
-            <dd>
-              {decision.source_url ? (
-                <a href={decision.source_url} rel="noreferrer" target="_blank">
-                  Open primary source
-                </a>
-              ) : (
-                "Synthetic fixture (no external URL)"
-              )}
-            </dd>
-          </div>
         </dl>
         {(missing.length > 0 || warnings.length > 0) && (
           <div className="warning">
@@ -73,7 +92,12 @@ export function DecisionView({ decision }: { decision: DecisionSeed }) {
       </section>
 
       <section className="panel" style={{ marginTop: "1rem" }}>
-        <h2>Extracted propositions</h2>
+        <h2>Published propositions</h2>
+        {published.length === 0 && (
+          <p className="warning">
+            Nothing published yet. Accept items in the review queue.
+          </p>
+        )}
         <div className="prop-list">
           {published.map((prop) => (
             <div className="prop" key={prop.id} id={`prop-${prop.id}`}>
@@ -98,23 +122,36 @@ export function DecisionView({ decision }: { decision: DecisionSeed }) {
             </div>
           ))}
         </div>
+        {unpublished.length > 0 && (
+          <p style={{ marginTop: "1rem", color: "var(--muted)" }}>
+            {unpublished.length} proposition(s) awaiting review (hidden from
+            search).
+          </p>
+        )}
       </section>
 
       <section className="panel" style={{ marginTop: "1rem" }}>
         <h2>Source pages</h2>
-        {decision.pages.map((page) => (
-          <div
-            className="page-block"
-            id={`page-${page.page_no}`}
-            key={page.span_id}
-          >
-            <strong>
-              Page {page.page_no}{" "}
-              <span className="badge">{page.span_id.slice(0, 8)}</span>
-            </strong>
-            <pre>{page.text}</pre>
-          </div>
-        ))}
+        {decision.pages.map((page) => {
+          const quotes = quotesByPage.get(page.page_no) || [];
+          const html =
+            quotes.length > 0
+              ? highlightQuote(page.text, quotes[0])
+              : escapeHtml(page.text);
+          return (
+            <div
+              className="page-block"
+              id={`page-${page.page_no}`}
+              key={page.span_id}
+            >
+              <strong>
+                Page {page.page_no}{" "}
+                <span className="badge">{page.span_id.slice(0, 8)}</span>
+              </strong>
+              <pre dangerouslySetInnerHTML={{ __html: html }} />
+            </div>
+          );
+        })}
       </section>
     </article>
   );

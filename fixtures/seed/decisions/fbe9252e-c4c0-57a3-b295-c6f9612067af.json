@@ -1,6 +1,6 @@
 {
-  "id": "14284ebf-2233-5064-9e0f-e3e35c75d040",
-  "document_id": "265e143b-804f-5220-9dca-d5d1e5f4080f",
+  "id": "fbe9252e-c4c0-57a3-b295-c6f9612067af",
+  "document_id": "0c79f929-40bb-5e34-b014-d2c654d8c9c6",
   "document_sha256": "17086bbf83aa8f73662388bd6cd0e846094df23a83c92bdbb9b6305f0b1c629b",
   "regulator_code": "DCHK",
   "source_id": "dchk_judgments",
@@ -36,7 +36,7 @@
   ],
   "propositions": [
     {
-      "id": "ea668c00-ca6c-4ff7-9c3f-6f2c80d78328",
+      "id": "7af69020-643a-4d32-9ca7-69ca5ff816ee",
       "prop_type": "charge",
       "epistemic_class": "fact",
       "claim_text": "That he, being a registered dentist, practised dentistry at premises that were not suitably equipped, and was guilty of misconduct in a professional respect.",
@@ -54,7 +54,7 @@
       ]
     },
     {
-      "id": "89b6c46d-1335-47a8-9abf-59ef711817c8",
+      "id": "d2babed7-18e1-4c02-b603-0e573397d6e9",
       "prop_type": "rule",
       "epistemic_class": "fact",
       "claim_text": "Dentists Registration Ordinance",
@@ -72,7 +72,7 @@
       ]
     },
     {
-      "id": "cec3c580-a019-4710-9a80-204cfc432c55",
+      "id": "2d2f5930-333c-4707-a61a-2a7e4c9ff5c1",
       "prop_type": "finding",
       "epistemic_class": "fact",
       "claim_text": "The Council finds the charge proved.",
@@ -90,7 +90,7 @@
       ]
     },
     {
-      "id": "d41ffa4b-db19-4d06-9fa3-2bd635b84a62",
+      "id": "66a78cf4-902c-4a05-a4d7-9c031443e644",
       "prop_type": "sanction",
       "epistemic_class": "fact",
       "claim_text": "That the Defendant be removed from the register for a period of 1 month, suspended for 12 months.",
@@ -108,7 +108,7 @@
       ]
     },
     {
-      "id": "28a0fb09-7148-434d-9fdb-d7528e933307",
+      "id": "82a3091c-ff18-4ef5-be35-3894f2cb116b",
       "prop_type": "mitigating_factor",
       "epistemic_class": "fact",
       "claim_text": "genuine remorse",
@@ -126,7 +126,7 @@
       ]
     },
     {
-      "id": "b5d4231b-1cf9-426f-9c55-5c780816b896",
+      "id": "78a193f5-add3-40f2-b884-d8a3c4279926",
       "prop_type": "appeal_status",
       "epistemic_class": "fact",
       "claim_text": "no appeal",
@@ -144,6 +144,6 @@
       ]
     }
   ],
-  "licence_notice": "Internal research use of fixture materials only. Not legal advice. Link to official source where available.",
-  "generated_at": "2026-07-11T08:25:57+00:00"
+  "licence_notice": "Internal research use of fixture materials only. Not legal advice. Not for public republication of real judgments.",
+  "generated_at": "2026-07-11T11:30:23+00:00"
 }

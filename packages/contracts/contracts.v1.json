@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reglens.hk/schemas/contracts.v1.json",
+  "title": "RegLensHKSharedContracts",
+  "description": "Shared enums and publication contracts for web + worker.",
+  "type": "object",
+  "properties": {
+    "regulator_codes": {
+      "type": "array",
+      "items": { "enum": ["MCHK", "DCHK"] }
+    },
+    "professions": {
+      "type": "array",
+      "items": { "enum": ["doctor", "dentist"] }
+    },
+    "prop_types": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "charge",
+          "rule",
+          "finding",
+          "legal_test",
+          "aggravating_factor",
+          "mitigating_factor",
+          "sanction",
+          "costs",
+          "authority",
+          "appeal_status"
+        ]
+      }
+    },
+    "epistemic_classes": {
+      "type": "array",
+      "items": { "enum": ["fact", "interpretation"] }
+    },
+    "review_statuses": {
+      "type": "array",
+      "items": { "enum": ["pending", "accepted", "edited", "rejected"] }
+    },
+    "job_types": {
+      "type": "array",
+      "items": {
+        "enum": ["ingest_fixture", "segment", "extract", "index_fts"]
+      }
+    },
+    "job_statuses": {
+      "type": "array",
+      "items": {
+        "enum": ["pending", "running", "succeeded", "failed", "cancelled"]
+      }
+    }
+  }
+}

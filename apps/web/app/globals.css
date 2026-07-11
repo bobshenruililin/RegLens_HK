@@ -149,3 +149,28 @@ main {
   margin-right: 0.35rem;
   color: var(--muted);
 }
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.nav a,
+.nav button {
+  font-family: var(--ui);
+  color: var(--accent);
+  background: transparent;
+  border: 1px solid var(--line);
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.evidence-mark {
+  background: rgba(15, 107, 92, 0.22);
+  color: inherit;
+  padding: 0 0.1em;
+}

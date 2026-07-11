@@ -1,56 +1,36 @@
 # RegLens HK
 
 Evidence-linked database and analysis platform for Hong Kong regulatory and
-professional disciplinary decisions. Milestone 1 focuses on **fixture ingest**,
-**immutable hashing**, **page segmentation**, **strict extraction schemas**, a
-**mock LLM provider**, and one **source-linked decision detail page**.
+professional disciplinary decisions.
+
+**MVP Backbone (2A–2D)** is approved and implemented: contracts, determinism,
+private-data boundary, CI, Postgres/object-store/jobs interfaces, auth-gated
+review/publication, and keyword FTS with evidence UX.
 
 This is an internal research tool. It does **not** provide legal advice.
 
-## Milestone 1 scope
+## Restrictions
 
-- Manual fixtures only (no live crawling)
-- Mock LLM only (no real LLM network calls)
-- PostgreSQL migrations + local filesystem artifact store
-- Unit tests for parsers, schemas, and provenance links
+- Internal / non-commercial
+- No live crawling
+- No public real-document republication
+- Mock LLM only (no real LLM without privacy approval)
+- No NCHK
+- No semantic search before FTS evaluation
 
-Read [AGENTS.md](AGENTS.md) before changing extraction or provenance behaviour.
+Read [AGENTS.md](AGENTS.md). Phase 0 package: [docs/README.md](docs/README.md).
+Backbone notes: [docs/MVP_BACKBONE.md](docs/MVP_BACKBONE.md).
 
-Phase 0 planning package (assumptions, PRD, licensing audit, schemas,
-architecture, milestones, risks, evaluation, exclusions):
-**[docs/README.md](docs/README.md)**.
-
-## Quick start (host tools; no Docker required for demo)
+## Quick start
 
 ```bash
-# 1) Python deps
-python3 -m venv .venv
-source .venv/bin/activate
+python3 -m venv .venv && source .venv/bin/activate
 pip install -r services/worker/requirements.txt
-
-# 2) Ingest synthetic fixtures (idempotent)
 export PYTHONPATH=services/worker
-python -m reglens_worker ingest --manifest fixtures/manifests/m1.jsonl --data-root data
-
-# 3) Run tests
+python -m reglens_worker ingest --manifest fixtures/manifests/m1.jsonl --data-root data --accept
 pytest
-
-# 4) Web UI
-cd apps/web
-npm install
-npm run dev
-# open http://localhost:3000 and follow the decision link
+cd apps/web && npm install && npm run dev
+# http://localhost:3000  password: reglens-internal
 ```
 
-Full command reference: [docs/LOCAL_SETUP.md](docs/LOCAL_SETUP.md).
-
-## Optional Docker services
-
-```bash
-docker compose up -d db minio
-# applies packages/db/migrations/001_init.sql on first boot
-```
-
-## Repository layout
-
-See Phase 0 docs under `docs/` and the tree in `docs/ARCHITECTURE.md`.
+Full commands: [docs/LOCAL_SETUP.md](docs/LOCAL_SETUP.md).

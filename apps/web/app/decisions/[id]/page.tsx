@@ -1,4 +1,4 @@
-import { loadDecision } from "../../../lib/decision";
+import { loadDecision } from "../../../lib/data";
 import { DecisionView } from "../../../components/DecisionView";
 
 export default function DecisionPage({
@@ -12,7 +12,7 @@ export default function DecisionPage({
       <section className="panel">
         <h1>Decision not found</h1>
         <p>
-          No seed for <code>{params.id}</code>. Run fixture ingest first.
+          No seed for <code>{params.id}</code>.
         </p>
       </section>
     );

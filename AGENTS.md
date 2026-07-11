@@ -36,6 +36,8 @@ These rules apply to every contributor and coding agent working in this reposito
 
 - Jobs must be idempotent, resumable, and auditable (`dedupe_key` on content + pipeline versions).
 - One background worker; no premature microservices.
-- LLM access goes through the provider interface; Milestone 1 uses the **mock** provider only.
-- Write tests for parsers, schemas, and provenance links.
+- LLM access goes through the provider interface; use the **mock** provider only until a separate privacy approval for real LLM calls.
+- Write tests for parsers, schemas, provenance links, publication gates, and FTS.
 - Do not add real LLM network calls or live source harvesting without an explicit, separate approval.
+- Do not enable semantic/pgvector search until keyword FTS has been evaluated.
+- Keep the product auth-gated and internal/non-commercial; no public real-document republication.

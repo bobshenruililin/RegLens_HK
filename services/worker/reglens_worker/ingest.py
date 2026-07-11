@@ -1,16 +1,20 @@
 from __future__ import annotations
 
 import json
-import uuid
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from . import PIPELINE_VERSION
+from .db import persist_ingest_to_postgres
+from .determinism import decision_id_for_sha256, document_id_for_sha256, job_dedupe_key, span_stable_id
 from .hashutil import sha256_file
+from .jobs import build_job_queue
 from .llm import MockLLMProvider
+from .privacy import redact_derived_text
 from .schema_validate import assert_valid_extraction, evidence_quotes_supported
 from .segment import segment_document, text_quality
-from .store import LocalArtifactStore, mime_for, span_stable_id, utc_now_iso
+from .store import LocalArtifactStore, mime_for, utc_now_iso
 
 
 @dataclass(frozen=True)
@@ -53,11 +57,13 @@ def ingest_fixture(
     store: LocalArtifactStore,
     row: ManifestRow,
     provider: MockLLMProvider | None = None,
-    review_accept: bool = True,
+    review_accept: bool = False,
 ) -> dict[str, Any]:
     """
     Idempotent fixture ingest:
-    hash → immutable blob → page spans → mock extract → schema/quote checks → seed decision.
+    hash → immutable blob → page spans → mock extract → schema/quote checks → decision catalog.
+
+    Default: propositions are pending (not published) until human review (Milestone 2C).
     """
     provider = provider or MockLLMProvider()
     src = fixtures_root / row.relative_path
@@ -70,7 +76,7 @@ def ingest_fixture(
     quality = text_quality(spans)
 
     doc_record = {
-        "document_id": str(uuid.uuid5(uuid.NAMESPACE_URL, f"reglens:doc:{digest}")),
+        "document_id": document_id_for_sha256(digest),
         "sha256": digest,
         "storage_key": storage_key,
         "mime_type": mime_for(src),
@@ -110,11 +116,12 @@ def ingest_fixture(
         },
     )
 
-    # Attach stable span_ids to evidence where page matches.
     page_to_span = {s.page_no: span_stable_id(digest, s) for s in spans}
     for prop in extraction["propositions"]:
+        prop["claim_text"] = redact_derived_text(prop["claim_text"])
         for ev in prop["evidence"]:
             ev["span_id"] = page_to_span.get(ev["page_no"])
+            # Quotes stay faithful to source; derived claim_text is redacted.
 
     assert_valid_extraction(extraction)
     page_texts = {s.page_no: s.text for s in spans}
@@ -124,22 +131,23 @@ def ingest_fixture(
 
     store.write_extraction(digest, extraction)
 
-    decision_id = str(uuid.uuid5(uuid.NAMESPACE_URL, f"reglens:decision:{digest}"))
+    decision_id = decision_id_for_sha256(digest)
     propositions_out = []
     for prop in extraction["propositions"]:
         review_status = "accepted" if review_accept else "pending"
         published = bool(review_accept)
-        evidence = []
-        for ev in prop["evidence"]:
-            evidence.append(
-                {
-                    "span_id": ev["span_id"],
-                    "page_no": ev["page_no"],
-                    "quote": ev["quote"],
-                    "char_start": ev.get("char_start"),
-                    "char_end": ev.get("char_end"),
-                }
-            )
+        evidence = [
+            {
+                "span_id": ev["span_id"],
+                "page_no": ev["page_no"],
+                "quote": ev["quote"],
+                "char_start": ev.get("char_start"),
+                "char_end": ev.get("char_end"),
+            }
+            for ev in prop["evidence"]
+        ]
+        if published and not evidence:
+            raise ValueError("Refusing to publish proposition without evidence")
         propositions_out.append(
             {
                 "id": prop["id"],
@@ -184,11 +192,12 @@ def ingest_fixture(
         "propositions": propositions_out,
         "licence_notice": (
             "Internal research use of fixture materials only. "
-            "Not legal advice. Link to official source where available."
+            "Not legal advice. Not for public republication of real judgments."
         ),
         "generated_at": utc_now_iso(),
     }
     store.write_decision_seed(decision)
+    persist_ingest_to_postgres(decision, doc_record)
     return decision
 
 
@@ -197,17 +206,45 @@ def ingest_manifest(
     fixtures_root: Path,
     manifest_path: Path,
     data_root: Path,
+    review_accept: bool = False,
+    enqueue_jobs: bool = True,
 ) -> list[dict[str, Any]]:
     store = LocalArtifactStore(data_root)
+    queue = build_job_queue(data_root)
     rows = load_manifest(manifest_path)
     results = []
     for row in rows:
-        results.append(
-            ingest_fixture(fixtures_root=fixtures_root, store=store, row=row)
+        src = fixtures_root / row.relative_path
+        digest = sha256_file(src)
+        dedupe = job_dedupe_key(
+            job_type="ingest_fixture",
+            document_sha256=digest,
+            pipeline_version=PIPELINE_VERSION,
+            prompt_version="mock-prompt-1.0.0",
         )
-    # Prefer MCHK synthetic as default demo seed if present
+        if enqueue_jobs:
+            queue.enqueue(
+                "ingest_fixture",
+                dedupe,
+                {
+                    "relative_path": row.relative_path,
+                    "regulator_code": row.regulator_code,
+                    "source_id": row.source_id,
+                },
+            )
+        results.append(
+            ingest_fixture(
+                fixtures_root=fixtures_root,
+                store=store,
+                row=row,
+                review_accept=review_accept,
+            )
+        )
+        if enqueue_jobs and hasattr(queue, "mark_succeeded_by_dedupe"):
+            queue.mark_succeeded_by_dedupe(dedupe)
+
     preferred = next(
-        (d for d in results if d.get("regulator_code") == "MCHK"),
+        (d for d in results if d.get("regulator_code") == "MCHK" and "PDF" not in (d.get("title") or "")),
         results[0] if results else None,
     )
     if preferred:

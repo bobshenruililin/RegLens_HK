@@ -52,7 +52,8 @@ shows only short cited quotes under fair-dealing advice from counsel
 | attribution_required | Yes — acknowledge the Council as copyright owner and source |
 | commercial_consent_required | **Yes** |
 | consent_contact | mchk@dh.gov.hk |
-| consent_status | `not_requested` — draft letter ready (`licensing/MCHK_CONSENT_REQUEST.md`) |
+| consent_status | `granted` (owner-reported) — **scope: HKU Law / public-health student research use**; written postal letter received; letter scan to be filed under gitignored `private-data/licensing/`; **public real releases remain blocked** until letter terms are reviewed and policy is expressly updated |
+| consent_evidence | Postal letter on file with repository owner (2026-07-11 report); see `docs/licensing/OUTREACH_LOG.md` |
 | robots_txt_url | https://www.mchk.org.hk/robots.txt (record fetch date when reviewed operationally) |
 | terms_reviewed_by | Phase 0 package / 2026-07-11 |
 | pii_profile | Practitioner names public; patients often redacted (e.g. Madam/Mr xxx); residual risk remains |
@@ -82,7 +83,8 @@ shows only short cited quotes under fair-dealing advice from counsel
 | attribution_required | Yes |
 | commercial_consent_required | **Yes** (assumed until confirmed otherwise) |
 | consent_contact | Dental Council secretariat / official site contact channels |
-| consent_status | `not_requested` — draft letter ready (`licensing/DCHK_CONSENT_REQUEST.md`) |
+| consent_status | `granted` (owner-reported) — **scope: HKU Law / public-health student research use**; written postal letter received; letter scan to be filed under gitignored `private-data/licensing/`; **public real releases remain blocked** until letter terms are reviewed and policy is expressly updated |
+| consent_evidence | Postal letter on file with repository owner (2026-07-11 report); see `docs/licensing/OUTREACH_LOG.md` |
 | robots_txt_url | Record when reviewed |
 | terms_reviewed_by | Phase 0 package / 2026-07-11 |
 | pii_profile | Similar to MCHK |

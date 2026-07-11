@@ -1,35 +1,94 @@
-# Commercial-use consent request — Medical Council of Hong Kong
+# Consent / licensing request — Medical Council of Hong Kong
 
-**Status:** Draft for human sending. Do **not** auto-send from CI or coding agents without an approved organisational sender identity.
+**Status:** Updated draft for human sending (RC3 prep). Do **not** auto-send from
+CI or coding agents. An authorised organisational sender must send this email.
 
 | Field | Value |
 |-------|-------|
 | To | mchk@dh.gov.hk |
 | From | [Organisation legal / product contact — fill before send] |
-| Subject | Request for written consent — internal research database of published disciplinary judgments (RegLens HK) |
+| Subject | Request for written consent and guidance — RegLens HK research database of published disciplinary judgments |
 | Related audit row | `mchk_judgments` in `docs/SOURCE_LICENSING_AUDIT.md` |
+| Draft updated | 2026-07-11 |
 
 ---
 
 Dear Sir/Madam,
 
-We are developing an internal research tool, **RegLens HK**, that helps authorised users search and structure **already published** disciplinary judgments of the Medical Council of Hong Kong.
+We are developing **RegLens HK**, a research tool that helps authorised users
+search and structure **already published** disciplinary judgments of the Medical
+Council of Hong Kong.
 
 We have reviewed the Council’s Copyright Notice at  
 https://www.mchk.org.hk/english/important_notices/important_notices.html  
 
-We understand that Council copyright-protected text may be reproduced for personal or internal organisational use with attribution, and that **any commercial use requires prior written consent**.
+We understand that Council copyright-protected text may be reproduced for
+personal or internal organisational use with attribution, and that uses beyond
+that notice (including commercial purposes) require prior written consent.
 
-We request written guidance and, if appropriate, consent covering:
+We request **written guidance** and, where appropriate, **written consent**, and
+ask you to address each of the following points expressly:
 
-1. Storage of published judgment PDFs in a secured internal object store with SHA-256 integrity hashes;
-2. Creation of structured metadata (charges, findings, sanctions, cited authorities) linked to page-level quotations;
-3. Display of short cited quotations to authenticated internal users, with a prominent link to the Council’s official page;
-4. Clarification of whether a future public non-profit or commercial research service would be permitted, and on what terms (attribution wording, volume limits, takedown SLA).
+1. **Automated low-rate retrieval**  
+   Whether we may retrieve already published judgments from the Council’s public
+   website using automated tools at a low, polite rate (with respectful
+   intervals, identifying user-agent, and without overloading the site), or
+   whether acquisition must remain fully manual.
 
-We will not scrape the website programmatically without separate permission. Fixture acquisition for development is manual.
+2. **Internal storage**  
+   Whether we may store published judgment files in a secured internal object
+   store (access-controlled; integrity-checked with SHA-256 hashes) for
+   authorised research use within our organisation.
 
-Please let us know the preferred application process and any conditions.
+3. **Metadata publication**  
+   Whether we may publish non-substantial structured metadata about published
+   judgments (for example case reference, decision dates, profession, and
+   high-level category labels) on a public research website, with a link back to
+   the Council’s official page.
+
+4. **Short evidence excerpts**  
+   Whether we may display short cited quotations / excerpts from published
+   judgments (for example a few sentences) to support a structured claim, always
+   with attribution and a link to the official source.
+
+5. **Structured derived facts**  
+   Whether we may create and store structured derived records (charges, findings,
+   sanctions, cited rules/authorities, and similar fields) linked to page-level
+   evidence, for internal research use and—if separately permitted—for limited
+   public research display.
+
+6. **Source attribution**  
+   The attribution wording and credit line you require when we display metadata,
+   excerpts, or derived facts (and any other notice we must show).
+
+7. **Takedown arrangements**  
+   Your preferred process and expected timeframe if the Council requests removal
+   or correction of any stored file, excerpt, metadata, or derived record.
+
+8. **Public non-profit use** (separate from commercial use)  
+   Whether a public, non-profit research website that shows only permitted
+   metadata and/or short excerpts (not full judgment republication) would be
+   acceptable, and on what conditions.
+
+9. **Commercial use** (separate from non-profit use)  
+   Whether any commercial product or service using the materials, metadata,
+   excerpts, or derived facts would be permitted, and on what conditions
+   (licence fee, attribution, volume limits, or refusal).
+
+### What we will not do without clear permission
+
+- We will not republish full judgment text on a public website.
+- We will not scrape or harvest the site aggressively.
+- We will not treat silence as consent.
+
+### Current operating posture
+
+Until we receive written permission covering public or commercial uses, RegLens
+HK will keep **real** MCHK materials **internal-only**. Any public Observatory
+release of real judgments remains **blocked** by our source publication policy.
+
+Please let us know the preferred application process, any forms required, and
+any conditions you wish to attach.
 
 Yours faithfully,  
 [Organisation name]  

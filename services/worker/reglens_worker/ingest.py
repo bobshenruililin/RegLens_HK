@@ -19,6 +19,7 @@ from .determinism import (
 from .hashutil import sha256_file
 from .jobs import build_job_queue
 from .llm import MockLLMProvider
+from .privacy import redact_derived_text
 from .schema_validate import assert_valid_extraction_v2
 from .segment import segment_document_report
 from .store import LocalArtifactStore, mime_for, utc_now_iso
@@ -173,6 +174,22 @@ def ingest_fixture(
     propositions_out = []
     for prop in extraction["propositions"]:
         prop_id = proposition_id_for(run_key, prop["client_ref"])
+        claim = redact_derived_text(prop["claim_text"])
+        structured = prop.get("structured")
+        if isinstance(structured, dict):
+            structured = {
+                k: (redact_derived_text(v) if isinstance(v, str) else v)
+                for k, v in structured.items()
+            }
+        evidence_out = []
+        for ev in prop["evidence"]:
+            evidence_out.append(
+                {
+                    **ev,
+                    "quote": ev["quote"],  # exact internal evidence quote preserved
+                    "quote_internal": ev["quote"],
+                }
+            )
         propositions_out.append(
             {
                 "id": prop_id,
@@ -180,12 +197,12 @@ def ingest_fixture(
                 "prop_type": prop["prop_type"],
                 "epistemic_class": prop["epistemic_class"],
                 "derivation": prop["derivation"],
-                "claim_text": prop["claim_text"],
-                "structured": prop.get("structured"),
+                "claim_text": claim,
+                "structured": structured,
                 "confidence": prop["confidence"],
                 "review_status": "accepted" if auto else "pending",
                 "published": bool(auto),
-                "evidence": prop["evidence"],
+                "evidence": evidence_out,
             }
         )
 

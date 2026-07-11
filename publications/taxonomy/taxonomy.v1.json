@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0.0",
+  "taxonomy_version": "1.0.0",
+  "issue_categories": [
+    { "code": "recordkeeping", "label": "Recordkeeping" },
+    { "code": "consent", "label": "Consent" },
+    { "code": "clinical_care", "label": "Clinical care" },
+    { "code": "prescribing", "label": "Prescribing" },
+    { "code": "advertising", "label": "Advertising" },
+    { "code": "dishonesty", "label": "Dishonesty" },
+    { "code": "confidentiality", "label": "Confidentiality" },
+    { "code": "premises_equipment", "label": "Premises and equipment" },
+    { "code": "infection_control", "label": "Infection control" },
+    { "code": "certificates_reports", "label": "Certificates and reports" },
+    { "code": "conduct_conviction", "label": "Conduct / conviction" },
+    { "code": "registration_administration", "label": "Registration / administration" },
+    { "code": "other", "label": "Other" }
+  ],
+  "finding_outcomes": [
+    { "code": "proved", "label": "Proved" },
+    { "code": "partly_proved", "label": "Partly proved" },
+    { "code": "not_proved", "label": "Not proved" },
+    { "code": "withdrawn", "label": "Withdrawn" },
+    { "code": "admitted", "label": "Admitted" },
+    { "code": "unknown", "label": "Unknown" }
+  ],
+  "sanction_categories": [
+    { "code": "warning", "label": "Warning" },
+    { "code": "reprimand", "label": "Reprimand" },
+    { "code": "conditions", "label": "Conditions" },
+    { "code": "suspension", "label": "Suspension" },
+    { "code": "removal", "label": "Removal" },
+    { "code": "removal_suspended", "label": "Removal (suspended)" },
+    { "code": "no_order", "label": "No order" },
+    { "code": "costs", "label": "Costs" },
+    { "code": "other", "label": "Other" }
+  ],
+  "factor_categories": [
+    { "code": "clear_prior_record", "label": "Clear prior record" },
+    { "code": "previous_discipline", "label": "Previous discipline" },
+    { "code": "admission", "label": "Admission" },
+    { "code": "cooperation", "label": "Cooperation" },
+    { "code": "remorse", "label": "Remorse" },
+    { "code": "remediation", "label": "Remediation" },
+    { "code": "harm", "label": "Harm" },
+    { "code": "risk_of_harm", "label": "Risk of harm" },
+    { "code": "repetition", "label": "Repetition" },
+    { "code": "dishonesty", "label": "Dishonesty" },
+    { "code": "delay", "label": "Delay" },
+    { "code": "personal_circumstances", "label": "Personal circumstances" },
+    { "code": "other", "label": "Other" }
+  ]
+}

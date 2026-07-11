@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0.0",
+  "taxonomy_version": "1.0.0",
+  "annotations": [
+    {
+      "external_ref": "SYN-MCHK-2024-001",
+      "regulator_code": "MCHK",
+      "issue_categories": ["recordkeeping"],
+      "finding_outcomes": ["proved", "admitted"],
+      "sanction_categories": ["warning", "costs"],
+      "factor_categories": ["clear_prior_record", "admission"],
+      "editorial_note": {
+        "summary": "Synthetic MCHK inquiry in which inadequate clinical recordkeeping was admitted and found proved, resulting in a warning letter and no costs order.",
+        "takeaway": "For demo purposes, an admitted recordkeeping charge can still attract a formal warning even with a clear prior record; exact sanction wording remains in the published proposition claims.",
+        "supporting_client_refs": ["charge-1", "finding-1", "sanction-1"],
+        "reviewer_status": "verified"
+      }
+    },
+    {
+      "external_ref": "SYN-DCHK-2023-014",
+      "regulator_code": "DCHK",
+      "issue_categories": ["premises_equipment"],
+      "finding_outcomes": ["proved"],
+      "sanction_categories": ["removal_suspended"],
+      "factor_categories": ["remorse"],
+      "editorial_note": {
+        "summary": "Synthetic DCHK inquiry concerning unsuitable dental premises/equipment; the charge was proved and a short removal order was suspended.",
+        "takeaway": "The demo illustrates premises fitness as a distinct issue class and a suspended removal as the normalised sanction category, separate from remorse as a mitigating factor.",
+        "supporting_client_refs": ["charge-1", "finding-1", "sanction-1"],
+        "reviewer_status": "verified"
+      }
+    },
+    {
+      "external_ref": "SYN-MCHK-PDF-001",
+      "regulator_code": "MCHK",
+      "issue_categories": ["recordkeeping"],
+      "finding_outcomes": ["proved"],
+      "sanction_categories": ["warning"],
+      "factor_categories": [],
+      "editorial_note": {
+        "summary": "Minimal synthetic MCHK PDF fixture: inadequate records charge proved with a warning letter order.",
+        "takeaway": "Used to exercise PDF segmentation and public excerpt publication; classifications mirror the short fixture text only.",
+        "supporting_client_refs": ["charge-1", "finding-1", "sanction-1"],
+        "reviewer_status": "verified"
+      }
+    }
+  ]
+}

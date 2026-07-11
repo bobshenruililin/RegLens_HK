@@ -7,6 +7,26 @@ from .. import PIPELINE_VERSION
 from ..segment import PageSpan
 from .base import LLMProvider
 
+_MONTH = (
+    r"January|February|March|April|May|June|July|August|"
+    r"September|October|November|December"
+)
+_DATE_TOKEN = rf"(?:\d{{1,2}}\s+(?:{_MONTH})\s+\d{{4}}|\d{{4}}-\d{{2}}-\d{{2}})"
+
+_INQUIRY_DATE_LABELS = (
+    "Date of hearing",
+    "Hearing date",
+    "Inquiry date",
+    "Date of inquiry",
+)
+_JUDGMENT_DATE_LABELS = (
+    "Date of judgment",
+    "Judgment date",
+    "Decision date",
+    "Date of decision",
+    "Date of the decision",
+)
+
 
 class EvidenceResolutionError(ValueError):
     """Raised when a quote cannot be located on the referenced page."""
@@ -48,8 +68,13 @@ class MockLLMProvider(LLMProvider):
             return f"{prop_type.replace('_', '-')}-{counters[prop_type]}"
 
         def quote_on(page_no: int, needle: str) -> dict[str, Any]:
+            """Locate needle on page; quote is the full needle up to schema max 2000."""
             text = page_for[page_no].text
+            quote = needle[:2000]
             idx = text.find(needle)
+            if idx < 0:
+                # Prefer exact quote slice when only a prefix was taken for schema limit
+                idx = text.find(quote)
             if idx < 0:
                 collapsed_page = " ".join(text.split())
                 collapsed_needle = " ".join(needle.split())
@@ -57,20 +82,19 @@ class MockLLMProvider(LLMProvider):
                     raise EvidenceResolutionError(
                         f"quote not found on page {page_no}: {needle[:80]!r}"
                     )
-                # Offsets omitted when only collapsed match is available
                 return {
                     "span_id": None,
                     "page_no": page_no,
-                    "quote": needle[:2000],
+                    "quote": quote,
                     "char_start": None,
                     "char_end": None,
                 }
             return {
                 "span_id": None,
                 "page_no": page_no,
-                "quote": needle[:2000],
+                "quote": quote,
                 "char_start": idx,
-                "char_end": idx + len(needle),
+                "char_end": idx + len(quote),
             }
 
         case_ref = metadata.get("case_ref") or _first_match(
@@ -82,8 +106,12 @@ class MockLLMProvider(LLMProvider):
         reg_no = metadata.get("defendant_registration_no") or _first_match(
             joined, r"(?:Reg(?:istration)?\.?\s*No\.?)\s*[:#]?\s*([A-Z0-9]+)"
         )
-        judgment_date = metadata.get("decision_date") or _iso_date(joined)
-        inquiry_date = _iso_date(joined)
+
+        # Prefer labelled dates — do not treat the first date in the document as judgment.
+        inquiry_date = _labelled_date(joined, _INQUIRY_DATE_LABELS)
+        judgment_date = metadata.get("decision_date") or _labelled_date(
+            joined, _JUDGMENT_DATE_LABELS
+        )
 
         if regulator_code not in {"MCHK", "DCHK"}:
             raise ValueError(f"unknown regulator_code: {regulator_code}")
@@ -99,9 +127,10 @@ class MockLLMProvider(LLMProvider):
         factor_ref = None
 
         charge = _section_line(joined, "Charge") or _first_match(
-            joined, r"(?:amended\s+)?charge[:\s]+(.{20,240})", flags=re.I
+            joined, r"(?:amended\s+)?charge[:\s]+(.+)", flags=re.I
         )
         if charge:
+            charge = charge.strip()
             page = _page_containing(spans, charge)
             if page is None:
                 raise EvidenceResolutionError("charge text not located on any page")
@@ -114,15 +143,16 @@ class MockLLMProvider(LLMProvider):
                     "normalized",
                     charge,
                     0.85,
-                    [quote_on(page, charge[:180])],
-                    structured={"charge_text": charge[:500]},
+                    [quote_on(page, charge)],
+                    structured={"charge_text": charge},
                 )
             )
 
+        # Allow "Cap. 161" — do not stop at the period after Cap.
         rule = _first_match(
             joined,
-            r"((?:Medical|Dentists?)\s+Registration\s+Ordinance[^\n.]{0,80}|"
-            r"Code of Professional[^.\n]{0,80})",
+            r"((?:Medical|Dentists?)\s+Registration\s+Ordinance(?:,\s*Cap\.?\s*\d+)?|"
+            r"Code of Professional(?:\s+Conduct)?)",
             flags=re.I,
         )
         if rule:
@@ -138,14 +168,15 @@ class MockLLMProvider(LLMProvider):
                     "verbatim",
                     rule,
                     0.8,
-                    [quote_on(page, rule[:180])],
-                    structured={"instrument": rule[:200]},
+                    [quote_on(page, rule)],
+                    structured={"instrument": rule},
                 )
             )
 
         finding = _section_line(joined, "Finding") or _first_match(
             joined,
-            r"(guilty of misconduct[^\n.]{0,120}|charge is proved[^\n.]{0,80})",
+            r"((?:The Council[^\n]{0,40})?(?:is satisfied that )?the charge is proved[^\n.]{0,120}"
+            r"|guilty of misconduct[^\n.]{0,120})",
             flags=re.I,
         )
         if finding:
@@ -161,17 +192,19 @@ class MockLLMProvider(LLMProvider):
                     "normalized",
                     finding,
                     0.82,
-                    [quote_on(page, finding[:180])],
+                    [quote_on(page, finding)],
                     structured={"outcome": "proved" if "proved" in finding.lower() else "stated"},
                 )
             )
 
-        sanction = _section_line(joined, "Order") or _first_match(
+        sanction_raw = _section_line(joined, "Order") or _first_match(
             joined,
-            r"(removed from the (?:General Register|register)[^\n.]{0,100}|"
-            r"warning letter[^\n.]{0,80})",
+            r"((?:That the Defendant be )?removed from the (?:General Register|register)"
+            r"[^\n.]{0,160}|"
+            r"(?:The Defendant be served with a )?warning letter[^\n.]{0,80})",
             flags=re.I,
         )
+        sanction = _strip_trailing_appeal(sanction_raw) if sanction_raw else None
         if sanction:
             page = _page_containing(spans, sanction)
             if page is None:
@@ -185,14 +218,14 @@ class MockLLMProvider(LLMProvider):
                     "normalized",
                     sanction,
                     0.84,
-                    [quote_on(page, sanction[:180])],
-                    structured={"order_text": sanction[:300]},
+                    [quote_on(page, sanction)],
+                    structured={"order_text": sanction},
                 )
             )
 
         mitigating = _first_match(
             joined,
-            r"(clear disciplinary record|genuine remorse|admission of[^\n.]{0,60})",
+            r"([^\n]*\b(?:clear disciplinary record|genuine remorse|admission of)[^\n.]*)",
             flags=re.I,
         )
         if mitigating:
@@ -208,14 +241,16 @@ class MockLLMProvider(LLMProvider):
                     "verbatim",
                     mitigating,
                     0.75,
-                    [quote_on(page, mitigating[:180])],
+                    [quote_on(page, mitigating)],
                     structured={"polarity": "mitigating"},
                 )
             )
 
+        # Capture through Hong Kong / endorsement principles — avoid mid-word {0,40} cuts.
         authority = _first_match(
             joined,
-            r"(Dr\.?\s+[A-Z][a-z]+.?v\.?\s+The Medical Council[^\n.]{0,40})",
+            r"(Dr\.?\s+[A-Z][a-z]+\s+v\.?\s+The Medical Council of Hong Kong"
+            r"(?:\s+as a cited authority on professional endorsement principles)?)",
             flags=re.I,
         )
         if authority:
@@ -231,12 +266,17 @@ class MockLLMProvider(LLMProvider):
                     "verbatim",
                     authority,
                     0.7,
-                    [quote_on(page, authority[:180])],
-                    structured={"citation": authority[:200]},
+                    [quote_on(page, authority)],
+                    structured={"citation": authority},
                 )
             )
 
-        appeal = _first_match(joined, r"(no appeal|appeal (?:is|was)[^\n.]{0,80})", flags=re.I)
+        appeal = _first_match(
+            joined,
+            r"((?:No appeal[^\n]+)|(?:Appeal status\s*:\s*[^\n]+)|"
+            r"(?:\bappeal (?:is|was)[^\n.]{0,120}))",
+            flags=re.I,
+        )
         if appeal:
             page = _page_containing(spans, appeal)
             if page is None:
@@ -249,14 +289,14 @@ class MockLLMProvider(LLMProvider):
                     "normalized",
                     appeal,
                     0.7,
-                    [quote_on(page, appeal[:180])],
+                    [quote_on(page, appeal)],
                     structured=None,
                 )
             )
 
         legal_test = _first_match(
             joined,
-            r"(conduct (?:which )?falls short of the standard expected[^\n.]{0,100})",
+            r"([^\n]*conduct (?:which )?falls short of the standard expected[^\n.]*)",
             flags=re.I,
         )
         if legal_test:
@@ -272,7 +312,7 @@ class MockLLMProvider(LLMProvider):
                     "inferred",
                     legal_test,
                     0.65,
-                    [quote_on(page, legal_test[:180])],
+                    [quote_on(page, legal_test)],
                     structured={"test_label": "standard_expected"},
                 )
             )
@@ -388,13 +428,43 @@ def _first_match(text: str, pattern: str, flags: int = 0) -> str | None:
 
 
 def _section_line(text: str, heading: str) -> str | None:
+    """Return text after a labelled heading on the same line (does not cross newlines)."""
     m = re.search(rf"{heading}\s*[:.\-]\s*(.+)", text, flags=re.IGNORECASE)
-    return m.group(1).strip() if m else None
+    if not m:
+        return None
+    value = m.group(1).strip()
+    if heading.lower() == "order":
+        value = _strip_trailing_appeal(value)
+    return value or None
+
+
+def _strip_trailing_appeal(text: str) -> str:
+    """Remove appeal-status sentences absorbed into an Order/sanction paragraph."""
+    cleaned = re.split(
+        r"(?:\.\s*No appeal\b|\s+Appeal status\s*:|\s+No appeal\b).*",
+        text,
+        maxsplit=1,
+        flags=re.IGNORECASE | re.DOTALL,
+    )[0].strip()
+    return cleaned.rstrip(" .").strip() + ("." if cleaned else "")
+
+
+def _labelled_date(text: str, labels: tuple[str, ...] | list[str]) -> str | None:
+    """Extract an ISO date that appears immediately after one of the given labels."""
+    for label in labels:
+        m = re.search(
+            rf"{re.escape(label)}\s*[:.\-]?\s*({_DATE_TOKEN})",
+            text,
+            flags=re.IGNORECASE,
+        )
+        if m:
+            return _iso_date(m.group(1))
+    return None
 
 
 def _iso_date(text: str) -> str | None:
     m = re.search(
-        r"\b(\d{1,2})\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})\b",
+        rf"\b(\d{{1,2}})\s+({_MONTH})\s+(\d{{4}})\b",
         text,
         flags=re.I,
     )
@@ -423,7 +493,7 @@ def _iso_date(text: str) -> str | None:
 
 def _page_containing(spans: list[PageSpan], needle: str) -> int | None:
     for s in spans:
-        if needle[:80] in s.text or needle in s.text:
+        if needle in s.text or needle[:80] in s.text:
             return s.page_no
     collapsed_needle = " ".join(needle.split()[:8])
     for s in spans:

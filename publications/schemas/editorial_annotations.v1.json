@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reglens.hk/schemas/editorial_annotations.v1.json",
+  "title": "RegLensHKEditorialAnnotationsV1",
+  "description": "Human-reviewed editorial classifications keyed by stable external_ref (not run-derived decision IDs).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "taxonomy_version", "annotations"],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "taxonomy_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "annotations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "external_ref",
+          "regulator_code",
+          "issue_categories",
+          "finding_outcomes",
+          "sanction_categories",
+          "factor_categories",
+          "editorial_note"
+        ],
+        "properties": {
+          "external_ref": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Stable source/external case reference (e.g. SYN-MCHK-2024-001)."
+          },
+          "regulator_code": {
+            "type": "string",
+            "enum": ["MCHK", "DCHK"]
+          },
+          "issue_categories": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "finding_outcomes": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "sanction_categories": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "factor_categories": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "uniqueItems": true
+          },
+          "editorial_note": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "summary",
+              "takeaway",
+              "supporting_client_refs",
+              "reviewer_status"
+            ],
+            "properties": {
+              "summary": {
+                "type": "string",
+                "minLength": 1
+              },
+              "takeaway": {
+                "type": "string",
+                "minLength": 1
+              },
+              "supporting_client_refs": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "minItems": 1,
+                "uniqueItems": true
+              },
+              "reviewer_status": {
+                "type": "string",
+                "enum": [
+                  "verified",
+                  "human_edited",
+                  "incomplete",
+                  "disputed",
+                  "superseded"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

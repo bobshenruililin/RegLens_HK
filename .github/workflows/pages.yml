@@ -1,0 +1,112 @@
+name: GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: apps/site/package-lock.json
+      - name: Install Python deps
+        run: pip install -r services/worker/requirements.txt
+      - name: Fixture and privacy guards
+        env:
+          PYTHONPATH: services/worker
+        run: |
+          python scripts/check_fixtures.py
+          make pages-artifact
+          python scripts/check_public_release.py generated/public-release
+      - name: Assert no private/raw sources in release
+        run: |
+          ! rg -n "private-data|Patient [A-Z0-9]|AUTH_PASSWORD|REGLENS_SESSION" generated/public-release || true
+          python - <<'PY'
+          from pathlib import Path
+          import re, sys
+          root = Path("generated/public-release")
+          bad = []
+          for p in root.rglob("*"):
+              if p.is_file() and p.suffix.lower() in {".pdf", ".html", ".htm"}:
+                  bad.append(f"raw source file in release: {p}")
+              if p.suffix == ".json":
+                  text = p.read_text(encoding="utf-8")
+                  if '"pages"' in text and '"text"' in text and "page_no" in text:
+                      # public decisions must not embed full page text arrays
+                      if re.search(r'"pages"\s*:\s*\[', text) and re.search(r'"text"\s*:', text):
+                          bad.append(f"possible raw page text in {p}")
+                  if "confidence" in text:
+                      bad.append(f"confidence leaked in {p}")
+                  if re.search(r"\bPatient\s+[A-Z0-9]\b", text):
+                      bad.append(f"patient token in {p}")
+          if bad:
+              print("\n".join(bad))
+              sys.exit(1)
+          print("public release artifact guards OK")
+          PY
+      - name: Build Observatory
+        working-directory: apps/site
+        env:
+          NEXT_PUBLIC_BASE_PATH: ${{ vars.PAGES_BASE_PATH }}
+        run: |
+          npm ci
+          npm run typecheck
+          npm run build
+      - name: Verify static routes
+        run: |
+          test -f apps/site/out/index.html
+          test -f apps/site/out/explore/index.html
+          test -f apps/site/out/analytics/index.html
+          test -f apps/site/out/methodology/index.html
+          test -f apps/site/out/data/index.html
+          test -f apps/site/out/compare/index.html
+          test -f apps/site/out/404.html || test -f apps/site/out/404/index.html
+          # decision routes from release
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          cat = json.loads(Path("generated/public-release/catalog.json").read_text())
+          missing = []
+          for d in cat.get("decisions", []):
+              slug = d["slug"]
+              path = Path(f"apps/site/out/decisions/{slug}/index.html")
+              if not path.is_file():
+                  missing.append(str(path))
+          if missing:
+              raise SystemExit("missing decision routes:\n" + "\n".join(missing))
+          print(f"verified {len(cat.get('decisions', []))} decision routes")
+          PY
+          test ! -d apps/site/out/api
+          test ! -f apps/site/out/middleware.js
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/site/out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

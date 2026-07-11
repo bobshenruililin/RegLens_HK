@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0.0",
+  "policies": [
+    {
+      "source_id": "mchk_judgments",
+      "regulator_code": "MCHK",
+      "visibility": "internal_only",
+      "max_excerpt_chars": 280,
+      "attribution_required": true,
+      "notes": "Real MCHK judgments remain internal-only until commercial republication consent is granted. Synthetic fixtures may still be released under release_mode=synthetic_demo with public_excerpt treatment."
+    },
+    {
+      "source_id": "dchk_judgments",
+      "regulator_code": "DCHK",
+      "visibility": "internal_only",
+      "max_excerpt_chars": 280,
+      "attribution_required": true,
+      "notes": "Real DCHK judgments remain internal-only until written licence confirmation. From 14 July 2018 DCHK publishes written judgments where charges were found proved; that coverage change does not authorise public republication by RegLens. Synthetic fixtures may still be released under release_mode=synthetic_demo with public_excerpt treatment."
+    }
+  ]
+}

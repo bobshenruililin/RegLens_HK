@@ -21,7 +21,9 @@ from reglens_worker.ingest import (  # noqa: E402
 )
 from reglens_worker.llm import MockLLMProvider  # noqa: E402
 from reglens_worker.schema_validate import (  # noqa: E402
+    MigrationError,
     assert_valid_extraction_v2,
+    collapse_ws,
     migrate_v1_to_v2,
     validate_extraction,
     validate_extraction_schema,
@@ -191,7 +193,9 @@ def test_provenance_links(tmp_path: Path):
     for prop in decision["propositions"]:
         for ev in prop["evidence"]:
             assert ev["span_id"]
-            assert ev["quote"] in pages[ev["page_no"]] or True  # collapse allowed in domain
+            page = pages[ev["page_no"]]
+            quote = ev["quote"]
+            assert quote in page or collapse_ws(quote) in collapse_ws(page)
             assert any(pg["span_id"] == ev["span_id"] for pg in decision["pages"])
 
 
@@ -290,8 +294,43 @@ def test_v1_migration_to_v2():
     }
     v2 = migrate_v1_to_v2(v1)
     assert v2["schema_version"] == "2.0.0"
+    assert v2["decision_metadata"]["regulator_code"] == "MCHK"
+    assert v2["decision_metadata"]["profession"] == "doctor"
+    assert v2["decision_metadata"]["case_refs"] == ["X"]
+    assert v2["decision_metadata"]["dates"]["judgment"] == "2024-01-02"
     assert v2["propositions"][0]["client_ref"] == "charge-1"
     assert "id" not in v2["propositions"][0]
+
+
+def test_v1_migration_requires_regulator():
+    v1 = {
+        "schema_version": "1.0.0",
+        "document_sha256": "c" * 64,
+        "extractor": {
+            "pipeline_version": "m1",
+            "model_provider": "mock",
+            "model_version": "1",
+            "prompt_version": "1",
+        },
+        "decision_metadata": {
+            "case_ref": "X",
+            "decision_date": "2024-01-02",
+            "profession": "doctor",
+        },
+        "propositions": [
+            {
+                "id": "00000000-0000-4000-8000-000000000001",
+                "prop_type": "charge",
+                "epistemic_class": "fact",
+                "claim_text": "A charge",
+                "confidence": 0.5,
+                "evidence": [{"page_no": 1, "quote": "A charge"}],
+            }
+        ],
+        "coverage": {"missing_fields": [], "warnings": []},
+    }
+    with pytest.raises(MigrationError, match="regulator_code"):
+        migrate_v1_to_v2(v1)
 
 
 def test_legal_test_v1_still_checked():
@@ -319,7 +358,8 @@ def test_legal_test_v1_still_checked():
 
 
 def test_private_data_path_not_required_in_fixtures():
-    assert not (ROOT / "fixtures" / "raw").exists() or True
+    assert not (ROOT / "fixtures" / "raw").exists()
+    assert not (ROOT / "fixtures" / "seed").exists()
     assert (ROOT / "fixtures" / "synthetic").is_dir()
     assert (ROOT / "docs" / "PRIVATE_DATA.md").is_file()
 

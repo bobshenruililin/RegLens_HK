@@ -57,6 +57,25 @@ The pipeline **rejects** any `fixture_kind=real`. Auto-accept is labelled
 - `python` / `studio` / `site` jobs — demo-mode RC1 gate (no DATABASE_URL).
 - `postgres-integration` — Postgres 16 service, migrate, integration tests,
   demo pipeline or vertical-slice fallback.
+- `source-health` — manual `workflow_dispatch` only, skipped on forks,
+  metadata-only, offline fixture parser summary artifact; it does **not**
+  download PDFs and is not scheduled.
+
+## RC3 source/pilot commands
+
+```bash
+make rc3-verify
+make sources-status
+make source-sync-mchk-dry
+make source-sync-dchk-dry
+make core50-status
+make extraction-eval
+```
+
+RC3 live-source work remains policy-gated. Public availability is not reuse
+permission; robots.txt is not a licence; MCHK remains internal-only; DCHK carries
+the July 14, 2018 caveat; student-research letters do not unlock Pages; and no
+public real release or complete de-identification claim is made.
 
 ## Credentials
 
@@ -69,3 +88,5 @@ separate worker/studio/publisher DB users are documented as comments in
 - [`DATABASE_MIGRATIONS.md`](DATABASE_MIGRATIONS.md)
 - [`BACKUP_RESTORE.md`](BACKUP_RESTORE.md)
 - [`THREAT_MODEL.md`](THREAT_MODEL.md)
+- [`SOURCE_SYNC.md`](SOURCE_SYNC.md)
+- [`CRAWL_POLICY.md`](CRAWL_POLICY.md)

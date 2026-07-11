@@ -7,7 +7,8 @@
 | **Milestone 2A — Trusted contracts, deterministic artifacts, CI** | **Complete** |
 | Milestone 2B–2D experimental scaffolding | Superseded by RC2 data plane (archived migrations) |
 | **MVP-RC1 — RegLens Observatory** | **Complete** |
-| **MVP-RC2 — Studio trusted data plane** | **This delivery** |
+| **MVP-RC2 — Studio trusted data plane** | **Complete** |
+| **MVP-RC3 — Live source sync and real corpus pilot** | **This delivery** |
 
 ## Milestone 2A (complete)
 
@@ -39,8 +40,20 @@ retained for `make verify`. Checkpoint D (partial) adds:
 - Operator docs + ADRs 0008–0012
 - Synthetic-only `scripts/postgres_demo_pipeline.py`
 
-Continuing restrictions: no crawl, OCR, real LLM, semantic search, NCHK,
-Studio-on-Pages, or breaking `publication_release.v1`.
+At RC2 close, continuing restrictions were: no crawl, OCR, real LLM, semantic
+search, NCHK, Studio-on-Pages, or breaking `publication_release.v1`.
 
 `make verify` remains the **RC2 demo-mode gate** (no `DATABASE_URL` required).
 Postgres path is gated by `make integration` / CI `postgres-integration`.
+
+## MVP-RC3 — Source sync and internal pilot (this delivery)
+
+RC3 adds policy-aware source metadata sync, MCHK/DCHK adapters, local OCR text
+variants, bounded extractor/critic tests, and the Core 50 internal pilot plan.
+Focused checks: `make rc3-verify`, `make sources-status`,
+`make source-sync-mchk-dry`, `make source-sync-dchk-dry`, `make core50-status`.
+
+Continuing restrictions: public availability is not reuse permission; robots.txt
+is not a licence; MCHK remains internal-only; DCHK carries the July 14, 2018
+caveat; no public real release; no complete de-identification claim; and
+student-research letters do not unlock Pages.

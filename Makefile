@@ -3,7 +3,9 @@
 	site-build pages-artifact public-scan \
 	integration db-up db-down db-reset-local db-migrate db-status \
 	postgres-demo-pipeline postgres-demo-release \
-	site-build-from-postgres-release rc2-acceptance
+	site-build-from-postgres-release rc2-acceptance \
+	rc3-verify sources-status source-sync-mchk-dry source-sync-dchk-dry \
+	source-parser-tests ocr-tests core50-status extraction-eval
 
 PYTHONPATH := services/worker
 export PYTHONPATH
@@ -13,6 +15,8 @@ COMPOSE_DATABASE_URL ?= postgresql://reglens:reglens_local_only@127.0.0.1:5432/r
 DEFAULT_MANIFEST ?= fixtures/manifests/m1.jsonl
 DEFAULT_DATA_ROOT ?= data
 PG_RELEASE_OUT ?= generated/public-release-pg
+RC3_TEST_PATHS := tests/sources tests/ocr tests/llm tests/pipeline
+RC3_RUFF_PATHS := $(RC3_TEST_PATHS)
 
 verify: fixtures lint typecheck test studio-ci demo-release public-scan site-ci
 	@echo "All MVP-RC1 / RC2 demo-mode verification targets passed"
@@ -213,6 +217,43 @@ rc2-acceptance:
 	$(MAKE) integration; \
 	$(MAKE) postgres-demo-pipeline; \
 	$(MAKE) postgres-demo-release
+
+# --- RC3 source sync / OCR / LLM pilot helpers ---
+
+rc3-verify:
+	pytest $(RC3_TEST_PATHS)
+	ruff check $(RC3_RUFF_PATHS)
+	ruff format --check $(RC3_RUFF_PATHS)
+
+sources-status:
+	@echo "RC3 source automation policy (metadata posture only; public availability is not reuse permission; robots.txt is not a licence)"
+	@if command -v jq >/dev/null 2>&1; then \
+	  jq '.policies[] | {source_id, regulator_code, discovery_mode, document_acquisition, content_use_posture, require_user_agent_contact, public_visibility_policy_ref, publication_caveats}' sources/policies/source_automation_policy.v1.json; \
+	else \
+	  python -m json.tool sources/policies/source_automation_policy.v1.json; \
+	fi
+
+source-sync-mchk-dry:
+	python -m reglens_worker.sources.sync --source-id mchk_judgments --fixture-dir fixtures/source_html
+
+source-sync-dchk-dry:
+	python -m reglens_worker.sources.sync --source-id dchk_judgments --fixture-dir fixtures/source_html
+
+source-parser-tests:
+	pytest tests/sources
+
+ocr-tests:
+	pytest tests/ocr
+
+core50-status:
+	@if command -v jq >/dev/null 2>&1; then \
+	  cat publications/pilot/core50.v1.json | jq .; \
+	else \
+	  cat publications/pilot/core50.v1.json; \
+	fi
+
+extraction-eval:
+	@echo "RC3 extraction eval placeholder: publications/pilot/core10_eval.v1.json"
 
 lock:
 	pip install -r services/worker/requirements.txt

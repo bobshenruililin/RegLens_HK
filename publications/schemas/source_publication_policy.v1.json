@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reglens.hk/schemas/source_publication_policy.v1.json",
+  "title": "RegLensHKSourcePublicationPolicyV1",
+  "description": "Per-source visibility and excerpt limits for publication release builds.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "policies"],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "policies": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "regulator_code",
+          "visibility",
+          "max_excerpt_chars",
+          "attribution_required",
+          "notes"
+        ],
+        "properties": {
+          "source_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "regulator_code": {
+            "type": "string",
+            "enum": ["MCHK", "DCHK"]
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "internal_only",
+              "public_metadata_only",
+              "public_excerpt",
+              "public_fulltext"
+            ]
+          },
+          "max_excerpt_chars": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2000
+          },
+          "attribution_required": {
+            "type": "boolean"
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

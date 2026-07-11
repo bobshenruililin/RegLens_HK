@@ -9,6 +9,7 @@ from typing import Any
 
 from jsonschema import Draft202012Validator, FormatChecker
 
+from .determinism import span_stable_id
 from .segment import PageSpan
 
 SCHEMA_DIR = Path(__file__).resolve().parents[3] / "packages" / "extraction-schema"
@@ -80,11 +81,12 @@ def domain_validate_extraction(
         errors.append("duplicate client_ref values within extraction")
 
     span_by_page = {s.page_no: s for s in spans}
-    span_by_id = {}
-    # span_id filled by application before domain check when require_span_id
+    expected_ids = {s.page_no: span_stable_id(document_sha256, s) for s in spans}
+    id_to_span = {span_stable_id(document_sha256, s): s for s in spans}
 
     for prop in props:
         cref = prop.get("client_ref")
+        claim = prop.get("claim_text") or ""
         for ev in prop.get("evidence") or []:
             page_no = ev.get("page_no")
             quote = ev.get("quote") or ""
@@ -95,8 +97,27 @@ def domain_validate_extraction(
             if span is None:
                 errors.append(f"{cref}: evidence page_no {page_no} not in document spans")
                 continue
+
+            expected = expected_ids.get(page_no)
             if span_id:
-                span_by_id[span_id] = span
+                if span_id not in id_to_span:
+                    errors.append(
+                        f"{cref}: unknown or cross-document span_id {span_id!r} "
+                        f"for document {document_sha256[:12]}"
+                    )
+                elif expected and span_id != expected:
+                    errors.append(
+                        f"{cref}: span_id mismatch on page {page_no}: "
+                        f"got {span_id}, expected {expected}"
+                    )
+                else:
+                    bound = id_to_span[span_id]
+                    if bound.page_no != page_no:
+                        errors.append(
+                            f"{cref}: span_id belongs to page {bound.page_no}, "
+                            f"not evidence page_no {page_no}"
+                        )
+
             if quote not in span.text and collapse_ws(quote) not in collapse_ws(span.text):
                 errors.append(f"{cref}: quote not found on page {page_no}")
             cs, ce = ev.get("char_start"), ev.get("char_end")
@@ -111,6 +132,16 @@ def domain_validate_extraction(
                     sliced = span.text[cs:ce]
                     if collapse_ws(sliced) != collapse_ws(quote):
                         errors.append(f"{cref}: sliced span text does not match quote at offsets")
+
+            # Reject evidence truncated so far that it no longer supports the claim
+            if (
+                claim
+                and quote
+                and len(quote) + 40 < len(claim)
+                and collapse_ws(claim) not in collapse_ws(span.text)
+                and collapse_ws(quote) not in collapse_ws(claim)
+            ):
+                errors.append(f"{cref}: evidence quote appears truncated relative to claim_text")
 
     ref_set = set(refs)
     for rel in payload.get("relations") or []:
@@ -140,7 +171,6 @@ def assert_valid_extraction_v2(
         raise ValueError("Extraction validation failed:\n- " + "\n- ".join(errors))
 
 
-# Back-compat aliases used by older tests
 def validate_extraction(payload: dict[str, Any]) -> list[str]:
     version = str(payload.get("schema_version", "2.0.0"))
     if version.startswith("1"):
@@ -171,21 +201,32 @@ def evidence_quotes_supported(
     return failures
 
 
+class MigrationError(ValueError):
+    pass
+
+
 def migrate_v1_to_v2(payload: dict[str, Any]) -> dict[str, Any]:
-    """Best-effort structural migration for legacy fixtures (not for production publish)."""
+    """Structural migration for legacy fixtures. Missing regulator/profession fails."""
     if payload.get("schema_version") == "2.0.0":
         return payload
     meta = payload.get("decision_metadata") or {}
+    regulator = meta.get("regulator_code")
+    profession = meta.get("profession")
+    warnings = ["migrated_from_v1"]
+    if not regulator:
+        raise MigrationError("migrate_v1_to_v2 requires decision_metadata.regulator_code")
+    if not profession:
+        raise MigrationError("migrate_v1_to_v2 requires decision_metadata.profession")
+    if regulator not in ALLOWED_REGULATORS:
+        raise MigrationError(f"migrate_v1_to_v2 unknown regulator_code: {regulator!r}")
+
     case_ref = meta.get("case_ref")
     decision_date = meta.get("decision_date")
     propositions = []
     for i, prop in enumerate(payload.get("propositions") or [], start=1):
-        cref = f"{prop.get('prop_type', 'prop')}-{i}"
         propositions.append(
             {
-                "client_ref": cref.replace("_", "-")[:128].lower()
-                if False
-                else f"{prop['prop_type'].replace('_', '-')}-{i}",
+                "client_ref": f"{prop['prop_type'].replace('_', '-')}-{i}",
                 "prop_type": prop["prop_type"],
                 "epistemic_class": prop["epistemic_class"],
                 "derivation": "normalized",
@@ -195,13 +236,18 @@ def migrate_v1_to_v2(payload: dict[str, Any]) -> dict[str, Any]:
                 "evidence": prop["evidence"],
             }
         )
+    coverage = payload.get("coverage") or {"missing_fields": [], "warnings": []}
+    coverage = {
+        "missing_fields": list(coverage.get("missing_fields") or []),
+        "warnings": list(dict.fromkeys([*(coverage.get("warnings") or []), *warnings])),
+    }
     return {
         "schema_version": "2.0.0",
         "document_sha256": payload["document_sha256"],
         "extractor": payload["extractor"],
         "decision_metadata": {
-            "regulator_code": meta.get("regulator_code") or "MCHK",
-            "profession": meta.get("profession") or "doctor",
+            "regulator_code": regulator,
+            "profession": profession,
             "case_refs": [case_ref] if case_ref else [],
             "dates": {
                 "inquiry": None,
@@ -215,6 +261,5 @@ def migrate_v1_to_v2(payload: dict[str, Any]) -> dict[str, Any]:
         },
         "propositions": propositions,
         "relations": [],
-        "coverage": payload.get("coverage")
-        or {"missing_fields": [], "warnings": ["migrated_from_v1"]},
+        "coverage": coverage,
     }

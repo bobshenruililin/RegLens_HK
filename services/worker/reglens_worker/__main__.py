@@ -9,12 +9,25 @@ from .hashutil import sha256_file
 from .ingest import ingest_manifest
 from .jobs import build_job_queue
 from .publication import pending_review_queue, set_proposition_review
+from .release import ReleaseError, build_release
 from .search import search
 from .store import LocalArtifactStore
 
 
 def _repo_root() -> Path:
     return Path(__file__).resolve().parents[3]
+
+
+def _resolve_path(value: str | None, *, default_relative: str | None = None) -> Path:
+    root = _repo_root()
+    if value is None:
+        if default_relative is None:
+            raise ValueError("path required")
+        return (root / default_relative).resolve()
+    path = Path(value)
+    if not path.is_absolute():
+        path = root / path
+    return path.resolve()
 
 
 def cmd_ingest(args: argparse.Namespace) -> int:
@@ -116,6 +129,52 @@ def cmd_search(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_release_build(args: argparse.Namespace) -> int:
+    data_root = _resolve_path(args.data_root, default_relative="data")
+    annotations = _resolve_path(
+        args.annotations,
+        default_relative="publications/demo/editorial_annotations.v1.json",
+    )
+    policy = _resolve_path(
+        args.policy,
+        default_relative="publications/policies/source_publication_policy.v1.json",
+    )
+    taxonomy = _resolve_path(
+        args.taxonomy,
+        default_relative="publications/taxonomy/taxonomy.v1.json",
+    )
+    output = _resolve_path(args.output, default_relative="generated/public-release")
+    try:
+        manifest = build_release(
+            data_root=data_root,
+            annotations_path=annotations,
+            policy_path=policy,
+            taxonomy_path=taxonomy,
+            release_id=args.release_id,
+            release_mode=args.release_mode,
+            released_at=args.released_at,
+            output_dir=output,
+            title=args.title,
+            description=args.description,
+        )
+    except ReleaseError as exc:
+        print(f"release build FAILED: {exc}", file=sys.stderr)
+        return 1
+    print(
+        json.dumps(
+            {
+                "release_id": manifest["release_id"],
+                "release_mode": manifest["release_mode"],
+                "decision_count": manifest["decision_count"],
+                "proposition_count": manifest["proposition_count"],
+                "output": str(output),
+            },
+            indent=2,
+        )
+    )
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="reglens_worker", description="RegLens HK worker")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -172,6 +231,41 @@ def main(argv: list[str] | None = None) -> int:
     p_search.add_argument("--profession", default=None)
     p_search.add_argument("--prop-type", default=None)
     p_search.set_defaults(func=cmd_search)
+
+    p_release = sub.add_parser("release", help="Publication release operations")
+    release_sub = p_release.add_subparsers(dest="release_cmd", required=True)
+    p_rel_build = release_sub.add_parser(
+        "build",
+        help="Build a privacy-checked public release bundle",
+    )
+    p_rel_build.add_argument("--data-root", default="data")
+    p_rel_build.add_argument(
+        "--annotations",
+        default="publications/demo/editorial_annotations.v1.json",
+    )
+    p_rel_build.add_argument(
+        "--policy",
+        default="publications/policies/source_publication_policy.v1.json",
+    )
+    p_rel_build.add_argument(
+        "--taxonomy",
+        default="publications/taxonomy/taxonomy.v1.json",
+    )
+    p_rel_build.add_argument("--release-id", required=True)
+    p_rel_build.add_argument(
+        "--release-mode",
+        required=True,
+        choices=["synthetic_demo", "public"],
+    )
+    p_rel_build.add_argument(
+        "--released-at",
+        required=True,
+        help="ISO-8601 timestamp recorded in the release manifest (also used as generated_at)",
+    )
+    p_rel_build.add_argument("--output", default="generated/public-release")
+    p_rel_build.add_argument("--title", default=None)
+    p_rel_build.add_argument("--description", default=None)
+    p_rel_build.set_defaults(func=cmd_release_build)
 
     args = parser.parse_args(argv)
     return args.func(args)

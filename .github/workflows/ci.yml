@@ -28,8 +28,14 @@ jobs:
         env:
           PYTHONPATH: services/worker
         run: pytest
+      - name: Demo release + public scan
+        env:
+          PYTHONPATH: services/worker
+        run: |
+          make demo-release
+          python scripts/check_public_release.py generated/public-release
 
-  web:
+  studio:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -37,13 +43,50 @@ jobs:
         with:
           node-version: "20"
           cache: npm
-          cache-dependency-path: apps/web/package-lock.json
+          cache-dependency-path: apps/studio/package-lock.json
       - name: Install
-        working-directory: apps/web
+        working-directory: apps/studio
         run: npm ci
       - name: Typecheck
-        working-directory: apps/web
+        working-directory: apps/studio
         run: npm run typecheck
       - name: Build
-        working-directory: apps/web
+        working-directory: apps/studio
         run: npm run build
+
+  site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: apps/site/package-lock.json
+      - name: Install Python
+        run: pip install -r services/worker/requirements.txt
+      - name: Build pages artifact
+        env:
+          PYTHONPATH: services/worker
+        run: make pages-artifact
+      - name: Install site
+        working-directory: apps/site
+        run: npm ci
+      - name: Typecheck
+        working-directory: apps/site
+        run: npm run typecheck
+      - name: Static export
+        working-directory: apps/site
+        run: npm run build
+      - name: Guard Studio not in site output
+        run: |
+          if [ -d apps/site/out ] && rg -q "RegLens Studio|AUTH_PASSWORD|reglens_session" apps/site/out -g '*.html' ; then
+            echo "Studio/auth leakage in site output" >&2
+            exit 1
+          fi
+          test ! -d apps/site/out/api
+          test -f apps/site/out/index.html
+          test -f apps/site/out/explore/index.html

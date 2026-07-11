@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reglens.hk/schemas/publication_release.v1.json",
+  "title": "RegLensHKPublicationReleaseV1",
+  "description": "Manifest for a versioned, privacy-checked public publication release.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "release_id",
+    "schema_version",
+    "release_mode",
+    "generated_at",
+    "released_at",
+    "source_cutoff_date",
+    "title",
+    "description",
+    "corpus",
+    "regulators",
+    "methodology_version",
+    "taxonomy_version",
+    "inclusion_criteria",
+    "exclusion_criteria",
+    "global_caveats",
+    "decision_count",
+    "proposition_count",
+    "files"
+  ],
+  "properties": {
+    "release_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,127}$"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "release_mode": {
+      "type": "string",
+      "enum": ["synthetic_demo", "public"]
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "released_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_cutoff_date": {
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "corpus": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable corpus scope statement."
+    },
+    "regulators": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["MCHK", "DCHK"]
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "methodology_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "taxonomy_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "inclusion_criteria": {
+      "type": "string",
+      "minLength": 1
+    },
+    "exclusion_criteria": {
+      "type": "string",
+      "minLength": 1
+    },
+    "global_caveats": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "decision_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "proposition_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256", "kind"],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "manifest",
+              "catalog",
+              "analytics",
+              "decision",
+              "csv_decisions",
+              "csv_propositions",
+              "checksums",
+              "other"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

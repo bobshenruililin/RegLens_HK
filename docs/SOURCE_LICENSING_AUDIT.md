@@ -102,3 +102,31 @@ Not in MVP. Do not ingest NCHK materials until a completed audit row sets `mvp_a
 ## Outreach
 
 See [`licensing/OUTREACH_LOG.md`](licensing/OUTREACH_LOG.md).
+
+---
+
+## Enforcement via `source_publication_policy` (MVP-RC1)
+
+Licensing posture is enforced in the **publication release builder**, not by
+rewriting this audit’s consent fields.
+
+Machine-readable policy:
+[`publications/policies/source_publication_policy.v1.json`](../publications/policies/source_publication_policy.v1.json)
+(schema: [`publications/schemas/source_publication_policy.v1.json`](../publications/schemas/source_publication_policy.v1.json)).
+
+| Mechanism | Behaviour |
+|-----------|-----------|
+| `visibility: internal_only` | `release_mode=public` **refuses** inclusion of that source |
+| `max_excerpt_chars` | Caps public evidence excerpts |
+| `attribution_required` | Requires attribution strings on public decisions |
+| `synthetic_demo` | Allows synthetic fixtures only; treats them as demo `public_excerpt` without changing real-source consent |
+
+**Do not change `consent_status` values in this audit** to “unlock” engineering
+demos. Consent rows remain the human/legal record (`not_requested` until
+outreach progresses). Flipping policy visibility is a separate, deliberate
+licensing decision recorded with counsel and outreach updates — not a CI
+convenience.
+
+Until MCHK/DCHK leave `internal_only`, GitHub Pages must ship only
+`synthetic_demo` (or an empty/blocked public build). Real public republication
+remains blocked by source policy.

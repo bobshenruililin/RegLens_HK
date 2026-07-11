@@ -1,0 +1,267 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reglens.hk/schemas/public_decision.v1.json",
+  "title": "RegLensHKPublicDecisionV1",
+  "description": "Public, privacy-minimised decision record for Observatory consumption. Must not include confidence, raw page text, extractor metadata, or pending propositions.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "public_id",
+    "slug",
+    "release_id",
+    "release_mode",
+    "regulator_code",
+    "profession",
+    "case_refs",
+    "dates",
+    "official_source_url",
+    "source_attribution",
+    "publication_policy_caveats",
+    "editorial_takeaway",
+    "issue_categories",
+    "finding_outcomes",
+    "sanction_categories",
+    "factor_categories",
+    "propositions",
+    "relations",
+    "coverage_warnings"
+  ],
+  "properties": {
+    "public_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "slug": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+    },
+    "release_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "release_mode": {
+      "type": "string",
+      "enum": ["synthetic_demo", "public"]
+    },
+    "regulator_code": {
+      "type": "string",
+      "enum": ["MCHK", "DCHK"]
+    },
+    "profession": {
+      "type": "string",
+      "enum": ["doctor", "dentist"]
+    },
+    "case_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "dates": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "inquiry": { "type": ["string", "null"], "format": "date" },
+        "judgment": { "type": ["string", "null"], "format": "date" },
+        "publication": { "type": ["string", "null"], "format": "date" },
+        "conduct": { "type": ["string", "null"], "format": "date" },
+        "order_effective": { "type": ["string", "null"], "format": "date" }
+      }
+    },
+    "official_source_url": {
+      "type": ["string", "null"],
+      "format": "uri"
+    },
+    "source_attribution": {
+      "type": "string",
+      "minLength": 1
+    },
+    "publication_policy_caveats": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "editorial_takeaway": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["summary", "takeaway", "status"],
+      "properties": {
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "takeaway": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": ["verified", "human_edited", "incomplete", "disputed", "superseded"]
+        }
+      }
+    },
+    "issue_categories": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "finding_outcomes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "sanction_categories": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "factor_categories": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "propositions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/public_proposition"
+      }
+    },
+    "relations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/public_relation"
+      }
+    },
+    "coverage_warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "title": {
+      "type": "string"
+    },
+    "fixture_kind": {
+      "type": "string",
+      "enum": ["synthetic", "real"]
+    }
+  },
+  "$defs": {
+    "public_proposition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "client_ref",
+        "prop_type",
+        "epistemic_class",
+        "derivation",
+        "claim_text",
+        "verification_status",
+        "evidence"
+      ],
+      "properties": {
+        "client_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "prop_type": {
+          "type": "string",
+          "enum": [
+            "charge",
+            "rule",
+            "finding",
+            "legal_test",
+            "aggravating_factor",
+            "mitigating_factor",
+            "sanction",
+            "costs",
+            "authority",
+            "appeal_status"
+          ]
+        },
+        "epistemic_class": {
+          "type": "string",
+          "enum": ["fact", "interpretation"]
+        },
+        "derivation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "claim_text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "structured": {
+          "type": ["object", "null"]
+        },
+        "verification_status": {
+          "type": "string",
+          "enum": ["verified", "human_edited", "incomplete", "disputed", "superseded"]
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["page_no", "excerpt"],
+            "properties": {
+              "page_no": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "excerpt": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              }
+            }
+          }
+        }
+      },
+      "not": {
+        "required": ["confidence"]
+      }
+    },
+    "public_relation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from_ref", "to_ref", "relation_type"],
+      "properties": {
+        "from_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "to_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "relation_type": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

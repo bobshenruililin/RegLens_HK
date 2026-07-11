@@ -9,6 +9,8 @@ These rules apply to every contributor and coding agent working in this reposito
 - Do not provide legal advice or outcome predictions.
 - Separate extracted **facts** from **interpretation** (`epistemic_class`).
 - Record `derivation`: verbatim | normalized | inferred.
+- Distinguish **synthetic technical MVP** from a **real research pilot**. Do not
+  describe synthetic_demo corpus statistics as real-world prevalence.
 
 ## Sources and acquisition
 
@@ -28,16 +30,42 @@ These rules apply to every contributor and coding agent working in this reposito
 - `--demo-auto-approve-synthetic` is the only auto-approve path and rejects non-synthetic rows.
 - Prefer deterministic parsing before any LLM call; mock provider only until privacy approval for real LLMs.
 - Validate against extraction schema **v2** plus domain invariants.
+- Public outputs leave via `reglens_worker release build` only. Enforce
+  `source_publication_policy` — do not invent a parallel “publish anyway” path.
+- Real `release_mode=public` is refused while sources remain `internal_only`.
+
+## Observatory / Studio trust boundary
+
+| App | Role | Deploy |
+|-----|------|--------|
+| `apps/studio` | Internal review, auth, local seed/run access | **Never** deploy to GitHub Pages or any public static host |
+| `apps/site` | Public Observatory; reads only a checked publication release | Static export only (`output: "export"`) |
+
+Hard rules:
+
+1. **No Pages deploy of Studio.** Workflows and docs must keep Studio off Pages artifacts.
+2. **Public release only** for Observatory: ship `generated/public-release` (or the
+   copy under `apps/site/public/data/release`), never `data/objects`, `data/meta`,
+   or `private-data/`.
+3. GitHub Pages must contain **no raw documents** (no PDF/HTML judgment bytes,
+   no full page-text arrays).
+4. Public JSON must not include model `confidence`, extractor metadata, or pending propositions.
+5. The public site is **not** an authenticated research environment. Do not add
+   Studio login, review APIs, or session cookies to `apps/site`.
+6. Observatory counts describe the **published corpus** in that release, not
+   population prevalence. UI and docs must not imply otherwise.
 
 ## Privacy
 
 - Do not expose patient names or unnecessary personal data in derived fields.
-- Do not claim full de-identification.
+- Apply redaction / privacy scan on release build; fail closed on forbidden tokens.
+- Do not claim full de-identification. Residual risk remains even after scanning.
+- Synthetic demos may allow only the known synthetic practitioner name allow-list.
 
 ## Engineering
 
 - Jobs/runs must be idempotent, resumable, and auditable.
-- No premature microservices; no Milestone 2B+ features unless approved.
-- No OCR, semantic search, or public real-document republication in 2A.
-- Write tests for parsers, schemas, provenance, determinism, and publication safety.
+- Milestone 2B–2D code in-tree is **experimental**; do not present it as RC1 production.
+- No OCR, semantic search, or public real-document republication without explicit approval and policy change.
+- Write tests for parsers, schemas, provenance, determinism, publication safety, and public-release scans.
 - Run `make verify` before merge.

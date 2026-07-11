@@ -24,6 +24,19 @@ def main() -> int:
     if (FIXTURES / "raw").exists():
         errors.append("fixtures/raw must not exist; use fixtures/synthetic/ or private-data/")
 
+    seed_dir = FIXTURES / "seed"
+    if seed_dir.exists():
+        errors.append(
+            "fixtures/seed must not exist; generated decisions belong under data/ "
+            "(gitignored), not fixtures/"
+        )
+
+    for decision_json in FIXTURES.rglob("decision.json"):
+        errors.append(
+            f"generated decision artifact must not be committed under fixtures/: "
+            f"{decision_json.relative_to(ROOT)}"
+        )
+
     for manifest in MANIFESTS.glob("*.jsonl"):
         for line_no, line in enumerate(manifest.read_text(encoding="utf-8").splitlines(), 1):
             if not line.strip() or line.strip().startswith("#"):

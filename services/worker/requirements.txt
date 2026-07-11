@@ -1,12 +1,5 @@
-# Production/runtime dependencies for the worker (Milestone 2A).
-# Install: pip install -r services/worker/requirements.txt
-# Lockfile: services/worker/requirements.lock.txt (pip freeze after install).
-
-pypdf>=4.0.0,<6
-beautifulsoup4>=4.12.0,<5
-lxml>=5.0.0,<6
-jsonschema>=4.20.0,<5
-pytest>=8.0.0,<9
-ruff>=0.6.0,<1
-mypy>=1.11.0,<2
-types-beautifulsoup4>=4.12.0
+pypdf>=4.0.0
+beautifulsoup4>=4.12.0
+lxml>=5.0.0
+jsonschema>=4.20.0
+pytest>=8.0.0

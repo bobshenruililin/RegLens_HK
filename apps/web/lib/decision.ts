@@ -30,18 +30,6 @@ export type DecisionSeed = {
   }>;
 };
 
-function unwrap(raw: unknown): DecisionSeed {
-  if (
-    raw &&
-    typeof raw === "object" &&
-    "pointer_kind" in (raw as object) &&
-    "decision" in (raw as object)
-  ) {
-    return (raw as { decision: DecisionSeed }).decision;
-  }
-  return raw as DecisionSeed;
-}
-
 function candidates(): string[] {
   const cwd = process.cwd();
   return [
@@ -65,13 +53,13 @@ export function loadDecision(id?: string): DecisionSeed | null {
     ];
     for (const p of byId) {
       if (fs.existsSync(p)) {
-        return unwrap(JSON.parse(fs.readFileSync(p, "utf8")));
+        return JSON.parse(fs.readFileSync(p, "utf8")) as DecisionSeed;
       }
     }
   }
   for (const p of candidates()) {
     if (fs.existsSync(p)) {
-      return unwrap(JSON.parse(fs.readFileSync(p, "utf8")));
+      return JSON.parse(fs.readFileSync(p, "utf8")) as DecisionSeed;
     }
   }
   return null;

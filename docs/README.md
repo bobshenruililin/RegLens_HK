@@ -20,9 +20,6 @@ This directory is the approved Phase 0 package for RegLens HK.
 Also:
 
 - Approval record: [approvals/PHASE0_APPROVAL.md](approvals/PHASE0_APPROVAL.md)
-- Milestone 2A baseline: [approvals/M2A_BASELINE.md](approvals/M2A_BASELINE.md)
-- ADRs: [adr/](adr/)
-- Private data layout: [PRIVATE_DATA.md](PRIVATE_DATA.md)
 - Consent request drafts: [licensing/](licensing/)
 - Agent rules: [`../AGENTS.md`](../AGENTS.md)
 - Local runbook: [LOCAL_SETUP.md](LOCAL_SETUP.md)

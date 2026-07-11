@@ -16,6 +16,10 @@ This is an internal research tool. It does **not** provide legal advice.
 
 Read [AGENTS.md](AGENTS.md) before changing extraction or provenance behaviour.
 
+Phase 0 planning package (assumptions, PRD, licensing audit, schemas,
+architecture, milestones, risks, evaluation, exclusions):
+**[docs/README.md](docs/README.md)**.
+
 ## Quick start (host tools; no Docker required for demo)
 
 ```bash

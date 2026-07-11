@@ -62,10 +62,19 @@ Hard rules:
 - Do not claim full de-identification. Residual risk remains even after scanning.
 - Synthetic demos may allow only the known synthetic practitioner name allow-list.
 
+## Storage modes (RC2)
+
+- `REGLENS_MODE=demo` (default): filesystem SoT; used by `make verify`.
+- `REGLENS_MODE=postgres`: PostgreSQL SoT; requires `DATABASE_URL` (fail closed).
+- Do not half-write both stores based on “DSN happens to be set”.
+- Destructive DB reset only via `make db-reset-local` after
+  `assert_local_database_url` (local hosts only).
+- Compose mounts are **not** a substitute for `make db-migrate`.
+
 ## Engineering
 
 - Jobs/runs must be idempotent, resumable, and auditable.
-- Milestone 2B–2D code in-tree is **experimental**; do not present it as RC1 production.
+- RC2 Postgres path is the operational Studio SoT; demo mode remains for offline CI.
 - No OCR, semantic search, or public real-document republication without explicit approval and policy change.
 - Write tests for parsers, schemas, provenance, determinism, publication safety, and public-release scans.
-- Run `make verify` before merge.
+- Run `make verify` before merge (RC2 **demo-mode** gate). Postgres: `make integration` / CI `postgres-integration`.

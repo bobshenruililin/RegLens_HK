@@ -1,27 +1,40 @@
 import type { Metadata } from "next";
 import { SiteNav } from "../components/SiteNav";
+import { getCurrentUser } from "../lib/auth-server";
+import { getMode } from "../lib/mode";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "RegLens HK",
+  title: "RegLens Studio",
   description:
-    "Evidence-linked Hong Kong regulatory disciplinary decisions (internal research tool).",
+    "Internal evidence-linked Hong Kong regulatory disciplinary review (Studio).",
 };
 
-export default function RootLayout({
+export const dynamic = "force-dynamic";
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  let role = null;
+  try {
+    const user = await getCurrentUser();
+    role = user?.role ?? null;
+  } catch {
+    role = null;
+  }
+  const mode = getMode();
+
   return (
     <html lang="en">
       <body>
         <header className="site-header">
-          <div className="brand">RegLens HK</div>
+          <div className="brand">RegLens Studio</div>
           <p className="tagline">
-            Evidence-linked disciplinary data — not legal advice
+            Internal operator surface — not legal advice · not Observatory
           </p>
-          <SiteNav />
+          <SiteNav role={role} mode={mode} />
         </header>
         <main>{children}</main>
         <footer className="site-footer">

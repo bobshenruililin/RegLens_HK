@@ -1,9 +1,10 @@
-# System architecture (MVP-RC1)
+# System architecture (MVP-RC1 / RC2)
 
-RegLens HK is a **two-app** system: an internal Studio for review and local
-artifacts, and a public Observatory that only consumes a versioned publication
-release. Milestone 2A contracts (immutable runs, synthetic/private boundary)
-remain the trust foundation.
+RegLens HK is a **two-app** system: an internal Studio for review and local or
+Postgres artifacts, and a public Observatory that only consumes a versioned
+publication release. Milestone 2A contracts (immutable runs, synthetic/private
+boundary) remain the trust foundation. MVP-RC2 adds an explicit
+`REGLENS_MODE=demo|postgres` storage split ([ADR 0010](adr/0010-explicit-storage-modes.md)).
 
 ## Two-app overview
 
@@ -18,16 +19,18 @@ flowchart TB
     Ingest[Ingest hash segment]
     Extract[Mock LLM provider v2]
     Val[JSON Schema + domain invariants]
-    Runs[Immutable meta/runs/run_key]
-    Seed[seed/decisions reviewed]
+    Mode{REGLENS_MODE}
+    Runs[Immutable meta/runs demo]
+    PG[(Postgres SoT RC2)]
+    Obj[Object store blobs]
   end
 
   subgraph release [Publication release boundary]
     Policy[source_publication_policy]
     Tax[taxonomy + editorial annotations]
-    Build[release build]
+    Build[release build / build_release_from_postgres]
     Scan[check_public_release]
-    Bundle[generated/public-release]
+    Bundle[generated/public-release*]
   end
 
   subgraph apps [Frontends]
@@ -39,10 +42,15 @@ flowchart TB
 
   Synth --> Ingest
   Private -.->|manual local only| Ingest
-  Ingest --> Extract --> Val --> Runs --> Seed
+  Ingest --> Extract --> Val --> Mode
+  Mode -->|demo| Runs --> Seed[seed/decisions]
+  Mode -->|postgres| PG
+  Mode -->|postgres| Obj
   Seed --> Studio
+  PG --> Studio
   Runs --> Studio
   Seed --> Build
+  PG --> Build
   Policy --> Build
   Tax --> Build
   Build --> Scan --> Bundle
@@ -51,38 +59,22 @@ flowchart TB
   Studio -.->|never deployed| Pages
 ```
 
-ASCII equivalent:
+## Storage modes
 
-```text
-fixtures/synthetic ──┐
-                     ├──► ingest → extract v2 → immutable runs → seed/decisions
-private-data/ ───────┘                              │
-                                                    ├──► Studio (local, auth)
-                                                    │
-                         policy + taxonomy + annotations
-                                                    │
-                                                    ▼
-                                         release build + public-scan
-                                                    │
-                                                    ▼
-                                      generated/public-release
-                                                    │
-                                                    ▼
-                                         apps/site → GitHub Pages
-```
+| Mode | Operational SoT | `make verify` |
+|------|-----------------|---------------|
+| `demo` (default) | `data/` filesystem + file job queue | Yes — demo-mode gate |
+| `postgres` | `0001_rc2_baseline` + object store | Separate CI / `make integration` |
 
 ## Publication release boundary
 
-Everything left of `release build` may contain raw documents, full page text,
-confidence scores, pending propositions, and operator credentials.
+Everything left of `release build` / `build_release_from_postgres` may contain
+raw documents, full page text, confidence scores, pending propositions, and
+operator credentials.
 
-Everything right of a successful `check_public_release` must be:
-
-- schema-valid public decisions / catalog / analytics / CSV;
-- excerpt-bounded evidence only (or metadata-only if policy requires);
-- free of raw PDF/HTML and full page-text arrays;
-- free of model `confidence` and extractor run metadata;
-- privacy-scanned for residual patient-style tokens.
+Everything right of a successful `check_public_release` must be schema-valid
+public artifacts only (excerpt-bounded evidence, no raw PDF/HTML, no model
+confidence).
 
 `release_mode`:
 
@@ -98,18 +90,17 @@ release is **blocked** until policy and consent posture change.
 
 | Concern | Studio (`apps/studio`) | Observatory (`apps/site`) |
 |---------|------------------------|---------------------------|
-| Auth | Cookie session; fail-closed in production | None |
-| Data | Local `data/` seed + run artifacts | `public/data/release/*` only |
-| Search | Experimental keyword/substring (2D) | Client-side filter over catalog JSON |
+| Auth | Roles: reviewer / publisher / admin (RC2) | None |
+| Data | demo `data/` or Postgres | `public/data/release/*` only |
+| Search | Studio FTS (Postgres) / local substring (demo) | Client-side filter over catalog JSON |
 | Deploy | Local / private hosts only | Static export → Pages |
-| Review / publish | Review UI (experimental 2C) | Read-only |
+| Review / publish | Review + publication transaction | Read-only |
 
 ## Milestone notes
 
-- **2A (complete):** contracts, determinism, privacy boundary, CI.
-- **2B–2D (experimental):** Postgres, jobs, Studio auth/review, local search —
-  present in-tree but **not** RC1 production claims. See [`MVP_BACKBONE.md`](MVP_BACKBONE.md).
-- **MVP-RC1:** Observatory + publication release + Pages workflow.
+- **2A / RC1:** contracts, Observatory, Pages.
+- **RC2:** Postgres SoT, modes, jobs/leases, revisions, publication transaction,
+  operator tooling/docs (Checkpoint D partial). See [`MILESTONES.md`](MILESTONES.md).
 
-Compose (`docker-compose.yml`) remains for optional local Postgres/MinIO prep;
-image tags are pinned; credentials labelled local-only.
+Compose uses `postgres:16` (no pgvector). Credentials are local-only; always
+`make db-migrate` after `db-up`.

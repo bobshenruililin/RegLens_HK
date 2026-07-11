@@ -1,6 +1,7 @@
-# Production/runtime dependencies for the worker (Milestone 2A).
+# Production/runtime dependencies for the worker (Milestone 2A / MVP-RC2).
 # Install: pip install -r services/worker/requirements.txt
 # Lockfile: services/worker/requirements.lock.txt (pip freeze after install).
+# Optional S3/MinIO: pip install -r services/worker/requirements-s3.txt (boto3).
 
 pypdf>=4.0.0,<6
 beautifulsoup4>=4.12.0,<5
@@ -10,3 +11,4 @@ pytest>=8.0.0,<9
 ruff>=0.6.0,<1
 mypy>=1.11.0,<2
 types-beautifulsoup4>=4.12.0
+psycopg[binary]>=3.1,<4

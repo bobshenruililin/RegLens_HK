@@ -174,3 +174,16 @@ main {
   color: inherit;
   padding: 0 0.1em;
 }
+
+.review-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .review-grid {
+    grid-template-columns: 1.1fr 0.9fr;
+  }
+}

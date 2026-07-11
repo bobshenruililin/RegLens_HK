@@ -3,17 +3,19 @@
 Evidence-linked database for Hong Kong regulatory disciplinary decisions
 (MCHK and DCHK). Not legal advice. Not outcome prediction.
 
-**MVP-RC1** ships two deliberately separated surfaces:
+**MVP-RC1** shipped Observatory + publication releases. **MVP-RC2** adds a
+trusted Studio data plane (`REGLENS_MODE=demo|postgres`) while keeping the
+public site on checked static bundles only.
 
 | Surface | Path | Audience | Hosting |
 |---------|------|----------|---------|
 | **RegLens Studio** | `apps/studio` | Internal reviewers / operators | Local only — never GitHub Pages |
 | **RegLens Observatory** | `apps/site` | Public, read-only research site | Static export → GitHub Pages |
 
-Studio holds raw artifacts, review queues, and experimental auth. Observatory
-consumes only a **versioned, privacy-checked publication release** under
-`generated/public-release` (copied into `apps/site/public/data/release` for
-static build). Pages deploys **must not** include Studio, raw PDFs/HTML, model
+Studio holds raw artifacts, review queues, and auth. Observatory consumes only a
+**versioned, privacy-checked publication release** under
+`generated/public-release` (or `generated/public-release-pg` from the Postgres
+demo pipeline). Pages deploys **must not** include Studio, raw PDFs/HTML, model
 confidence, or full page text.
 
 ## Product posture (read carefully)
@@ -28,37 +30,28 @@ confidence, or full page text.
   release — not population prevalence or regulator-wide rates.
 - GitHub Pages contains **no raw documents**.
 
-## Quick start
+## Quick start (demo mode — no DATABASE_URL)
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r services/worker/requirements.txt
 export PYTHONPATH=services/worker
 
-# Synthetic ingest (auto-approve synthetic rows only)
 make demo-ingest
-
-# Build privacy-checked synthetic_demo release + validate
 make demo-release
-
-# Internal Studio (local)
-make studio-dev
-
-# Public Observatory (local; needs pages-artifact / demo-release data)
-make site-dev
-
-# Full verification gate
-make verify
+make studio-dev          # internal
+make site-dev            # Observatory (needs pages-artifact / demo-release)
+make verify              # RC2 demo-mode gate
 ```
 
 | Target | Purpose |
 |--------|---------|
-| `make demo-ingest` | Wipe `data/`, ingest `fixtures/manifests/m1.jsonl` with `--demo-auto-approve-synthetic` |
-| `make demo-release` | Ingest + build `generated/public-release` + `scripts/check_public_release.py` |
-| `make studio-dev` | Next.js Studio on localhost |
-| `make site-dev` | Next.js Observatory on localhost |
-| `make pages-artifact` | Copy release into `apps/site/public/data/release` for static export |
-| `make verify` | Fixtures, lint, types, pytest, Studio CI, demo-release, public-scan, site CI |
+| `make demo-ingest` / `demo-enqueue` / `worker-once` | Synthetic filesystem pipeline |
+| `make demo-release` | Build + scan `generated/public-release` |
+| `make verify` | Fixtures, lint, types, pytest, Studio/site CI, demo-release |
+| `make db-up` + `db-migrate` | Local Postgres 16 (RC2; migrate required) |
+| `make postgres-demo-pipeline` | Synthetic-only Postgres demo → `public-release-pg` |
+| `make integration` | Postgres tests (skips locally without DSN; fails in CI if unset) |
 
 ## Documentation
 
@@ -66,12 +59,13 @@ Full index: **[docs/README.md](docs/README.md)**
 
 | Topic | Doc |
 |-------|-----|
-| Architecture (Studio vs Observatory) | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |
-| Observatory product | [docs/OBSERVATORY.md](docs/OBSERVATORY.md) |
+| Architecture | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |
+| Studio | [docs/STUDIO.md](docs/STUDIO.md) |
+| Operations / migrations | [docs/OPERATIONS.md](docs/OPERATIONS.md), [docs/DATABASE_MIGRATIONS.md](docs/DATABASE_MIGRATIONS.md) |
+| Observatory | [docs/OBSERVATORY.md](docs/OBSERVATORY.md) |
 | Publication releases | [docs/PUBLICATION_RELEASES.md](docs/PUBLICATION_RELEASES.md) |
-| GitHub Pages enablement | [docs/GITHUB_PAGES.md](docs/GITHUB_PAGES.md) |
-| Agent / trust-boundary rules | [AGENTS.md](AGENTS.md) |
-| Security | [SECURITY.md](SECURITY.md) |
+| Agent rules | [AGENTS.md](AGENTS.md) |
+| Security / threat model | [SECURITY.md](SECURITY.md), [docs/THREAT_MODEL.md](docs/THREAT_MODEL.md) |
 | Local setup | [docs/LOCAL_SETUP.md](docs/LOCAL_SETUP.md) |
 
 ## Licence

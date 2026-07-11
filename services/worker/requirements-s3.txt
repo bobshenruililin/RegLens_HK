@@ -1,0 +1,5 @@
+# Optional S3/MinIO object-store backend for the worker.
+# Install only when OBJECT_STORE=s3|minio:
+#   pip install -r services/worker/requirements-s3.txt
+
+boto3>=1.34.0,<2

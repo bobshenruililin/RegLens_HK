@@ -21,12 +21,15 @@ to inspect the exact page or paragraph supporting every material extracted
 proposition (in Studio / internal views). Public Observatory surfaces short
 attributed excerpts only, within publication policy limits.
 
-## Product surfaces (MVP-RC1)
+## Product surfaces (MVP-RC1 / RC2)
 
 | Surface | Description |
 |---------|-------------|
-| **RegLens Studio** | Internal authenticated environment for ingest review, evidence inspection, and operator workflows. Not publicly hosted. |
+| **RegLens Studio** | Internal authenticated environment for ingest, jobs, review, releases, and audit. Demo or Postgres mode. Not publicly hosted. |
 | **RegLens Observatory** | Public, read-only, static research website. Consumes a versioned publication release. Unauthenticated. |
+
+RC2 adds the operational data plane (migrations, jobs/leases, immutable revisions,
+publication transaction, Studio roles) without changing `publication_release.v1`.
 
 ### Synthetic technical MVP vs real research pilot
 

@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.0.0",
+  "policies": [
+    {
+      "source_id": "mchk_judgments",
+      "regulator_code": "MCHK",
+      "official_hosts": ["www.mchk.org.hk", "mchk.org.hk"],
+      "allowed_path_prefixes": [
+        "/english/complaint/",
+        "/english/important_notices/",
+        "/english/"
+      ],
+      "official_index_urls": [
+        "https://www.mchk.org.hk/english/complaint/disciplinary.php?type=j"
+      ],
+      "adapter_id": "mchk_html_index",
+      "adapter_version": "1.0.0",
+      "enabled": true,
+      "discovery_mode": "metadata_only",
+      "document_acquisition": "policy_controlled",
+      "content_use_posture": "internal_non_commercial_research",
+      "public_visibility_policy_ref": "publications/policies/source_publication_policy.v1.json#mchk_judgments",
+      "terms_url": "https://www.mchk.org.hk/english/important_notices/important_notices.html",
+      "terms_snapshot_date": "2026-07-11",
+      "robots_url": "https://www.mchk.org.hk/robots.txt",
+      "last_robots_result": "unchecked",
+      "robots_checked_at": null,
+      "operator_approval_ref": "docs/approvals/MVP_RC3_APPROVAL.md",
+      "min_delay_seconds": 2,
+      "max_concurrency": 1,
+      "max_requests_per_run": 40,
+      "max_document_bytes": 26214400,
+      "allowed_mime_types": ["application/pdf", "text/html", "application/xhtml+xml"],
+      "redirect_policy": "same_host_allowlist",
+      "attribution": "Medical Council of Hong Kong — official disciplinary judgments index",
+      "require_user_agent_contact": true,
+      "publication_caveats": [
+        "Public Observatory visibility remains internal_only until a separate source-policy approval."
+      ],
+      "notes": "Metadata discovery enabled. Document acquisition only via explicit acquire mode under postgres + --live + operator. Do not infer public-release permission from student-research letters."
+    },
+    {
+      "source_id": "dchk_judgments",
+      "regulator_code": "DCHK",
+      "official_hosts": ["www.dchk.org.hk", "dchk.org.hk"],
+      "allowed_path_prefixes": [
+        "/en/complaints_disciplinary/",
+        "/en/"
+      ],
+      "official_index_urls": [
+        "https://www.dchk.org.hk/en/complaints_disciplinary/judgments.html"
+      ],
+      "adapter_id": "dchk_html_table",
+      "adapter_version": "1.0.0",
+      "enabled": true,
+      "discovery_mode": "metadata_only",
+      "document_acquisition": "manual_only",
+      "content_use_posture": "metadata_discovery_only",
+      "public_visibility_policy_ref": "publications/policies/source_publication_policy.v1.json#dchk_judgments",
+      "terms_url": null,
+      "terms_snapshot_date": null,
+      "robots_url": "https://www.dchk.org.hk/robots.txt",
+      "last_robots_result": "unchecked",
+      "robots_checked_at": null,
+      "operator_approval_ref": "docs/approvals/MVP_RC3_APPROVAL.md",
+      "min_delay_seconds": 2,
+      "max_concurrency": 1,
+      "max_requests_per_run": 20,
+      "max_document_bytes": 26214400,
+      "allowed_mime_types": ["application/pdf", "text/html", "application/xhtml+xml"],
+      "redirect_policy": "same_host_allowlist",
+      "attribution": "Dental Council of Hong Kong — official disciplinary judgments index",
+      "require_user_agent_contact": true,
+      "publication_caveats": [
+        "From July 14, 2018, the source generally publishes written judgments only where all or some charges were found guilty. This does not mean unpublished cases did not exist.",
+        "Public Observatory visibility remains internal_only until a separate source-policy approval."
+      ],
+      "notes": "Metadata discovery enabled. Document acquisition default manual_only until reuse posture is clarified against filed letter terms. Do not auto-download PDFs in ordinary sync."
+    }
+  ]
+}

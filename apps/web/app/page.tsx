@@ -1,14 +1,43 @@
 import Link from "next/link";
-import { loadDecision } from "../lib/decision";
+import { listDecisions, loadDecision } from "../lib/data";
 
 export default function HomePage() {
   const decision = loadDecision();
+  const decisions = listDecisions();
+  const pending = decisions.reduce(
+    (n, d) => n + d.propositions.filter((p) => !p.published && p.review_status !== "rejected").length,
+    0
+  );
+  const published = decisions.reduce(
+    (n, d) => n + d.propositions.filter((p) => p.published).length,
+    0
+  );
+
   return (
     <section className="panel">
-      <h1>Milestone 1 demo</h1>
+      <h1>MVP Backbone</h1>
       <p>
-        Fixture ingest produces a source-linked decision seed. Open the decision
-        detail page to inspect each proposition against its page span.
+        Auth-gated internal tool: fixture ingest, human review, publication
+        gate, and keyword FTS. Semantic search and live crawling are disabled.
+      </p>
+      <dl className="meta-grid">
+        <div>
+          <dt>Decisions</dt>
+          <dd>{decisions.length}</dd>
+        </div>
+        <div>
+          <dt>Published propositions</dt>
+          <dd>{published}</dd>
+        </div>
+        <div>
+          <dt>Review queue</dt>
+          <dd>{pending}</dd>
+        </div>
+      </dl>
+      <p>
+        <Link href="/search">Search published propositions</Link>
+        {" · "}
+        <Link href="/review">Open review queue</Link>
       </p>
       {decision ? (
         <p>
@@ -18,11 +47,7 @@ export default function HomePage() {
         </p>
       ) : (
         <p className="warning">
-          No seed found. Run{" "}
-          <code>
-            python -m reglens_worker ingest --manifest fixtures/manifests/m1.jsonl
-          </code>{" "}
-          from the repo root (with <code>PYTHONPATH=services/worker</code>).
+          No seed found. Run fixture ingest from the repo root.
         </p>
       )}
     </section>

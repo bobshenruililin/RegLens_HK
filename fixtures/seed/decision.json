@@ -1,6 +1,6 @@
 {
-  "id": "417f615f-72bc-571c-883a-e1083f2652b1",
-  "document_id": "31138d94-d5db-532f-9ef9-677a4fdd0223",
+  "id": "25beab03-7e17-5a7f-be40-1dd5244e62fd",
+  "document_id": "1c31ed90-b5db-5320-af82-96c097acaaf7",
   "document_sha256": "8de4cc2091224b859147bb2186759a818f2e01cef222857ca621594318ec70e3",
   "regulator_code": "MCHK",
   "source_id": "mchk_judgments",
@@ -41,10 +41,10 @@
   ],
   "propositions": [
     {
-      "id": "b567f0fe-475f-4be3-bc58-8f4e0c97ee25",
+      "id": "7a2dfbc2-5042-4fd2-b1a7-a6c853e05a68",
       "prop_type": "charge",
       "epistemic_class": "fact",
-      "claim_text": "That she, being a registered medical practitioner, failed to keep adequate clinical records in respect of Patient A, and in relation to the facts alleged was guilty of misconduct in a professional respect.",
+      "claim_text": "That she, being a registered medical practitioner, failed to keep adequate clinical records in respect of [REDACTED_PERSON] , and in relation to the facts alleged was guilty of misconduct in a professional respect.",
       "confidence": 0.85,
       "review_status": "accepted",
       "published": true,
@@ -59,7 +59,7 @@
       ]
     },
     {
-      "id": "6917eb5e-1f4b-444d-bcfd-6ae8d6f03bb4",
+      "id": "f01280eb-23ee-4306-872e-8933145c05b1",
       "prop_type": "rule",
       "epistemic_class": "fact",
       "claim_text": "Medical Registration Ordinance, Cap",
@@ -77,7 +77,7 @@
       ]
     },
     {
-      "id": "f7d4f9ae-a7de-40db-afdc-4a0bc71540d8",
+      "id": "016713ec-5ca5-4f75-a4b2-2412abbec827",
       "prop_type": "finding",
       "epistemic_class": "fact",
       "claim_text": "The Council is satisfied that the charge is proved and that the Defendant is guilty of misconduct in a professional respect.",
@@ -95,7 +95,7 @@
       ]
     },
     {
-      "id": "671954c0-9147-4e6c-81eb-db9ac63c338e",
+      "id": "4f6f297e-eced-4d8c-977f-b11a6c562835",
       "prop_type": "sanction",
       "epistemic_class": "fact",
       "claim_text": "The Defendant be served with a warning letter. The removal order is not required. No appeal is recorded in this synthetic fixture.",
@@ -113,7 +113,7 @@
       ]
     },
     {
-      "id": "9a83a7ae-7e92-4561-8abc-9d5fe3329be0",
+      "id": "7f0d2574-e2b3-48ff-982d-5a7d9d6c1e49",
       "prop_type": "mitigating_factor",
       "epistemic_class": "fact",
       "claim_text": "clear disciplinary record",
@@ -131,7 +131,7 @@
       ]
     },
     {
-      "id": "299eefb0-9ce4-4a56-8331-32b409ed7451",
+      "id": "8ce406c5-c4cd-47d2-bf2a-fbd4e61f2ee1",
       "prop_type": "authority",
       "epistemic_class": "fact",
       "claim_text": "Dr Chan v. The Medical Council of Hong Kong as a cited authority on pr",
@@ -149,7 +149,7 @@
       ]
     },
     {
-      "id": "5a9dd4ad-a29b-4fd7-9761-93005a38342c",
+      "id": "7b17f310-353b-483a-bf7f-4707a230b3d5",
       "prop_type": "appeal_status",
       "epistemic_class": "fact",
       "claim_text": "No appeal",
@@ -167,7 +167,7 @@
       ]
     },
     {
-      "id": "58952b58-b613-489f-aaa2-0b0cf812ff3a",
+      "id": "16e9b466-ffd2-46cc-a8a3-33cafdd60cb5",
       "prop_type": "legal_test",
       "epistemic_class": "interpretation",
       "claim_text": "conduct which falls short of the standard expected of a registered medical practitioner may constitute misconduct",
@@ -185,6 +185,6 @@
       ]
     }
   ],
-  "licence_notice": "Internal research use of fixture materials only. Not legal advice. Link to official source where available.",
-  "generated_at": "2026-07-11T08:25:57+00:00"
+  "licence_notice": "Internal research use of fixture materials only. Not legal advice. Not for public republication of real judgments.",
+  "generated_at": "2026-07-11T11:30:23+00:00"
 }

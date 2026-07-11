@@ -1,6 +1,6 @@
 {
-  "id": "858224b1-8592-5b46-8279-b4a283fe1946",
-  "document_id": "ed978c18-0aa7-5939-b191-92316183366e",
+  "id": "f201833e-866a-5d4f-baef-af4a5d664397",
+  "document_id": "e157ec92-b545-50c9-95ab-93b07120aa91",
   "document_sha256": "384a8c21d0a3785a7c929295e710570c71579e83523ec9199df8abc921121e4a",
   "regulator_code": "MCHK",
   "source_id": "mchk_judgments",
@@ -31,7 +31,7 @@
   ],
   "propositions": [
     {
-      "id": "65dc2b35-450e-4372-85cb-5973d322478c",
+      "id": "f2184191-8abb-4245-ba3f-c0fe67de61d9",
       "prop_type": "charge",
       "epistemic_class": "fact",
       "claim_text": "Failed to maintain adequate records.",
@@ -49,7 +49,7 @@
       ]
     },
     {
-      "id": "8e176e8f-5fff-4de5-a57c-d26648c224ca",
+      "id": "d9c63863-9af4-49dd-ba17-e28e8777bc80",
       "prop_type": "finding",
       "epistemic_class": "fact",
       "claim_text": "The charge is proved.",
@@ -67,7 +67,7 @@
       ]
     },
     {
-      "id": "34a42b37-cd66-41f7-9fed-87b071dc7b9d",
+      "id": "ccd2915d-128b-454c-aa03-f8bfa00a68b1",
       "prop_type": "sanction",
       "epistemic_class": "fact",
       "claim_text": "warning letter be served.",
@@ -85,6 +85,6 @@
       ]
     }
   ],
-  "licence_notice": "Internal research use of fixture materials only. Not legal advice. Link to official source where available.",
-  "generated_at": "2026-07-11T08:25:57+00:00"
+  "licence_notice": "Internal research use of fixture materials only. Not legal advice. Not for public republication of real judgments.",
+  "generated_at": "2026-07-11T11:30:23+00:00"
 }

@@ -20,6 +20,8 @@ This directory is the approved Phase 0 package for RegLens HK.
 Also:
 
 - Approval record: [approvals/PHASE0_APPROVAL.md](approvals/PHASE0_APPROVAL.md)
+- MVP Backbone approval: [approvals/MVP_BACKBONE_APPROVAL.md](approvals/MVP_BACKBONE_APPROVAL.md)
+- MVP Backbone notes: [MVP_BACKBONE.md](MVP_BACKBONE.md)
 - Consent request drafts: [licensing/](licensing/)
 - Agent rules: [`../AGENTS.md`](../AGENTS.md)
 - Local runbook: [LOCAL_SETUP.md](LOCAL_SETUP.md)

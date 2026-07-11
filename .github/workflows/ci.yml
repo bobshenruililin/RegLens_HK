@@ -90,3 +90,47 @@ jobs:
           test ! -d apps/site/out/api
           test -f apps/site/out/index.html
           test -f apps/site/out/explore/index.html
+
+  postgres-integration:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: reglens
+          POSTGRES_PASSWORD: reglens_ci
+          POSTGRES_DB: reglens
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U reglens -d reglens"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://reglens:reglens_ci@localhost:5432/reglens
+      REGLENS_MODE: postgres
+      PYTHONPATH: services/worker
+      CI: "true"
+      OBJECT_STORE: local
+      DATA_ROOT: data
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: pip install -r services/worker/requirements.txt
+      - name: Migrate
+        run: python -m reglens_worker db migrate
+      - name: Integration tests (marker)
+        run: pytest -m integration
+      - name: Postgres unit + job tests
+        run: pytest tests/pg tests/test_jobs_postgres.py
+      - name: Postgres demo pipeline (vertical slice)
+        run: |
+          set -euo pipefail
+          make postgres-demo-pipeline
+          make postgres-demo-release
+          python scripts/check_public_release.py generated/public-release-pg
+          make site-build-from-postgres-release

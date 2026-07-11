@@ -6,10 +6,16 @@
 3. Place real manually acquired documents in gitignored `private-data/`
    (see [`docs/PRIVATE_DATA.md`](docs/PRIVATE_DATA.md)).
 4. Run **`make verify`** before opening a PR. That gate covers fixtures, ruff,
-   mypy, pytest, Studio CI, `demo-release`, public-release scan, and site CI.
-5. Do not add scrapers, real LLM network calls, OCR, NCHK, or semantic search
+   mypy, pytest, Studio CI, `demo-release`, public-release scan, and site CI
+   (RC2 **demo mode** — no `DATABASE_URL` required).
+5. For Postgres path changes, also run `make integration` /
+   `make postgres-demo-pipeline` when `DATABASE_URL` is available (CI job
+   `postgres-integration`).
+6. Do not add scrapers, real LLM network calls, OCR, NCHK, or semantic search
    without an explicit milestone approval.
-6. Prefer deterministic parsing and schema-validated extraction with evidence spans.
+7. Prefer deterministic parsing and schema-validated extraction with evidence spans.
+8. Prefer direct parameterized SQL (psycopg / `pg` client). Do not add an ORM
+   without an ADR.
 
 ## Two frontends
 
@@ -24,7 +30,16 @@ Do not point Pages artifact upload at `apps/studio`.
 ## Publication changes
 
 - Policy / taxonomy / schemas live under `publications/`.
-- Release builder: `python -m reglens_worker release build` (see `make demo-release`).
+- Release builder:
+  - Demo: `python -m reglens_worker release build --input-mode demo …`
+  - Postgres: `python -m reglens_worker release build --input-mode postgres
+    --publication-release-id <uuid> …`
 - Changing `source_publication_policy` visibility is a licensing decision, not a
   convenience flag. Do not flip `internal_only` → public without counsel /
   consent-status progress recorded in the licensing audit.
+
+## Storage modes (RC2)
+
+- `REGLENS_MODE=demo` (default): filesystem artifacts under `data/`.
+- `REGLENS_MODE=postgres`: PostgreSQL SoT; requires `DATABASE_URL` (fail closed).
+  Do not mix demo seed decisions into postgres mode.

@@ -223,7 +223,8 @@ def process_ingest_job(
     Process one ``ingest_fixture`` job.
 
     Demo path: run ``ingest_fixture`` when payload has ``relative_path``.
-    Postgres path (Checkpoint B stub): verify acquisition/blob and record progress.
+    Postgres path: verify acquisition/blob, segment, mock-extract, and persist
+    immutable spans / extraction runs / propositions / pending revisions.
     """
     if job.job_type != "ingest_fixture":
         raise ValueError(f"Unsupported job_type for process_ingest_job: {job.job_type}")
@@ -251,8 +252,25 @@ def process_ingest_job(
 
 
 def _process_ingest_job_postgres(job: Job, *, data_root: Path) -> dict[str, Any]:
-    """Checkpoint B stub: validate acquisition/blob rows and record progress."""
+    """Segment + mock-extract + persist immutable extraction artifacts (Postgres)."""
+    import tempfile
+
     import psycopg
+
+    from .determinism import (
+        SCHEMA_VERSION,
+        extraction_run_key,
+        proposition_id_for,
+        span_stable_id,
+    )
+    from .llm import MockLLMProvider
+    from .pg.decisions import link_document_version, upsert_decision
+    from .pg.documents import insert_document_version, upsert_document
+    from .pg.extractions import persist_extraction_bundle
+    from .privacy import redact_derived_text
+    from .schema_validate import assert_valid_extraction_v2
+    from .segment import segment_document_report
+    from .store import LocalArtifactStore
 
     payload = job.payload_json or {}
     acquisition_id = payload.get("acquisition_id")
@@ -261,17 +279,26 @@ def _process_ingest_job_postgres(job: Job, *, data_root: Path) -> dict[str, Any]
     if not acquisition_id:
         raise ValueError("postgres ingest job missing acquisition_id")
 
+    source_id = payload.get("source_id")
+    regulator_code = payload.get("regulator_code")
+    fixture_kind = payload.get("fixture_kind")
+    if not source_id or not regulator_code or fixture_kind not in {"synthetic", "real"}:
+        raise ValueError("postgres ingest job missing source_id/regulator_code/fixture_kind")
+
     dsn = require_postgres_dsn()
-    store = build_object_store(data_root)
+    object_store = build_object_store(data_root)
+    artifact_store = LocalArtifactStore(Path(data_root))
 
     with psycopg.connect(dsn) as conn:
         with conn.cursor() as cur:
             cur.execute(
                 """
                 SELECT a.id::text, a.fixture_kind, a.external_ref, a.title,
-                       b.sha256, b.storage_key, b.byte_size
+                       a.source_url, b.id::text, b.sha256, b.storage_key, b.byte_size,
+                       b.mime_type, sc.source_id
                 FROM acquisitions a
                 JOIN blobs b ON b.id = a.blob_id
+                JOIN source_collections sc ON sc.id = a.source_collection_id
                 WHERE a.id = %s::uuid
                 """,
                 (acquisition_id,),
@@ -279,29 +306,263 @@ def _process_ingest_job_postgres(job: Job, *, data_root: Path) -> dict[str, Any]
             row = cur.fetchone()
             if row is None:
                 raise RuntimeError(f"acquisition {acquisition_id} not found")
-            _acq_id, fixture_kind, external_ref, title, blob_sha, blob_key, byte_size = row
+            (
+                _acq_id,
+                db_fixture_kind,
+                external_ref,
+                title,
+                source_url,
+                blob_id,
+                blob_sha,
+                blob_key,
+                _byte_size,
+                mime_type,
+                db_source_id,
+            ) = row
             if sha256 and blob_sha != sha256:
                 raise RuntimeError(f"acquisition blob sha mismatch: payload={sha256} db={blob_sha}")
+            if db_source_id != source_id:
+                raise RuntimeError(
+                    f"acquisition source_id mismatch: payload={source_id} db={db_source_id}"
+                )
+            if db_fixture_kind != fixture_kind:
+                raise RuntimeError(
+                    f"acquisition fixture_kind mismatch: payload={fixture_kind} "
+                    f"db={db_fixture_kind}"
+                )
             key = storage_key or blob_key
-            # Verify object store bytes when present.
-            if store.exists(key):
-                store.get(key, expected_sha256=blob_sha)
+            blob_bytes = object_store.get(key, expected_sha256=blob_sha)
 
-            progress = {
-                "job_id": job.id,
-                "acquisition_id": acquisition_id,
-                "document_sha256": blob_sha,
-                "storage_key": key,
-                "fixture_kind": fixture_kind,
-                "external_ref": external_ref,
-                "title": title,
-                "byte_size": byte_size,
-                "stage": "queued_validated",
-                "note": (
-                    "RC2 Checkpoint B postgres stub: acquisition/blob verified; "
-                    "full segment+extract persistence lands in a later checkpoint."
+        # Materialize verified bytes for the segmenter (needs a filesystem path).
+        suffix = Path(payload.get("relative_path") or "document.bin").suffix or ".bin"
+        with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as tmp:
+            tmp.write(blob_bytes)
+            tmp_path = Path(tmp.name)
+        try:
+            report = segment_document_report(tmp_path)
+        finally:
+            tmp_path.unlink(missing_ok=True)
+
+        spans = report.spans
+        provider = MockLLMProvider()
+        extraction = provider.extract(
+            document_sha256=blob_sha,
+            regulator_code=regulator_code,
+            spans=spans,
+            metadata={
+                "case_ref": external_ref,
+                "defendant_name_as_published": None,
+                "decision_date": None,
+            },
+        )
+
+        page_to_stable = {s.page_no: span_stable_id(blob_sha, s) for s in spans}
+        for prop in extraction["propositions"]:
+            for ev in prop["evidence"]:
+                sid = page_to_stable.get(ev["page_no"])
+                if not sid:
+                    raise ValueError(f"no span for page {ev['page_no']}")
+                ev["span_id"] = sid
+
+        assert_valid_extraction_v2(
+            extraction,
+            spans=spans,
+            document_sha256=blob_sha,
+            require_span_id=True,
+        )
+
+        run_key = extraction_run_key(
+            document_sha256=blob_sha,
+            schema_version=SCHEMA_VERSION,
+            pipeline_version=extraction["extractor"]["pipeline_version"],
+            model_provider=extraction["extractor"]["model_provider"],
+            model_version=extraction["extractor"]["model_version"],
+            prompt_version=extraction["extractor"]["prompt_version"],
+            deterministic_settings={"fixture_kind": fixture_kind},
+        )
+
+        # Idempotent short-circuit: same run_key already succeeded.
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT id::text, status, decision_id::text, output_sha256
+                FROM extraction_runs WHERE run_key = %s
+                """,
+                (run_key,),
+            )
+            existing = cur.fetchone()
+            if existing is not None and existing[1] == "succeeded":
+                progress = {
+                    "job_id": job.id,
+                    "acquisition_id": acquisition_id,
+                    "document_sha256": blob_sha,
+                    "storage_key": key,
+                    "run_key": run_key,
+                    "extraction_run_id": existing[0],
+                    "decision_id": existing[2],
+                    "output_sha256": existing[3],
+                    "stage": "idempotent_skip",
+                }
+                cur.execute(
+                    """
+                    INSERT INTO audit_events (actor, action, entity_type, entity_id, after_json)
+                    VALUES (%s, %s, %s, %s, %s::jsonb)
+                    """,
+                    (
+                        f"worker:{job.lease_owner or 'unknown'}",
+                        "ingest.idempotent_skip",
+                        "extraction_run",
+                        existing[0],
+                        json.dumps(progress),
+                    ),
+                )
+                conn.commit()
+                return {"mode": "postgres", **progress}
+
+        _, output_sha = artifact_store.write_run_extraction(run_key, extraction)
+
+        meta = extraction["decision_metadata"]
+        profession = meta.get("profession") or ("dentist" if regulator_code == "DCHK" else "doctor")
+        case_refs = meta.get("case_refs") or ([external_ref] if external_ref else [])
+        dates = meta.get("dates") or {}
+
+        doc = upsert_document(
+            conn,
+            source_id=source_id,
+            external_ref=external_ref or blob_sha,
+            title=title or payload.get("title"),
+            ingest_status="extracted",
+            text_quality=report.overall_quality,
+            ocr_used=False,
+        )
+        doc_version = insert_document_version(
+            conn,
+            document_id=doc["id"],
+            blob_id=blob_id,
+            sha256=blob_sha,
+            storage_key=key,
+            note=f"acquisition:{acquisition_id}",
+        )
+        decision = upsert_decision(
+            conn,
+            source_id=source_id,
+            external_ref=external_ref or blob_sha,
+            profession=profession,
+            title=title or payload.get("title"),
+            defendant_name_as_published=meta.get("defendant_name_as_published"),
+            defendant_registration_no=meta.get("defendant_registration_no"),
+            coverage_json=extraction.get("coverage") or {},
+            fixture_kind=fixture_kind,
+            official_source_url=source_url,
+            case_refs=case_refs,
+            dates=dates,
+        )
+        link_document_version(
+            conn,
+            decision_id=decision["id"],
+            document_version_id=doc_version["id"],
+            role="primary",
+        )
+
+        span_payloads = [
+            {
+                "page_no": s.page_no,
+                "text": s.text,
+                "text_hash": s.text_hash,
+                "stable_span_id": span_stable_id(blob_sha, s),
+                "span_type": (
+                    s.span_type if s.span_type in {"page", "block", "paragraph"} else "page"
                 ),
+                "char_start": s.char_start,
+                "char_end": s.char_end,
             }
+            for s in spans
+        ]
+
+        propositions_out: list[dict[str, Any]] = []
+        for prop in extraction["propositions"]:
+            claim = redact_derived_text(prop["claim_text"])
+            structured = prop.get("structured")
+            if isinstance(structured, dict):
+                structured = {
+                    k: (redact_derived_text(v) if isinstance(v, str) else v)
+                    for k, v in structured.items()
+                }
+            evidence_out = []
+            for ev in prop["evidence"]:
+                evidence_out.append(
+                    {
+                        "page_no": ev["page_no"],
+                        "quote": ev["quote"],
+                        "quote_text": ev["quote"],
+                        "stable_span_id": ev.get("span_id") or page_to_stable.get(ev["page_no"]),
+                        "char_start": ev.get("char_start"),
+                        "char_end": ev.get("char_end"),
+                        "relevance": ev.get("relevance"),
+                    }
+                )
+            propositions_out.append(
+                {
+                    "id": proposition_id_for(run_key, prop["client_ref"]),
+                    "client_ref": prop["client_ref"],
+                    "prop_type": prop["prop_type"],
+                    "epistemic_class": prop["epistemic_class"],
+                    "derivation": prop["derivation"],
+                    "claim_text": claim,
+                    "structured": structured,
+                    "confidence": prop["confidence"],
+                    "evidence": evidence_out,
+                }
+            )
+
+        relations_out = []
+        for rel in extraction.get("relations") or []:
+            relations_out.append(
+                {
+                    "from_ref": rel.get("from_ref") or rel.get("from_client_ref"),
+                    "to_ref": rel.get("to_ref") or rel.get("to_client_ref"),
+                    "relation_type": rel["relation_type"],
+                }
+            )
+
+        bundle = persist_extraction_bundle(
+            conn,
+            run_key=run_key,
+            document_version_id=doc_version["id"],
+            decision_id=decision["id"],
+            pipeline_version=extraction["extractor"]["pipeline_version"],
+            model_provider=extraction["extractor"]["model_provider"],
+            model_version=extraction["extractor"]["model_version"],
+            prompt_version=extraction["extractor"]["prompt_version"],
+            input_hash=blob_sha,
+            propositions=propositions_out,
+            relations=relations_out,
+            spans=span_payloads,
+            output_sha256=output_sha,
+            coverage_json=extraction.get("coverage"),
+            schema_version=SCHEMA_VERSION,
+            reviewer_user_id=None,
+        )
+
+        progress = {
+            "job_id": job.id,
+            "acquisition_id": acquisition_id,
+            "document_sha256": blob_sha,
+            "storage_key": key,
+            "mime_type": mime_type,
+            "fixture_kind": fixture_kind,
+            "external_ref": external_ref,
+            "title": title,
+            "run_key": run_key,
+            "decision_id": str(decision["id"]),
+            "document_id": str(doc["id"]),
+            "document_version_id": str(doc_version["id"]),
+            "extraction_run_id": str(bundle["extraction_run"]["id"]),
+            "proposition_count": len(bundle["propositions"]),
+            "output_sha256": output_sha,
+            "stage": "extracted",
+        }
+        with conn.cursor() as cur:
             cur.execute(
                 """
                 INSERT INTO audit_events (actor, action, entity_type, entity_id, after_json)
@@ -309,13 +570,13 @@ def _process_ingest_job_postgres(job: Job, *, data_root: Path) -> dict[str, Any]
                 """,
                 (
                     f"worker:{job.lease_owner or 'unknown'}",
-                    "ingest.progress",
-                    "acquisition",
-                    str(acquisition_id),
+                    "ingest.extracted",
+                    "decision",
+                    str(decision["id"]),
                     json.dumps(progress),
                 ),
             )
-            conn.commit()
+        conn.commit()
     return {"mode": "postgres", **progress}
 
 

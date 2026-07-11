@@ -1,7 +1,34 @@
+# RegLens HK — local-only Compose stack (MVP-RC2).
+#
+# IMPORTANT — migrations:
+#   Mounting SQL into /docker-entrypoint-initdb.d is NOT enough for RC2.
+#   The operational schema is applied by the migration runner:
+#     export DATABASE_URL=postgresql://reglens:reglens_local_only@127.0.0.1:5432/reglens
+#     export REGLENS_MODE=postgres
+#     make db-migrate
+#     # or: python -m reglens_worker db migrate
+#   See docs/DATABASE_MIGRATIONS.md.
+#
+# Init note:
+#   On first volume create, Postgres may run any *.sql under
+#   /docker-entrypoint-initdb.d. RC2 does not rely on that path for schema;
+#   always run `make db-migrate` after `docker compose up`. Recreate volumes
+#   after switching from the archived experimental 001/002 migrations
+#   (pgvector era) to 0001_rc2_baseline.sql.
+#
+# Optional separate app credentials (comments only — wire in .env when ready):
+#   REGLENS_DB_USER_WORKER=reglens_worker
+#   REGLENS_DB_PASSWORD_WORKER=...          # SELECT/INSERT/UPDATE on jobs, blobs, …
+#   REGLENS_DB_USER_STUDIO=reglens_studio
+#   REGLENS_DB_PASSWORD_STUDIO=...         # Studio API role (no DROP)
+#   REGLENS_DB_USER_PUBLISHER=reglens_publisher
+#   REGLENS_DB_PASSWORD_PUBLISHER=...      # publication_releases approve/build
+#   Until then, local demos use the single POSTGRES_USER below.
+
 services:
   db:
-    # Pinned explicit tag reviewed for local-only development (Milestone 2A).
-    image: pgvector/pgvector:pg16
+    # RC2 drops pgvector — stock Postgres 16 is sufficient (tsvector FTS only).
+    image: postgres:16
     environment:
       # LOCAL-ONLY development credentials — never use in production.
       POSTGRES_USER: reglens
@@ -11,7 +38,8 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./packages/db/migrations/001_init.sql:/docker-entrypoint-initdb.d/001_init.sql:ro
+      # Optional first-boot hint only — NOT a substitute for `make db-migrate`.
+      # packages/db/migrations/0001_rc2_baseline.sql is applied by the runner.
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U reglens -d reglens"]
       interval: 5s

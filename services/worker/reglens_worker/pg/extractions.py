@@ -39,8 +39,7 @@ def upsert_document_span(
                 COALESCE(%s, gen_random_uuid()), %s, %s, %s, %s, %s,
                 %s, %s, %s, %s
             )
-            ON CONFLICT (document_version_id, page_no, span_type, text_hash) DO UPDATE SET
-                text = EXCLUDED.text
+            ON CONFLICT (document_version_id, page_no, span_type, text_hash) DO NOTHING
             RETURNING *
             """,
             (
@@ -57,6 +56,18 @@ def upsert_document_span(
             ),
         )
         row = cur.fetchone()
+        if row is None:
+            cur.execute(
+                """
+                SELECT * FROM document_spans
+                WHERE document_version_id = %s
+                  AND page_no = %s
+                  AND span_type = %s
+                  AND text_hash = %s
+                """,
+                (document_version_id, page_no, span_type, text_hash.strip().lower()),
+            )
+            row = cur.fetchone()
         if row is None:
             raise ExtractionError("document_span upsert returned no row")
         return dict(row)
@@ -93,12 +104,7 @@ def insert_extraction_run(
                 %s, %s, %s, %s,
                 CASE WHEN %s THEN now() ELSE NULL END
             )
-            ON CONFLICT (run_key) DO UPDATE SET
-                status = EXCLUDED.status,
-                output_sha256 = COALESCE(EXCLUDED.output_sha256, extraction_runs.output_sha256),
-                coverage_json = EXCLUDED.coverage_json,
-                decision_id = COALESCE(EXCLUDED.decision_id, extraction_runs.decision_id),
-                finished_at = COALESCE(EXCLUDED.finished_at, extraction_runs.finished_at)
+            ON CONFLICT (run_key) DO NOTHING
             RETURNING *
             """,
             (
@@ -119,6 +125,13 @@ def insert_extraction_run(
             ),
         )
         row = cur.fetchone()
+        if row is None:
+            # Immutable: same run_key must not overwrite earlier extraction output.
+            cur.execute(
+                "SELECT * FROM extraction_runs WHERE run_key = %s",
+                (run_key,),
+            )
+            row = cur.fetchone()
         if row is None:
             raise ExtractionError("extraction_run insert returned no row")
         return dict(row)
@@ -164,8 +177,7 @@ def insert_extracted_proposition(
                 COALESCE(%s, gen_random_uuid()), %s, %s, %s, %s,
                 %s, %s, %s, %s, %s
             )
-            ON CONFLICT (extraction_run_id, client_ref) DO UPDATE SET
-                claim_text = EXCLUDED.claim_text
+            ON CONFLICT (extraction_run_id, client_ref) DO NOTHING
             RETURNING *
             """,
             (
@@ -182,6 +194,15 @@ def insert_extracted_proposition(
             ),
         )
         prop = cur.fetchone()
+        if prop is None:
+            cur.execute(
+                """
+                SELECT * FROM extracted_propositions
+                WHERE extraction_run_id = %s AND client_ref = %s
+                """,
+                (extraction_run_id, client_ref),
+            )
+            prop = cur.fetchone()
         if prop is None:
             raise ExtractionError("extracted_proposition insert returned no row")
 
@@ -220,7 +241,7 @@ def insert_extracted_proposition(
                 )
                 revision = cur.fetchone()
 
-            if create_pending_review and revision is not None and reviewer_user_id is not None:
+            if create_pending_review and revision is not None:
                 cur.execute(
                     """
                     SELECT 1 FROM reviews
@@ -230,6 +251,8 @@ def insert_extracted_proposition(
                     (revision["id"],),
                 )
                 if cur.fetchone() is None:
+                    # Pending queue rows have no human reviewer yet (reviewer_user_id NULL).
+                    # Terminal statuses require a real reviewer (see migration 0002).
                     cur.execute(
                         """
                         INSERT INTO reviews (
@@ -237,7 +260,12 @@ def insert_extracted_proposition(
                             reviewer_user_id, review_status
                         ) VALUES (%s, %s, %s, %s, 'pending')
                         """,
-                        (decision_id, revision["id"], prop["id"], reviewer_user_id),
+                        (
+                            decision_id,
+                            revision["id"],
+                            prop["id"],
+                            reviewer_user_id,  # normally None at ingest
+                        ),
                     )
 
         out = dict(prop)

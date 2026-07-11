@@ -1,3 +1,4 @@
+# Observatory Pages only — do not add Studio or DATABASE_URL here (RC2).
 name: GitHub Pages
 
 on:

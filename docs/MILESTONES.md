@@ -5,10 +5,9 @@
 | W1 Foundations | Done |
 | Phase 0 docs | Done |
 | **Milestone 2A — Trusted contracts, deterministic artifacts, CI** | **Complete** |
-| Milestone 2B — PostgreSQL, object storage, jobs | Experimental / partial (not production-ready) |
-| Milestone 2C — Review, publication, authentication | Experimental / partial (Studio only; not production-ready) |
-| Milestone 2D — Keyword search and evidence UX | Experimental / partial (substring/local; not production FTS) |
-| **MVP-RC1 — RegLens Observatory** | **This delivery** |
+| Milestone 2B–2D experimental scaffolding | Superseded by RC2 data plane (archived migrations) |
+| **MVP-RC1 — RegLens Observatory** | **Complete** |
+| **MVP-RC2 — Studio trusted data plane** | **This delivery** |
 
 ## Milestone 2A (complete)
 
@@ -19,15 +18,7 @@
 - Parser safety limits and page-quality reporting
 - `make verify` / CI green
 
-## Experimental 2B–2D code
-
-Worker modules (`jobs`, `db`, `objectstore`, `publication`, `search`) and Studio
-auth/review/search UI exist as **local experimental** scaffolding. They are not
-represented as production-ready. Object store is unwired; Studio search is
-keyword/substring over local seed files; Postgres FTS requires `DATABASE_URL`
-and is not used by the public site.
-
-## MVP-RC1 — RegLens Observatory
+## MVP-RC1 — RegLens Observatory (complete)
 
 Public, read-only, static research website (GitHub Pages) consuming a versioned
 privacy-checked publication release. Trust boundaries:
@@ -35,5 +26,21 @@ privacy-checked publication release. Trust boundaries:
 - **RegLens Studio** (`apps/studio`) — internal; never deployed to Pages
 - **RegLens Observatory** (`apps/site`) — public static export only
 
-Semantic search, OCR, live crawl, NCHK, real LLM, and real public republication
-remain blocked.
+## MVP-RC2 — Trusted data plane (this delivery)
+
+PostgreSQL operational SoT when `REGLENS_MODE=postgres`; demo filesystem mode
+retained for `make verify`. Checkpoint D (partial) adds:
+
+- Makefile: `integration`, `db-*`, `demo-enqueue`, `worker-once`,
+  `postgres-demo-pipeline` / `postgres-demo-release`,
+  `site-build-from-postgres-release`, `rc2-acceptance`
+- Compose on `postgres:16` (no pgvector); migrate-required docs
+- CI job `postgres-integration`
+- Operator docs + ADRs 0008–0012
+- Synthetic-only `scripts/postgres_demo_pipeline.py`
+
+Continuing restrictions: no crawl, OCR, real LLM, semantic search, NCHK,
+Studio-on-Pages, or breaking `publication_release.v1`.
+
+`make verify` remains the **RC2 demo-mode gate** (no `DATABASE_URL` required).
+Postgres path is gated by `make integration` / CI `postgres-integration`.

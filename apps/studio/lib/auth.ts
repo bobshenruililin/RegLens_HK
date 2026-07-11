@@ -1,5 +1,28 @@
-const COOKIE = "reglens_session";
+/**
+ * Studio authentication.
+ *
+ * - demo mode (default): HMAC-signed cookie + AUTH_PASSWORD — demo/local only.
+ * - postgres mode: opaque session cookie; DB verification lives in auth-server.ts
+ *   (middleware only checks cookie presence on Edge).
+ */
+
+import { getMode, isPostgresMode } from "./mode";
+
+export const SESSION_COOKIE = "reglens_session";
+export const CSRF_COOKIE = "reglens_csrf";
+export const CSRF_HEADER = "x-csrf-token";
+
 const MAX_AGE_MS = 12 * 60 * 60 * 1000; // 12 hours
+export const SESSION_TTL_HOURS = 12;
+
+export type StudioRole = "reviewer" | "publisher" | "admin";
+
+export type SessionUser = {
+  id: string;
+  username: string;
+  role: StudioRole;
+  displayName?: string | null;
+};
 
 function isProduction(): boolean {
   return process.env.NODE_ENV === "production";
@@ -18,12 +41,13 @@ function secret(): string {
   return value;
 }
 
-function expectedPassword(): string {
+/** Demo-only shared password (AUTH_PASSWORD). Not used in postgres mode. */
+export function expectedPassword(): string {
   const value = process.env.AUTH_PASSWORD;
   if (!value) {
-    if (isProduction()) {
+    if (isProduction() && !isPostgresMode()) {
       throw new Error(
-        "AUTH_PASSWORD is required in production (Studio fail-closed)"
+        "AUTH_PASSWORD is required in production demo mode (Studio fail-closed)"
       );
     }
     return "reglens-internal";
@@ -57,9 +81,12 @@ async function hmacKey(): Promise<CryptoKey> {
   );
 }
 
+/** Demo-only: sign HMAC session cookie. */
 export async function signSession(username: string): Promise<string> {
   const payload = b64url(
-    new TextEncoder().encode(JSON.stringify({ u: username, t: Date.now() }))
+    new TextEncoder().encode(
+      JSON.stringify({ u: username, t: Date.now(), role: "admin" })
+    )
   );
   const key = await hmacKey();
   const sig = b64url(
@@ -68,10 +95,20 @@ export async function signSession(username: string): Promise<string> {
   return `${payload}.${sig}`;
 }
 
+/**
+ * Edge-safe session gate for middleware.
+ * - demo: full HMAC + expiry verification
+ * - postgres: cookie presence only (full DB lookup in auth-server)
+ */
 export async function verifySessionToken(
   token: string | undefined
 ): Promise<boolean> {
-  if (!token || !token.includes(".")) return false;
+  if (!token) return false;
+  if (isPostgresMode()) {
+    // Opaque token: middleware cannot hit Postgres on Edge.
+    return token.length >= 16;
+  }
+  if (!token.includes(".")) return false;
   const [payload, sig] = token.split(".");
   try {
     const key = await hmacKey();
@@ -96,6 +133,33 @@ export async function verifySessionToken(
   }
 }
 
+/** Parse demo HMAC cookie into a SessionUser (null if invalid). */
+export async function parseDemoSession(
+  token: string | undefined
+): Promise<SessionUser | null> {
+  if (!token || !token.includes(".") || isPostgresMode()) return null;
+  if (!(await verifySessionToken(token))) return null;
+  try {
+    const [payload] = token.split(".");
+    const pad = "=".repeat((4 - (payload.length % 4)) % 4);
+    const b64 = (payload + pad).replace(/-/g, "+").replace(/_/g, "/");
+    const parsed = JSON.parse(atob(b64)) as {
+      u?: string;
+      role?: StudioRole;
+    };
+    if (!parsed.u) return null;
+    return {
+      id: "demo-user",
+      username: parsed.u,
+      role: parsed.role || "admin",
+      displayName: parsed.u,
+    };
+  } catch {
+    return null;
+  }
+}
+
+/** Demo-only password check (constant-time). */
 export function checkPassword(password: string): boolean {
   const expected = expectedPassword();
   if (password.length !== expected.length) return false;
@@ -107,5 +171,98 @@ export function checkPassword(password: string): boolean {
 }
 
 export function sessionCookieName(): string {
-  return COOKIE;
+  return SESSION_COOKIE;
+}
+
+export function csrfCookieName(): string {
+  return CSRF_COOKIE;
+}
+
+export function sessionCookieOptions(maxAgeSeconds = SESSION_TTL_HOURS * 3600) {
+  return {
+    httpOnly: true as const,
+    sameSite: "lax" as const,
+    path: "/",
+    secure: isProduction(),
+    maxAge: maxAgeSeconds,
+  };
+}
+
+export function csrfCookieOptions(maxAgeSeconds = SESSION_TTL_HOURS * 3600) {
+  return {
+    httpOnly: false as const, // double-submit: readable by JS / form
+    sameSite: "lax" as const,
+    path: "/",
+    secure: isProduction(),
+    maxAge: maxAgeSeconds,
+  };
+}
+
+export function newCsrfToken(): string {
+  const bytes = new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  return b64url(bytes);
+}
+
+export function rolesAtLeast(
+  role: StudioRole,
+  minimum: StudioRole
+): boolean {
+  const rank: Record<StudioRole, number> = {
+    reviewer: 1,
+    publisher: 2,
+    admin: 3,
+  };
+  return rank[role] >= rank[minimum];
+}
+
+export function isReviewer(role: StudioRole): boolean {
+  return rolesAtLeast(role, "reviewer");
+}
+
+export function isPublisher(role: StudioRole): boolean {
+  return rolesAtLeast(role, "publisher");
+}
+
+export function isAdmin(role: StudioRole): boolean {
+  return role === "admin";
+}
+
+/**
+ * Origin/Host check for state-changing requests (postgres mode).
+ * Allows missing Origin on same-site navigations when Host matches.
+ */
+export function checkOriginHost(req: Request): boolean {
+  const host = req.headers.get("host");
+  if (!host) return false;
+  const origin = req.headers.get("origin");
+  if (!origin) {
+    // Same-site form POSTs may omit Origin; require matching Host only.
+    const referer = req.headers.get("referer");
+    if (!referer) return getMode() === "demo";
+    try {
+      return new URL(referer).host === host;
+    } catch {
+      return false;
+    }
+  }
+  try {
+    return new URL(origin).host === host;
+  } catch {
+    return false;
+  }
+}
+
+/** Double-submit CSRF: cookie value must equal header or body token. */
+export function checkCsrf(
+  cookieToken: string | undefined,
+  submitted: string | undefined
+): boolean {
+  if (!cookieToken || !submitted) return false;
+  if (cookieToken.length !== submitted.length) return false;
+  let ok = 0;
+  for (let i = 0; i < cookieToken.length; i++) {
+    ok |= cookieToken.charCodeAt(i) ^ submitted.charCodeAt(i);
+  }
+  return ok === 0;
 }

@@ -242,11 +242,11 @@ def cmd_search(args: argparse.Namespace) -> int:
 
 
 def cmd_release_build(args: argparse.Namespace) -> int:
-    data_root = _resolve_path(args.data_root, default_relative="data")
-    annotations = _resolve_path(
-        args.annotations,
-        default_relative="publications/demo/editorial_annotations.v1.json",
-    )
+    input_mode = (args.input_mode or "demo").strip().lower()
+    if input_mode not in {"demo", "postgres"}:
+        print(f"release build FAILED: invalid --input-mode={input_mode!r}", file=sys.stderr)
+        return 1
+
     policy = _resolve_path(
         args.policy,
         default_relative="publications/policies/source_publication_policy.v1.json",
@@ -256,25 +256,68 @@ def cmd_release_build(args: argparse.Namespace) -> int:
         default_relative="publications/taxonomy/taxonomy.v1.json",
     )
     output = _resolve_path(args.output, default_relative="generated/public-release")
-    try:
-        manifest = build_release(
-            data_root=data_root,
-            annotations_path=annotations,
-            policy_path=policy,
-            taxonomy_path=taxonomy,
-            release_id=args.release_id,
-            release_mode=args.release_mode,
-            released_at=args.released_at,
-            output_dir=output,
-            title=args.title,
-            description=args.description,
+
+    if input_mode == "postgres":
+        import psycopg
+
+        from .release_postgres import build_release_from_postgres
+
+        if not args.publication_release_id:
+            print(
+                "release build FAILED: --publication-release-id is required "
+                "when --input-mode=postgres",
+                file=sys.stderr,
+            )
+            return 1
+        try:
+            dsn = require_postgres_dsn()
+            with psycopg.connect(dsn) as conn:
+                manifest = build_release_from_postgres(
+                    conn,
+                    publication_release_id=args.publication_release_id,
+                    policy_path=policy,
+                    taxonomy_path=taxonomy,
+                    output_dir=output,
+                    released_at=args.released_at,
+                    mark_published=bool(args.mark_published),
+                )
+                conn.commit()
+        except Exception as exc:  # noqa: BLE001 — CLI boundary
+            print(f"release build FAILED: {exc}", file=sys.stderr)
+            return 1
+    else:
+        if not args.release_id or not args.release_mode:
+            print(
+                "release build FAILED: --release-id and --release-mode are required "
+                "when --input-mode=demo",
+                file=sys.stderr,
+            )
+            return 1
+        data_root = _resolve_path(args.data_root, default_relative="data")
+        annotations = _resolve_path(
+            args.annotations,
+            default_relative="publications/demo/editorial_annotations.v1.json",
         )
-    except ReleaseError as exc:
-        print(f"release build FAILED: {exc}", file=sys.stderr)
-        return 1
+        try:
+            manifest = build_release(
+                data_root=data_root,
+                annotations_path=annotations,
+                policy_path=policy,
+                taxonomy_path=taxonomy,
+                release_id=args.release_id,
+                release_mode=args.release_mode,
+                released_at=args.released_at,
+                output_dir=output,
+                title=args.title,
+                description=args.description,
+            )
+        except ReleaseError as exc:
+            print(f"release build FAILED: {exc}", file=sys.stderr)
+            return 1
     print(
         json.dumps(
             {
+                "input_mode": input_mode,
                 "release_id": manifest["release_id"],
                 "release_mode": manifest["release_mode"],
                 "decision_count": manifest["decision_count"],
@@ -428,6 +471,12 @@ def main(argv: list[str] | None = None) -> int:
         "build",
         help="Build a privacy-checked public release bundle",
     )
+    p_rel_build.add_argument(
+        "--input-mode",
+        default="demo",
+        choices=["demo", "postgres"],
+        help="demo = filesystem seed; postgres = approved publication_releases row",
+    )
     p_rel_build.add_argument("--data-root", default="data")
     p_rel_build.add_argument(
         "--annotations",
@@ -441,11 +490,16 @@ def main(argv: list[str] | None = None) -> int:
         "--taxonomy",
         default="publications/taxonomy/taxonomy.v1.json",
     )
-    p_rel_build.add_argument("--release-id", required=True)
+    p_rel_build.add_argument(
+        "--release-id",
+        default=None,
+        help="Required for --input-mode=demo",
+    )
     p_rel_build.add_argument(
         "--release-mode",
-        required=True,
+        default=None,
         choices=["synthetic_demo", "public"],
+        help="Required for --input-mode=demo",
     )
     p_rel_build.add_argument(
         "--released-at",
@@ -455,6 +509,16 @@ def main(argv: list[str] | None = None) -> int:
     p_rel_build.add_argument("--output", default="generated/public-release")
     p_rel_build.add_argument("--title", default=None)
     p_rel_build.add_argument("--description", default=None)
+    p_rel_build.add_argument(
+        "--publication-release-id",
+        default=None,
+        help="UUID of an approved/ready publication_releases row (--input-mode=postgres)",
+    )
+    p_rel_build.add_argument(
+        "--mark-published",
+        action="store_true",
+        help="Mark the Postgres release as published after a successful build",
+    )
     p_rel_build.set_defaults(func=cmd_release_build)
 
     p_db = sub.add_parser("db", help="Database migration operations")

@@ -15,19 +15,23 @@ Do not open public issues that include real patient identifiers or unlicensed do
 ## Trust boundaries
 
 ```text
-private-data/  +  data/objects + data/meta     →  Studio (local, authenticated)
+private-data/  +  object store  +  Postgres (REGLENS_MODE=postgres)
+                         │
+                         ▼  Studio (local, role-authenticated)
+                         │
+              release build / build_release_from_postgres + public-scan
                          │
                          ▼
-              release build + public-scan
-                         │
-                         ▼
-         generated/public-release  →  apps/site static export  →  GitHub Pages
+         generated/public-release*  →  apps/site static export  →  GitHub Pages
+
+demo mode (default): data/objects + data/meta + file queue → same release gate
 ```
 
 - **Studio** may touch raw bytes, run artifacts, review state, and secrets.
 - **Observatory / Pages** may touch only release JSON/CSV and static UI assets.
-- Crossing that boundary without `release build` + `scripts/check_public_release.py`
+- Crossing that boundary without release build + `scripts/check_public_release.py`
   is a security defect.
+- See [`docs/THREAT_MODEL.md`](docs/THREAT_MODEL.md).
 
 ## Hard rules
 
@@ -36,12 +40,15 @@ private-data/  +  data/objects + data/meta     →  Studio (local, authenticated
 - Do not commit real regulator documents (`private-data/` is gitignored).
 - Do not enable real LLM providers without a separate privacy approval.
 - Development credentials in `.env.example` / Compose are **local-only**.
+- `REGLENS_MODE=postgres` without `DATABASE_URL` must fail closed.
+- `make db-reset-local` must refuse non-local database hosts.
 - **No secrets in Pages.** Never bake `AUTH_PASSWORD`, `REGLENS_SESSION_SECRET`,
   database URLs, MinIO keys, or API tokens into `apps/site` or the Pages artifact.
   Observatory is unauthenticated by design.
 - **Studio production auth is fail-closed.** In `NODE_ENV=production`, Studio
-  requires `AUTH_PASSWORD` and `REGLENS_SESSION_SECRET`; missing values throw
-  rather than falling back to dev defaults (`apps/studio/lib/auth.ts`).
+  requires configured secrets; missing values throw rather than falling back to
+  unsafe defaults. RC2 roles: reviewer / publisher / admin.
 - Do not deploy Studio to GitHub Pages or any public static host.
 - Public release artifacts must not contain raw PDF/HTML, full page text, model
   `confidence`, or patient-style tokens that fail the privacy scan.
+- Demo auto-accept / `postgres_demo_pipeline` must reject `fixture_kind=real`.

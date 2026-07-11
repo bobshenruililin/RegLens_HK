@@ -41,7 +41,21 @@ mock LLM only; no NCHK; FTS before semantic).
 Semantic / pgvector search remains disabled. Studio search may still be
 substring matching over local seed files.
 
-## MVP-RC1 (current delivery) vs experimental 2B–2D
+## MVP-RC2 supersedes experimental 2B–2D
+
+The experimental Postgres / review scaffolding above is replaced by the RC2
+trusted data plane:
+
+- Clean baseline migrations (`0001_rc2_baseline.sql` + `0002_…`)
+- Explicit `REGLENS_MODE=demo|postgres`
+- Queued ingest with leases (`FOR UPDATE SKIP LOCKED`)
+- Immutable extractions propositions + append-only revisions
+- Studio auth roles (reviewer / publisher / admin)
+- Publication transaction + `--input-mode postgres` release adapter
+
+Archived design notes: `packages/db/archive/`, ADRs 0007–0012.
+
+## MVP-RC1 vs experimental 2B–2D (historical)
 
 | Concern | Experimental 2B–2D | MVP-RC1 |
 |---------|--------------------|---------|
@@ -52,6 +66,7 @@ substring matching over local seed files.
 | Search for public users | N/A | Client-side catalog filter |
 | Real corpus on public web | Forbidden | Still forbidden (`internal_only`) |
 
-**Do not treat 2B–2D modules as RC1 acceptance criteria.** RC1 acceptance is the
-Studio/Observatory separation, synthetic_demo release pipeline, public-scan
-guards, and static Observatory — built on the completed 2A trust foundation.
+**Do not treat pre-RC2 2B–2D modules as acceptance criteria.** RC1 acceptance is
+the Studio/Observatory separation and synthetic_demo release pipeline. RC2
+acceptance is the Postgres operational SoT + Studio control plane without
+breaking `publication_release.v1`.

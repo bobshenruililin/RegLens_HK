@@ -1,4 +1,4 @@
-# Local setup — MVP-RC1
+# Local setup — MVP-RC1 / RC2
 
 ## Baseline restrictions
 
@@ -18,16 +18,33 @@ export PYTHONPATH=services/worker
 
 ## Make targets (preferred)
 
+### Demo mode (no DATABASE_URL) — RC2 verify gate
+
 | Target | What it does |
 |--------|----------------|
 | `make demo-ingest` | Reset `data/`, ingest `fixtures/manifests/m1.jsonl` with `--demo-auto-approve-synthetic` |
+| `make demo-enqueue` | Enqueue manifest jobs only |
+| `make worker-once` | Claim/process one job (demo auto-approve synthetic) |
 | `make demo-release` | `demo-ingest` + `release build` → `generated/public-release` + public-scan |
 | `make pages-artifact` | Copy release into `apps/site/public/data/release/` (+ `.nojekyll`) |
 | `make studio-dev` | `cd apps/studio && npm run dev` |
 | `make site-dev` | `cd apps/site && npm run dev` |
 | `make site-build` | `pages-artifact` + Observatory production build |
-| `make verify` | Full RC1 gate (fixtures, lint, types, tests, studio-ci, demo-release, public-scan, site-ci) |
+| `make verify` | Full **demo-mode** gate (fixtures, lint, types, tests, studio-ci, demo-release, public-scan, site-ci) |
 | `make public-scan` | Re-run `scripts/check_public_release.py` on `generated/public-release` |
+
+### Postgres mode (RC2)
+
+| Target | What it does |
+|--------|----------------|
+| `make db-up` / `db-down` | Compose Postgres 16 + MinIO |
+| `make db-migrate` / `db-status` | Apply / list SQL migrations (**required** after up) |
+| `make db-reset-local` | Destructive local wipe (warns; asserts local DSN) |
+| `make integration` | `pytest -m integration` (+ pg tests); skips locally if no DSN; **fails in CI** if unset |
+| `make postgres-demo-pipeline` | Synthetic-only Postgres vertical demo → `generated/public-release-pg` |
+| `make postgres-demo-release` | Public-scan on Postgres demo bundle |
+| `make site-build-from-postgres-release` | Observatory build from `public-release-pg` |
+| `make rc2-acceptance` | `verify` + postgres acceptance when `DATABASE_URL` set |
 
 ## Ingest (default: pending / unpublished)
 
@@ -39,51 +56,37 @@ Synthetic demo auto-approve (rejects non-synthetic rows):
 
 ```bash
 make demo-ingest
-# or:
-python -m reglens_worker ingest --manifest fixtures/manifests/m1.jsonl \
-  --data-root data --demo-auto-approve-synthetic
 ```
 
-Immutable audit artifacts: `data/meta/runs/<run_key>/extraction.json` (+ `.sha256`).
-Reviewed decisions for release: `data/seed/decisions/`.
-
-## Release build
+## Postgres local stack
 
 ```bash
-make demo-release
+make db-up
+export DATABASE_URL=postgresql://reglens:reglens_local_only@127.0.0.1:5432/reglens
+export REGLENS_MODE=postgres
+make db-migrate   # mounts alone are NOT enough — see docs/DATABASE_MIGRATIONS.md
 ```
 
-Equivalent manual invocation is in the root `Makefile` (`demo-release` target):
-annotations, policy, taxonomy under `publications/`, `release_mode=synthetic_demo`.
+If Docker is unavailable, see [`OPERATIONS.md`](OPERATIONS.md) for `psql`-based
+reset notes. Recreate volumes after leaving the archived pgvector/experimental
+migrations.
 
 ## Frontends
 
 ### Studio (internal) — `apps/studio`
 
 ```bash
-cd apps/studio
-npm ci
-npm run typecheck
-npm run build
-npm run dev
-# or: make studio-dev
+make studio-dev
 ```
 
-Production auth is fail-closed: set `AUTH_PASSWORD` and `REGLENS_SESSION_SECRET`
-when `NODE_ENV=production`. Dev defaults exist only outside production.
-
-**Do not** configure this app for GitHub Pages.
+See [`STUDIO.md`](STUDIO.md). Production auth is fail-closed. **Do not** deploy
+to GitHub Pages.
 
 ### Observatory (public) — `apps/site`
 
 ```bash
-make pages-artifact   # requires demo-release output
-cd apps/site
-npm ci
-npm run typecheck
-npm run build
-npm run dev
-# or: make site-dev
+make pages-artifact
+make site-dev
 ```
 
 Optional Pages base path: `NEXT_PUBLIC_BASE_PATH` (e.g. `/RegLens_HK`).
@@ -92,12 +95,9 @@ Optional Pages base path: `NEXT_PUBLIC_BASE_PATH` (e.g. `/RegLens_HK`).
 
 See [`PRIVATE_DATA.md`](PRIVATE_DATA.md). The `private-data/` tree is gitignored.
 
-## Compose (optional; local-only credentials)
+## Docs
 
-```bash
-docker compose config   # validate file
-docker compose up -d db minio
-```
-
-Postgres/MinIO are **not** required for synthetic demo ingest, release build, or
-Observatory static export.
+- [`OPERATIONS.md`](OPERATIONS.md) — workers, Compose, CI
+- [`DATABASE_MIGRATIONS.md`](DATABASE_MIGRATIONS.md)
+- [`BACKUP_RESTORE.md`](BACKUP_RESTORE.md)
+- [`REVIEW_WORKFLOW.md`](REVIEW_WORKFLOW.md)

@@ -144,7 +144,7 @@ def add_review(
     conn: psycopg.Connection,
     *,
     proposition_revision_id: uuid.UUID | str,
-    reviewer_user_id: uuid.UUID | str,
+    reviewer_user_id: uuid.UUID | str | None,
     review_status: str,
     notes: str | None = None,
     expected_revision_number: int | None = None,
@@ -155,8 +155,19 @@ def add_review(
     When `expected_revision_number` is provided, verifies the revision's number
     still matches (optimistic concurrency) before inserting.
     """
-    if review_status not in {"pending", "accepted", "edited", "rejected"}:
+    if review_status not in {
+        "pending",
+        "accepted",
+        "edited",
+        "rejected",
+        "disputed",
+        "incomplete",
+    }:
         raise ReviewError(f"Invalid review_status={review_status!r}")
+    if review_status == "pending" and reviewer_user_id is not None:
+        raise ReviewError("pending reviews must not set reviewer_user_id")
+    if review_status != "pending" and reviewer_user_id is None:
+        raise ReviewError(f"{review_status} reviews require reviewer_user_id")
 
     with conn.cursor(row_factory=dict_row) as cur:
         cur.execute(

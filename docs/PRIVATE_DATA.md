@@ -7,6 +7,7 @@ Place them outside the tracked tree as follows (created locally; gitignored):
 ```text
 private-data/
   README.md                 # optional local notes (gitignored with tree)
+  licensing/                # scans of consent / approval letters (never commit)
   raw/
     mchk/                   # manually downloaded MCHK PDFs/HTML
     dchk/                   # manually downloaded DCHK PDFs/HTML
@@ -15,6 +16,9 @@ private-data/
 ```
 
 Manifest rows for real documents must set `"fixture_kind": "real"`.
+
+Consent / approval letters: store scans under `private-data/licensing/` only.
+Never commit letter scans or full judgment text.
 
 Acquisition remains manual only — see `scripts/download_checklist.md`.
 Do not scrape. Do not use `--demo-auto-approve-synthetic` on real rows

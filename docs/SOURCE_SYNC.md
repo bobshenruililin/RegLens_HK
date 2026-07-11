@@ -2,6 +2,8 @@
 
 RC3 adds policy-aware metadata sync for official MCHK and DCHK judgment indexes.
 It is an internal research capability, not a public-corpus release path.
+RC4 Core10 uses source sync as the first internal step before acquisition,
+extraction, review, and internal research.
 
 ## What sync may do
 
@@ -16,9 +18,21 @@ It is an internal research capability, not a public-corpus release path.
 
 - Treat public availability as reuse permission.
 - Treat robots.txt as a licence or consent record.
-- Download PDFs in ordinary CI or source-health checks.
+- Download PDFs in ordinary CI or offline adapter smoke tests.
 - Publish real MCHK/DCHK judgments, excerpts, OCR text, or page text to Pages.
+- Use GitHub Pages as a controlled research environment; Pages is public.
 - Claim complete de-identification; scans reduce risk but do not eliminate it.
+
+## Workflow ladder (do not conflate)
+
+| Workflow / command | What it does | Network | PDFs | Postgres |
+|--------------------|--------------|---------|------|----------|
+| **Source adapter smoke test — offline** (Actions) | Parse synthetic fixtures | No | No | No |
+| **Live source health — metadata only** (Actions, manual) | Few index GETs | Yes (allow-listed) | No | No (dry-run forced) |
+| `sources sync --mode metadata --live --no-dry-run` | Full metadata sync | Yes | No | Yes |
+| `sources sync --mode acquire …` | Document acquisition | Yes | Yes (policy-gated) | Yes |
+
+Ordinary CI must not require live health. External site outages must not fail PR checks.
 
 ## Source posture
 
@@ -40,3 +54,4 @@ make source-parser-tests
 ```
 
 Live sync/acquisition remains opt-in and policy-gated outside ordinary CI.
+If operator live contact is unset, do not run live sync.

@@ -1,0 +1,13 @@
+{
+  "id": "synthetic-recordkeeping-warning",
+  "title": "Synthetic recordkeeping warning examples",
+  "description": "Demo-only collection using reviewed synthetic decisions to exercise collection listing and export.",
+  "decision_ids": [
+    "95db05b2-72a0-5849-ae8a-5a001a318196",
+    "e48147dd-8746-5173-b09a-24b57474a316"
+  ],
+  "created_at": "2026-07-11T00:00:00.000Z",
+  "updated_at": "2026-07-11T00:00:00.000Z",
+  "notes": "Synthetic examples only. Do not replace with real IDs in git.",
+  "synthetic_only": true
+}

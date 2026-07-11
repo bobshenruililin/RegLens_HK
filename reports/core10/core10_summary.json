@@ -1,0 +1,90 @@
+{
+  "aggregate": {
+    "by_issue_category": {
+      "premises_equipment": 1,
+      "recordkeeping": 2
+    },
+    "by_prop_type": {
+      "appeal_status": 2,
+      "authority": 1,
+      "charge": 3,
+      "finding": 3,
+      "legal_test": 1,
+      "mitigating_factor": 2,
+      "rule": 2,
+      "sanction": 3
+    },
+    "by_regulator": {
+      "DCHK": 1,
+      "MCHK": 2
+    },
+    "by_sanction_category": {
+      "costs": 1,
+      "removal_suspended": 1,
+      "warning": 2
+    }
+  },
+  "decisions": [
+    {
+      "factor_categories": "remorse",
+      "finding_outcomes": "proved",
+      "human_interpretation": "PLACEHOLDER - reviewer synthesis required",
+      "issue_categories": "premises_equipment",
+      "profession": "dentist",
+      "proposition_count": "6",
+      "public_id": "demo-0.1.0:syn-dchk-2023-014",
+      "regulator_code": "DCHK",
+      "sanction_categories": "removal_suspended",
+      "slug": "syn-dchk-2023-014",
+      "synthetic_label": "SYNTHETIC DEMO ONLY - NOT REAL CORPUS",
+      "year": "2023"
+    },
+    {
+      "factor_categories": "clear_prior_record|admission",
+      "finding_outcomes": "proved|admitted",
+      "human_interpretation": "PLACEHOLDER - reviewer synthesis required",
+      "issue_categories": "recordkeeping",
+      "profession": "doctor",
+      "proposition_count": "8",
+      "public_id": "demo-0.1.0:syn-mchk-2024-001",
+      "regulator_code": "MCHK",
+      "sanction_categories": "warning|costs",
+      "slug": "syn-mchk-2024-001",
+      "synthetic_label": "SYNTHETIC DEMO ONLY - NOT REAL CORPUS",
+      "year": "2024"
+    },
+    {
+      "factor_categories": "",
+      "finding_outcomes": "proved",
+      "human_interpretation": "PLACEHOLDER - reviewer synthesis required",
+      "issue_categories": "recordkeeping",
+      "profession": "doctor",
+      "proposition_count": "3",
+      "public_id": "demo-0.1.0:syn-mchk-pdf-001",
+      "regulator_code": "MCHK",
+      "sanction_categories": "warning",
+      "slug": "syn-mchk-pdf-001",
+      "synthetic_label": "SYNTHETIC DEMO ONLY - NOT REAL CORPUS",
+      "year": ""
+    }
+  ],
+  "human_interpretation": {
+    "notes": [
+      "Reviewer synthesis required after real Core10 internal review.",
+      "Do not infer prevalence or outcome rates from synthetic demo counts.",
+      "Public real release remains blocked until legal/source-policy approval."
+    ],
+    "status": "placeholder"
+  },
+  "label": "SYNTHETIC DEMO ONLY - NOT REAL CORPUS",
+  "observed_decision_count": 3,
+  "observed_proposition_count": 17,
+  "real_decisions_included": false,
+  "release_generated_at": "2026-07-11T00:00:00Z",
+  "release_id": "demo-0.1.0",
+  "release_mode": "synthetic_demo",
+  "report_id": "core10.synthetic_demo",
+  "schema_version": "1.0.0",
+  "synthetic_only": true,
+  "target_decision_count": 10
+}

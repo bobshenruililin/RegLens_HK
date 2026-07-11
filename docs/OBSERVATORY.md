@@ -1,8 +1,8 @@
-# RegLens Observatory (MVP-RC1)
+# RegLens Observatory (MVP-RC1 / RC4)
 
 Observatory is the **public, read-only** research website for RegLens HK. It is
 implemented in `apps/site` as a Next.js static export and is the only frontend
-eligible for GitHub Pages.
+eligible for GitHub Pages. GitHub Pages is publicly accessible.
 
 ## What it is
 
@@ -10,6 +10,8 @@ eligible for GitHub Pages.
   (`apps/site/public/data/release/`, produced by `make pages-artifact`).
 - Unauthenticated. No review queue, no operator APIs, no session cookies.
 - Explicitly **not** an authenticated research environment (that role is Studio).
+- In RC4, a synthetic-only guided tour, research questions, and roadmap explain
+  the pipeline without exposing real corpus data.
 
 ## What it is not
 
@@ -39,6 +41,9 @@ until consent/licence posture and `source_publication_policy` change together.
 | `/methodology/` | How extracts and releases are produced |
 | `/data/` | Release manifest, checksums, downloadable CSV/JSON pointers |
 | `/compare/` | Side-by-side comparison within the published set |
+| `/tour/` | Synthetic guided tour using `syn-mchk-2024-001` |
+| `/questions/` | Public research-question prompts linking into `/explore/` filters |
+| `/roadmap/` | Synthetic demo to Core10/Core50/legal approval/public release path |
 | `/404` | Static not-found |
 
 ## Data contract
@@ -61,6 +66,8 @@ same JSON after static copy into `public/`.
 3. Counts describe the **published corpus**; methodology and UI must say so.
 4. Global and per-decision caveats from the release must remain visible.
 5. GitHub Pages contains **no raw documents**.
+6. Real Core10/Core50 research routes do **not** belong in `apps/site`; use
+   Studio for internal review and research.
 
 ## Local run
 

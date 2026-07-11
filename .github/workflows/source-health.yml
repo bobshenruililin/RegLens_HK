@@ -1,4 +1,9 @@
-name: Source health
+# Source adapter smoke test — offline
+#
+# Offline fixture-only parser smoke test (NOT live source monitoring).
+# Does not visit MCHK/DCHK websites, download PDFs, or update Postgres.
+
+name: Source adapter smoke test — offline
 
 on:
   workflow_dispatch:
@@ -7,8 +12,8 @@ permissions:
   contents: read
 
 jobs:
-  metadata-only:
-    name: Metadata-only source health
+  offline-smoke:
+    name: Offline adapter smoke
     runs-on: ubuntu-latest
     if: ${{ !github.event.repository.fork }}
     steps:
@@ -18,12 +23,13 @@ jobs:
           python-version: "3.12"
       - name: Install Python deps
         run: pip install -r services/worker/requirements.txt
-      - name: Build sanitized source-health summary
+      - name: Offline fixture sync (dry_run, live=false, acquire=false)
         env:
           PYTHONPATH: services/worker
         run: |
           python - <<'PY'
           import json
+          import os
           from pathlib import Path
 
           from reglens_worker.sources.sync import sync_source
@@ -39,41 +45,62 @@ jobs:
               ).to_dict()
               results.append(
                   {
-                      "source_id": result["source_id"],
+                      "adapter": source_id,
+                      "fixture_mode": True,
                       "mode": result["mode"],
                       "dry_run": result["dry_run"],
                       "live": result["live"],
+                      "network_access": False,
+                      "pdf_downloads": 0,
                       "discovered_count": result["discovered_count"],
                       "persisted_count": result["persisted_count"],
                       "acquired_count": result["acquired_count"],
                       "parser_health": result["parser_health"],
+                      "warnings": result.get("errors") or [],
                   }
               )
 
           summary = {
-              "note": (
-                  "Manual metadata-only source health. Uses offline fixtures, "
-                  "does not fetch live sites, does not download PDFs, and "
-                  "does not create public real-release artifacts."
+              "workflow": "Source adapter smoke test — offline",
+              "confirmation": (
+                  "No network access and no PDF downloads occurred. "
+                  "This is a parser smoke test against synthetic fixtures, "
+                  "not a live source-health monitor."
               ),
               "licensing_caveat": (
                   "Public availability is not reuse permission; robots.txt is "
-                  "not a licence. MCHK remains internal-only; DCHK carries the "
-                  "July 14, 2018 caveat. Student-research letters do not unlock Pages."
-              ),
-              "deidentification_caveat": (
-                  "No complete de-identification claim is made by this check."
+                  "not a licence. Real research remains in authenticated Studio."
               ),
               "results": results,
           }
-          Path("source-health-summary.json").write_text(
+          Path("source-adapter-smoke-summary.json").write_text(
               json.dumps(summary, indent=2, sort_keys=True) + "\n",
               encoding="utf-8",
           )
+
+          lines = [
+              "# Source adapter smoke test — offline",
+              "",
+              summary["confirmation"],
+              "",
+              "| Adapter | Discovered | Parser OK | Acquired | Network |",
+              "|---------|------------|-----------|----------|---------|",
+          ]
+          for row in results:
+              health = row["parser_health"] or {}
+              lines.append(
+                  f"| {row['adapter']} | {row['discovered_count']} | "
+                  f"{health.get('ok')} | {row['acquired_count']} | no |"
+              )
+              for w in row["warnings"]:
+                  lines.append(f"- warning `{row['adapter']}`: {w}")
+          step_summary = os.environ.get("GITHUB_STEP_SUMMARY")
+          if step_summary:
+              Path(step_summary).write_text("\n".join(lines) + "\n", encoding="utf-8")
           PY
       - name: Upload sanitized summary
         uses: actions/upload-artifact@v4
         with:
-          name: source-health-summary
-          path: source-health-summary.json
+          name: source-adapter-smoke-summary
+          path: source-adapter-smoke-summary.json
           if-no-files-found: error

@@ -4,10 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const NAV = [
+  { href: "/tour/", label: "Tour" },
   { href: "/explore/", label: "Explore" },
+  { href: "/questions/", label: "Questions" },
   { href: "/compare/", label: "Compare" },
   { href: "/analytics/", label: "Analytics" },
   { href: "/methodology/", label: "Methodology" },
+  { href: "/roadmap/", label: "Roadmap" },
   { href: "/data/", label: "Data" },
 ] as const;
 

@@ -5,7 +5,8 @@
 	postgres-demo-pipeline postgres-demo-release \
 	site-build-from-postgres-release rc2-acceptance \
 	rc3-verify sources-status source-sync-mchk-dry source-sync-dchk-dry \
-	source-parser-tests ocr-tests core50-status extraction-eval
+	source-parser-tests ocr-tests core50-status extraction-eval \
+	core10-report rc4-verify
 
 PYTHONPATH := services/worker
 export PYTHONPATH
@@ -256,6 +257,16 @@ core50-status:
 
 extraction-eval:
 	@echo "RC3 extraction eval placeholder: publications/pilot/core10_eval.v1.json"
+
+# --- RC4 Core10 / public Observatory enrichment ---
+
+core10-report: demo-release
+	python scripts/core10_report.py \
+	  --release-dir generated/public-release \
+	  --output-dir reports/core10
+
+rc4-verify: verify core10-report
+	pytest tests/test_rc4_public_pages.py
 
 lock:
 	pip install -r services/worker/requirements.txt

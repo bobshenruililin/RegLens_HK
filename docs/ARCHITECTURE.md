@@ -1,4 +1,4 @@
-# System architecture (MVP-RC1 / RC2 / RC3)
+# System architecture (MVP-RC1 / RC2 / RC3 / RC4)
 
 RegLens HK is a **two-app** system: an internal Studio for review and local or
 Postgres artifacts, and a public Observatory that only consumes a versioned
@@ -6,7 +6,9 @@ publication release. Milestone 2A contracts (immutable runs, synthetic/private
 boundary) remain the trust foundation. MVP-RC2 adds an explicit
 `REGLENS_MODE=demo|postgres` storage split ([ADR 0010](adr/0010-explicit-storage-modes.md)).
 MVP-RC3 adds policy-aware source sync and internal OCR/LLM pilot gates without
-changing the public-release boundary.
+changing the public-release boundary. MVP-RC4 adds public synthetic-only
+Observatory enrichment pages and Core10 internal research/report tooling before
+Core50 scale.
 
 ## Two-app overview
 
@@ -38,10 +40,10 @@ flowchart TB
 
   subgraph apps [Frontends]
     Studio[apps/studio RegLens Studio\ninternal auth]
-    Site[apps/site RegLens Observatory\nstatic export]
+    Site[apps/site RegLens Observatory\nstatic export\nsynthetic public enrichment]
   end
 
-  Pages[GitHub Pages]
+  Pages[GitHub Pages\npublicly accessible]
 
   Synth --> Ingest
   Private -.->|manual local only| Ingest
@@ -96,6 +98,10 @@ the July 14, 2018 caveat, there is no public real release, privacy scans are not
 a complete de-identification claim, and student-research letters do not unlock
 Pages.
 
+RC4 does not change the boundary: Core10/Core50 real-corpus work stays in
+Studio/private storage, while Pages may show synthetic tour, questions, roadmap,
+and checked demo release artifacts.
+
 ## App responsibilities
 
 | Concern | Studio (`apps/studio`) | Observatory (`apps/site`) |
@@ -105,6 +111,7 @@ Pages.
 | Search | Studio FTS (Postgres) / local substring (demo) | Client-side filter over catalog JSON |
 | Deploy | Local / private hosts only | Static export → Pages |
 | Review / publish | Review + publication transaction | Read-only |
+| Core10 research | Internal real-corpus operations and reviewer notes | Synthetic/demo explanations and reports only |
 
 ## Milestone notes
 
@@ -113,6 +120,8 @@ Pages.
   operator tooling/docs (Checkpoint D partial). See [`MILESTONES.md`](MILESTONES.md).
 - **RC3:** policy-aware source sync, source versioning, OCR text variants,
   bounded extractor/critic, and Core 50 internal pilot.
+- **RC4:** editorial codebook, Core10 before scale, synthetic public tour /
+  questions / roadmap, and synthetic-only report tooling.
 
 Compose uses `postgres:16` (no pgvector). Credentials are local-only; always
 `make db-migrate` after `db-up`.

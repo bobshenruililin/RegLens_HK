@@ -62,6 +62,13 @@ def extract_matching(
     dest: Path,
     *,
     contains: tuple[str, ...],
-) -> list[Path]:
+):
     inspect_zip(archive)
-    return safe_extract(archive, dest, name_contains=contains, overwrite=True)
+    return safe_extract(
+        archive,
+        dest,
+        name_contains=contains,
+        overwrite=False,
+        preserve_archive_relative_path=True,
+        on_collision="fail",
+    )

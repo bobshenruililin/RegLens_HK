@@ -44,7 +44,7 @@ It is **not** yet proven that:
 **Conditions:**
 
 1. Stage B date-semantics gate passes (or product promise falls back to version-to-version comparator only).
-2. Top-level section identity metrics meet §11 (100% precision on gold accepted edges; ≥95% ordinary succession coverage; uncertain → unmatched).
+2. Top-level section identity metrics meet §11 (100% precision on agent-reviewed candidate/provisional accepted edges — not independent human gold; ≥95% ordinary succession coverage; uncertain → unmatched).
 3. Full Cap. 614 section-succession review completed.
 4. Cap. 599-family showcase selected only after §6 census.
 5. Provenance and renderability rules in §§4–5 enforced; no ordinary redlines for `potentially_lossy` / `unsupported`.
@@ -252,7 +252,7 @@ Nested subsections/paragraphs are stored as structured content **inside** `secti
 
 | Metric | Requirement |
 |--------|-------------|
-| Precision of automatically accepted edges | **100%** on the reviewed gold set (zero silent wrong matches) |
+| Precision of automatically accepted edges | **100%** on the agent-reviewed **candidate/provisional** set (zero silent wrong matches); not an independent human gold standard until human audit |
 | Coverage of ordinary same-provision successions | **≥95%** matched (not unmatched) for ordinary successions |
 | Separate reporting | Counts for additions, repeals, renumberings, substitutions, splits, consolidations, ambiguous/`unmatched` |
 | Cap. 614 | Review **all** top-level section successions across consecutive versions in fixture set |
@@ -425,7 +425,7 @@ Published entrypoint checksum (to verify on acquisition):
 | Path | Purpose |
 |------|---------|
 | `fixtures/lawtrace/cap_614/**` | Trimmed Cap. 614 current/past English XML extracts |
-| `fixtures/lawtrace/gold/cap_614_section_successions.jsonl` | Gold edges for precision review (initially draft) |
+| `fixtures/lawtrace/candidate_gold/cap_614_section_successions.provisional.jsonl` | Candidate/provisional succession edges (agent-reviewed; human_review_status=not_reviewed) |
 | `services/lawtrace-worker/lawtrace_worker/parse_cap.py` | Instrument/section parse (top-level sections) |
 | `services/lawtrace-worker/lawtrace_worker/identity.py` | Section identity + match_method |
 | `services/lawtrace-worker/lawtrace_worker/date_semantics.py` | Field extraction + claim classification |
@@ -444,7 +444,7 @@ Stages C–E file lists are deferred until Stage B human approval.
 **PASS:**
 
 - Date-semantics gate documented; UI claim is either justified or explicitly version-to-version only.
-- Cap. 614: 100% precision on automatically accepted gold edges; ≥95% coverage on ordinary same-section successions; all section successions reviewed; uncertain → unmatched.
+- Cap. 614: 100% precision on automatically accepted **candidate/provisional** edges (agent-reviewed same run; not independent human gold); ≥95% coverage on ordinary same-section successions; uncertain → unmatched.
 - Separate tallies for added/repealed/renumbered/substituted/split/consolidated/ambiguous.
 - Provenance complete per §8; XPath never sole pointer.
 - Renderability classified; no ordinary redlines for `potentially_lossy`/`unsupported`.
@@ -478,7 +478,7 @@ Stages C–E file lists are deferred until Stage B human approval.
 
 1. **Cap. 614 English-only section comparator** — drop Cap. 599-family stress test.
 2. **Version-to-version only** — if date gate fails “in force” semantics (expected default until proven).
-3. **Chapter-level diffs only** — if section identity precision cannot hit 100% on gold accepted edges.
+3. **Chapter-level diffs only** — if section identity precision cannot hit 100% on candidate/provisional accepted edges.
 
 ---
 

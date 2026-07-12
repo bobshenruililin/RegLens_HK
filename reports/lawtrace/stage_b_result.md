@@ -6,7 +6,7 @@
 `VERSION_TO_VERSION_COMPARATOR_ONLY` — do not promise “law in force on date X”.
 
 ## Identity
-- Precision on `@id` gold edges: **100%** (392 edges)
+- Precision on `@id` edges vs agent-reviewed **candidate** set: **100%** (not independent human gold) (392 edges)
 - Ordinary successor coverage: **100%** (392/392)
 - Ambiguous: 0; unmatched old: 0; additions across history: 6
 

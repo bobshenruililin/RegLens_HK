@@ -56,7 +56,8 @@ def test_determinism_two_runs() -> None:
 def test_no_nested_identity_assignment_in_canonical() -> None:
     """Nested subsection/paragraph markers exist, but matching remains top-level @id only."""
     fixture_dir = Path("fixtures/lawtrace/cap_614")
-    parsed = [parse_instrument_file(p, archive_sha256="t") for p in sorted(fixture_dir.glob("*.xml"))]
+    paths = sorted(fixture_dir.glob("*.xml"))
+    parsed = [parse_instrument_file(p, archive_sha256="t") for p in paths]
     parsed.sort(key=lambda x: x["filename_meta"]["ver"])
     m = match_sections(parsed[0]["sections"], parsed[1]["sections"])
     assert all(e["match_method"] in {"id", "unmatched"} for e in m["edges"])

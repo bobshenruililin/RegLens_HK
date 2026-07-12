@@ -36,10 +36,14 @@ def sha256_text(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
-def dump_json(path: Path, obj: Any, *, deterministic: bool = True) -> str:
+def dump_json(path: Path, obj: Any, *, deterministic: bool = True, pretty: bool = False) -> str:
     """Write JSON; return content hash excluding generation_timestamp fields."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    text = json.dumps(obj, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
+    if pretty:
+        text = json.dumps(obj, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
+    else:
+        # Compact artifacts reduce PR/CI payload while remaining human-diffable enough.
+        text = json.dumps(obj, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n"
     path.write_text(text, encoding="utf-8")
     if deterministic:
         scrubbed = _strip_timestamps(obj)
@@ -598,11 +602,11 @@ def export_instrument(
         "official_portal": HKEL_SEARCH,
     }
 
-    dump_json(out_dir / "manifest.json", manifest)
-    dump_json(out_dir / "versions.json", {"instrument_id": instrument_id, "versions": versions})
+    dump_json(out_dir / "manifest.json", manifest, pretty=True)
+    dump_json(out_dir / "versions.json", {"instrument_id": instrument_id, "versions": versions}, pretty=True)
     dump_json(out_dir / "sections.json", {"instrument_id": instrument_id, "sections": sections_out})
-    dump_json(out_dir / "insights.json", insights)
-    dump_json(out_dir / "transitions.json", {"instrument_id": instrument_id, "transitions": transitions_meta})
+    dump_json(out_dir / "insights.json", insights, pretty=True)
+    dump_json(out_dir / "transitions.json", {"instrument_id": instrument_id, "transitions": transitions_meta}, pretty=True)
 
     return manifest
 
@@ -650,7 +654,7 @@ def write_root_manifest(
         "corrections_contact_placeholder": "corrections@example.invalid (placeholder — replace before public launch)",
         "generation_timestamp": utc_now(),
     }
-    dump_json(out_root / "methodology.json", methodology)
+    dump_json(out_root / "methodology.json", methodology, pretty=True)
     root = {
         "schema_version": EXPORT_SCHEMA_VERSION,
         "dataset_mode": dataset_mode,
@@ -663,7 +667,7 @@ def write_root_manifest(
         "normalization_version": NORMALIZATION_VERSION,
         "parser_version": PARSER_VERSION,
     }
-    dump_json(out_root / "manifest.json", root)
+    dump_json(out_root / "manifest.json", root, pretty=True)
 
 
 def main(argv: list[str] | None = None) -> None:

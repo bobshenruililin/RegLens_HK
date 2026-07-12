@@ -6,8 +6,8 @@ from pathlib import Path
 from typing import Any
 from xml.etree.ElementTree import Element
 
-from defusedxml.ElementTree import parse as defused_parse
 from defusedxml.common import DTDForbidden, EntitiesForbidden, ExternalReferenceForbidden
+from defusedxml.ElementTree import parse as defused_parse
 
 from lawtrace_worker.limits import DEFAULT_LIMITS, ResourceLimits
 

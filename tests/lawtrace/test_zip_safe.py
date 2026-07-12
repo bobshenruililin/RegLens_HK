@@ -1,16 +1,16 @@
 from __future__ import annotations
 
-import io
 import zipfile
 from pathlib import Path
 
 import pytest
-
 from lawtrace_worker.limits import ResourceLimits
 from lawtrace_worker.security.zip_safe import ZipSecurityError, inspect_zip, safe_extract
 
 
-def _write_zip(path: Path, members: dict[str, bytes], *, compress: int = zipfile.ZIP_DEFLATED) -> None:
+def _write_zip(
+    path: Path, members: dict[str, bytes], *, compress: int = zipfile.ZIP_DEFLATED
+) -> None:
     with zipfile.ZipFile(path, "w", compression=compress) as zf:
         for name, data in members.items():
             zf.writestr(name, data)

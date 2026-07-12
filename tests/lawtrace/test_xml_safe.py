@@ -3,7 +3,6 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-
 from lawtrace_worker.security.xml_safe import XmlSecurityError, parse_xml_file
 
 
@@ -42,6 +41,8 @@ def test_rejects_malformed(tmp_path: Path) -> None:
 
 def test_parses_simple_fixture(tmp_path: Path) -> None:
     p = tmp_path / "ok.xml"
-    p.write_text("<lawDoc><main><section id='s1'><num>1</num></section></main></lawDoc>", encoding="utf-8")
+    p.write_text(
+        "<lawDoc><main><section id='s1'><num>1</num></section></main></lawDoc>", encoding="utf-8"
+    )
     root = parse_xml_file(p)
     assert root.tag.endswith("lawDoc") or root.tag == "lawDoc"

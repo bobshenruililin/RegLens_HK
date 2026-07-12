@@ -6,15 +6,12 @@ import json
 from pathlib import Path
 from typing import Any
 
-from lawtrace_worker.acquire import sha256_file, utc_now_iso
-
+from lawtrace_worker.acquire import utc_now_iso
 
 # Official entrypoint documented on HKeL How to Use (Version 1.0, 138 KB).
 # Programmatic fetch via /file/get?openfile=hklm redirects to a client-config
 # interstitial and does not yield the XSD bytes without interactive browser config.
-HKLM_ENTRYPOINT_EXPECTED_SHA256 = (
-    "4B0BA06E45F33BF97AC2C11CF9325764E8FCC92DE38E64FBD0ED8ED358DDB3BD"
-)
+HKLM_ENTRYPOINT_EXPECTED_SHA256 = "4B0BA06E45F33BF97AC2C11CF9325764E8FCC92DE38E64FBD0ED8ED358DDB3BD"
 HKLM_ENTRYPOINT_URL = "https://www.elegislation.gov.hk/file/get?openfile=hklm"
 HKLM_HOWTO_URL = "https://www.elegislation.gov.hk/howtouseeleg"
 
@@ -36,9 +33,7 @@ def write_schema_acquisition_failure(dest_dir: Path, detail: dict[str, Any]) -> 
             "Open https://www.elegislation.gov.hk/howtouseeleg in a browser.",
             "Locate Hong Kong Legislation Model (HKLM) Version 1.0 download.",
             "Download the schema package after any official client-config checks complete.",
-            "Verify SHA-256 of the entrypoint equals "
-            + HKLM_ENTRYPOINT_EXPECTED_SHA256
-            + ".",
+            "Verify SHA-256 of the entrypoint equals " + HKLM_ENTRYPOINT_EXPECTED_SHA256 + ".",
             "Place all schema files (including include/import closure) under "
             "fixtures/lawtrace/schema/hklm/ and regenerate BUNDLE_MANIFEST.json.",
             "Validate fixtures offline with network disabled.",

@@ -1,0 +1,237 @@
+[
+  {
+    "older": "cap_614_20110630000000_en_p.xml",
+    "newer": "cap_614_20120116000000_en_p.xml",
+    "counts": {
+      "matched_by_id": 31,
+      "matched_by_temporalId": 0,
+      "matched_by_unique_num": 0,
+      "added": 5,
+      "ambiguous": 0,
+      "unmatched_old": 0,
+      "text_changed": 0,
+      "status_changed": 0,
+      "renumber_candidate": 0
+    },
+    "ordinary_coverage": 1.0,
+    "change_classes": {
+      "unchanged": 31,
+      "added": 5
+    },
+    "ambiguous_details": []
+  },
+  {
+    "older": "cap_614_20120116000000_en_p.xml",
+    "newer": "cap_614_20120209000000_en_p.xml",
+    "counts": {
+      "matched_by_id": 36,
+      "matched_by_temporalId": 0,
+      "matched_by_unique_num": 0,
+      "added": 0,
+      "ambiguous": 0,
+      "unmatched_old": 0,
+      "text_changed": 13,
+      "status_changed": 12,
+      "renumber_candidate": 0
+    },
+    "ordinary_coverage": 1.0,
+    "change_classes": {
+      "text_changed": 1,
+      "unchanged": 23,
+      "text_and_status_changed": 12
+    },
+    "ambiguous_details": []
+  },
+  {
+    "older": "cap_614_20120209000000_en_p.xml",
+    "newer": "cap_614_20120727000000_en_p.xml",
+    "counts": {
+      "matched_by_id": 36,
+      "matched_by_temporalId": 0,
+      "matched_by_unique_num": 0,
+      "added": 0,
+      "ambiguous": 0,
+      "unmatched_old": 0,
+      "text_changed": 1,
+      "status_changed": 0,
+      "renumber_candidate": 0
+    },
+    "ordinary_coverage": 1.0,
+    "change_classes": {
+      "unchanged": 35,
+      "text_changed": 1
+    },
+    "ambiguous_details": []
+  },
+  {
+    "older": "cap_614_20120727000000_en_p.xml",
+    "newer": "cap_614_20170224000000_en_p.xml",
+    "counts": {
+      "matched_by_id": 36,
+      "matched_by_temporalId": 0,
+      "matched_by_unique_num": 0,
+      "added": 0,
+      "ambiguous": 0,
+      "unmatched_old": 0,
+      "text_changed": 1,
+      "status_changed": 16,
+      "renumber_candidate": 0
+    },
+    "ordinary_coverage": 1.0,
+    "change_classes": {
+      "unchanged": 20,
+      "status_changed": 15,
+      "text_and_status_changed": 1
+    },
+    "ambiguous_details": []
+  },
+  {
+    "older": "cap_614_20170224000000_en_p.xml",
+    "newer": "cap_614_20180420000000_en_p.xml",
+    "counts": {
+      "matched_by_id": 36,
+      "matched_by_temporalId": 0,
+      "matched_by_unique_num": 0,
+      "added": 0,
+      "ambiguous": 0,
+      "unmatched_old": 0,
+      "text_changed": 7,
+      "status_changed": 1,
+      "renumber_candidate": 0
+    },
+    "ordinary_coverage": 1.0,
+    "change_classes": {
+      "unchanged": 29,
+      "text_changed": 6,
+      "text_and_status_changed": 1
+    },
+    "ambiguous_details": []
+  },
+  {
+    "older": "cap_614_20180420000000_en_p.xml",
+    "newer": "cap_614_20180628000000_en_p.xml",
+    "counts": {
+      "matched_by_id": 36,
+      "matched_by_temporalId": 0,
+      "matched_by_unique_num": 0,
+      "added": 0,
+      "ambiguous": 0,
+      "unmatched_old": 0,
+      "text_changed": 3,
+      "status_changed": 3,
+      "renumber_candidate": 0
+    },
+    "ordinary_coverage": 1.0,
+    "change_classes": {
+      "unchanged": 33,
+      "text_and_status_changed": 3
+    },
+    "ambiguous_details": []
+  },
+  {
+    "older": "cap_614_20180628000000_en_p.xml",
+    "newer": "cap_614_20200612000000_en_p.xml",
+    "counts": {
+      "matched_by_id": 36,
+      "matched_by_temporalId": 0,
+      "matched_by_unique_num": 0,
+      "added": 0,
+      "ambiguous": 0,
+      "unmatched_old": 0,
+      "text_changed": 1,
+      "status_changed": 0,
+      "renumber_candidate": 0
+    },
+    "ordinary_coverage": 1.0,
+    "change_classes": {
+      "unchanged": 35,
+      "text_changed": 1
+    },
+    "ambiguous_details": []
+  },
+  {
+    "older": "cap_614_20200612000000_en_p.xml",
+    "newer": "cap_614_20220224000000_en_p.xml",
+    "counts": {
+      "matched_by_id": 36,
+      "matched_by_temporalId": 0,
+      "matched_by_unique_num": 0,
+      "added": 0,
+      "ambiguous": 0,
+      "unmatched_old": 0,
+      "text_changed": 1,
+      "status_changed": 0,
+      "renumber_candidate": 0
+    },
+    "ordinary_coverage": 1.0,
+    "change_classes": {
+      "unchanged": 35,
+      "text_changed": 1
+    },
+    "ambiguous_details": []
+  },
+  {
+    "older": "cap_614_20220224000000_en_p.xml",
+    "newer": "cap_614_20240323000000_en_p.xml",
+    "counts": {
+      "matched_by_id": 36,
+      "matched_by_temporalId": 0,
+      "matched_by_unique_num": 0,
+      "added": 0,
+      "ambiguous": 0,
+      "unmatched_old": 0,
+      "text_changed": 1,
+      "status_changed": 0,
+      "renumber_candidate": 0
+    },
+    "ordinary_coverage": 1.0,
+    "change_classes": {
+      "unchanged": 35,
+      "text_changed": 1
+    },
+    "ambiguous_details": []
+  },
+  {
+    "older": "cap_614_20240323000000_en_p.xml",
+    "newer": "cap_614_20240719000000_en_p.xml",
+    "counts": {
+      "matched_by_id": 36,
+      "matched_by_temporalId": 0,
+      "matched_by_unique_num": 0,
+      "added": 1,
+      "ambiguous": 0,
+      "unmatched_old": 0,
+      "text_changed": 4,
+      "status_changed": 0,
+      "renumber_candidate": 0
+    },
+    "ordinary_coverage": 1.0,
+    "change_classes": {
+      "unchanged": 32,
+      "text_changed": 4,
+      "added": 1
+    },
+    "ambiguous_details": []
+  },
+  {
+    "older": "cap_614_20240719000000_en_p.xml",
+    "newer": "cap_614_20260601000000_en_c.xml",
+    "counts": {
+      "matched_by_id": 37,
+      "matched_by_temporalId": 0,
+      "matched_by_unique_num": 0,
+      "added": 0,
+      "ambiguous": 0,
+      "unmatched_old": 0,
+      "text_changed": 2,
+      "status_changed": 2,
+      "renumber_candidate": 0
+    },
+    "ordinary_coverage": 1.0,
+    "change_classes": {
+      "unchanged": 35,
+      "text_and_status_changed": 2
+    },
+    "ambiguous_details": []
+  }
+]

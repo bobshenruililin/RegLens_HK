@@ -74,9 +74,7 @@ def inspect_zip(path: Path, limits: ResourceLimits = DEFAULT_LIMITS) -> dict:
             if info.is_dir():
                 continue
             if info.file_size > limits.max_individual_file_bytes:
-                raise ZipSecurityError(
-                    f"member too large: {info.filename!r} ({info.file_size})"
-                )
+                raise ZipSecurityError(f"member too large: {info.filename!r} ({info.file_size})")
             total_uncompressed += info.file_size
             if total_uncompressed > limits.max_total_uncompressed_bytes:
                 raise ZipSecurityError("total uncompressed size exceeds limit")

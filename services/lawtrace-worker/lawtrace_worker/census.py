@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import re
-from collections import defaultdict
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
@@ -68,16 +67,6 @@ def extract_title(root) -> str | None:
 def count_top_level_sections(root) -> int:
     """Count section elements that are not nested inside another section."""
     count = 0
-    for el in root.iter():
-        if local_name(el.tag) != "section":
-            continue
-        parent = None
-        # ElementTree has no parent pointer; approximate via path walk later if needed.
-        # Conservative: count all section elements that have no ancestor section by
-        # checking whether any section contains this element — expensive.
-        # Instead: sections whose parent local-name is not section/subsection.
-        # Without parent map, build parent map once.
-        break
     parent_map = {c: p for p in root.iter() for c in p}
     for el in root.iter():
         if local_name(el.tag) != "section":
@@ -119,7 +108,9 @@ def structure_flags(root) -> dict[str, bool]:
     return flags
 
 
-def census_directory(dir_path: Path, languages: set[str] | None = None) -> dict[str, InstrumentCensus]:
+def census_directory(
+    dir_path: Path, languages: set[str] | None = None
+) -> dict[str, InstrumentCensus]:
     languages = languages or {"en"}
     by_key: dict[str, InstrumentCensus] = {}
     for path in sorted(dir_path.glob("*.xml")):
@@ -179,7 +170,9 @@ def census_to_jsonable(rows: dict[str, InstrumentCensus]) -> list[dict]:
         d = asdict(row)
         d["census_key"] = key
         d["unique_versions"] = len(set(row.version_timestamps))
-        d["max_top_level_sections"] = max(row.top_level_section_counts) if row.top_level_section_counts else 0
+        d["max_top_level_sections"] = (
+            max(row.top_level_section_counts) if row.top_level_section_counts else 0
+        )
         out.append(d)
     return out
 

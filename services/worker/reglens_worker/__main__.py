@@ -395,6 +395,7 @@ def cmd_sources_sync(args: argparse.Namespace) -> int:
             live=bool(args.live),
             fixture_dir=args.fixture_dir,
             limit=args.limit,
+            max_requests_per_run=args.max_requests,
         )
     except (PolicyError, SourceSyncError, ValueError, RuntimeError) as exc:
         print(f"sources sync FAILED: {exc}", file=sys.stderr)
@@ -664,6 +665,12 @@ def main(argv: list[str] | None = None) -> int:
     )
     p_src_sync.add_argument("--acquire", action="store_true", help="Alias for --mode acquire")
     p_src_sync.add_argument("--limit", type=int, default=None, help="Max items to process")
+    p_src_sync.add_argument(
+        "--max-requests",
+        type=int,
+        default=None,
+        help="Override policy max_requests_per_run for this sync",
+    )
     p_src_sync.add_argument("--fixture-dir", default="fixtures/source_html")
     p_src_sync.set_defaults(func=cmd_sources_sync)
 

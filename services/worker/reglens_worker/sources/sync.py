@@ -17,7 +17,7 @@ from psycopg.types.json import Jsonb
 
 from reglens_worker.pg.conn import transaction
 
-from .adapters.base import BaseSourceAdapter, SourceItem
+from .adapters.base import BaseSourceAdapter, FetchHtml, SourceItem
 from .adapters.dchk import DchkAdapter
 from .adapters.health import assert_parser_health, check_parser_health
 from .adapters.mchk import MchkAdapter
@@ -28,6 +28,7 @@ from .policy import (
     assert_live_prerequisites,
     assert_mode_allows_acquire,
     get_policy,
+    user_agent_contact,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
@@ -91,30 +92,53 @@ def sync_source(
     http_client_factory: Callable[[Policy], SafeHttpClient] | None = None,
     conn: psycopg.Connection | None = None,
     limit: int | None = None,
+    max_requests_per_run: int | None = None,
 ) -> SyncResult:
     """
     Run metadata discovery and optional acquisition for one source.
 
     Fixture replay is used unless `live=True`. Non-dry-run persistence and document
-    acquisition both require policy/live prerequisites.
+    acquisition both require policy/live prerequisites. Dry-run live metadata health
+    only requires an operator contact User-Agent (no Postgres).
     """
     policy = assert_enabled(get_policy(source_id))
     if acquire:
         policy = assert_mode_allows_acquire(policy)
-    if live or acquire or not dry_run:
+    if acquire or not dry_run:
         assert_live_prerequisites(policy)
+    elif live:
+        # Manual/CI live metadata health: network + contact only.
+        user_agent_contact(policy)
+
+    if max_requests_per_run is not None:
+        if max_requests_per_run < 1:
+            raise SourceSyncError("--max-requests must be >= 1")
+        policy = dict(policy)
+        policy["max_requests_per_run"] = int(max_requests_per_run)
 
     adapter = get_adapter(source_id)
     mode = _sync_mode(dry_run=dry_run, acquire=acquire)
     run_id = uuid.uuid4()
+    client_factory = http_client_factory or _default_http_client_factory
+    live_client = client_factory(policy) if live else None
     index_url, index_html, fetch_result = _load_index(
         policy,
         adapter,
         live=live,
         fixture_dir=Path(fixture_dir),
-        http_client_factory=http_client_factory,
+        client=live_client,
     )
-    fetch_html = _fixture_fetcher(adapter, Path(fixture_dir), index_url) if not live else None
+    fetch_html: FetchHtml
+    if live:
+        assert live_client is not None
+
+        def _live_fetch_html(url: str) -> str:
+            result = live_client.fetch(url, purpose="index")
+            return result.temp_path.read_text(encoding="utf-8")
+
+        fetch_html = _live_fetch_html
+    else:
+        fetch_html = _fixture_fetcher(adapter, Path(fixture_dir), index_url)
     items = list(adapter.discover(index_html, base_url=index_url, fetch_html=fetch_html))
     if limit is not None:
         if limit < 0:
@@ -129,8 +153,7 @@ def sync_source(
 
     acquired_count = 0
     if acquire:
-        client_factory = http_client_factory or _default_http_client_factory
-        client = client_factory(policy)
+        client = live_client or client_factory(policy)
         for item in items:
             if not item.document_url:
                 continue
@@ -205,12 +228,13 @@ def _load_index(
     *,
     live: bool,
     fixture_dir: Path,
-    http_client_factory: Callable[[Policy], SafeHttpClient] | None,
+    client: SafeHttpClient | None = None,
 ) -> tuple[str, str, FetchResult | None]:
     index_url = str(policy["official_index_urls"][0])
     if live:
-        client_factory = http_client_factory or _default_http_client_factory
-        result = client_factory(policy).fetch(index_url, purpose="index")
+        if client is None:
+            raise SourceSyncError("live index fetch requires a shared SafeHttpClient")
+        result = client.fetch(index_url, purpose="index")
         return index_url, result.temp_path.read_text(encoding="utf-8"), result
 
     fixture_path = _fixture_path(adapter, fixture_dir)
@@ -246,8 +270,14 @@ def _fixture_fetcher(
 
 
 def _required_markers(source_id: str) -> tuple[str, ...]:
+    # Health passes when at least one marker is present (synthetic or live layout).
     if source_id == "mchk_judgments":
-        return ("#judgment-years", "table#judgments")
+        return (
+            "#judgment-years",
+            "table#judgments",
+            'a[href*="year="]',
+            'a[href*="_judgments"]',
+        )
     if source_id == "dchk_judgments":
         return ("table#judgments",)
     return ()

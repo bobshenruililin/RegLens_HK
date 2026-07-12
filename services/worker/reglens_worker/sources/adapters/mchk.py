@@ -1,18 +1,26 @@
-"""Medical Council of Hong Kong source adapter for synthetic RC3 fixtures."""
+"""Medical Council of Hong Kong source adapter (synthetic fixtures + live HTML)."""
 
 from __future__ import annotations
 
 import re
 from collections.abc import Mapping, Sequence
 from typing import Any
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse, urlunparse
 
 from bs4 import BeautifulSoup, Tag
 
+from ..http_client import RequestBudgetExceededError
 from .base import BaseSourceAdapter, FetchHtml, SourceItem
 
 _SPLIT_RE = re.compile(r"\s*(?:;|\||\n|,|\s/\s)\s*")
+_INQUIRY_SPLIT_RE = re.compile(r"\s*(?:,|\band\b)\s*", re.IGNORECASE)
 _SPACE_RE = re.compile(r"\s+")
+_YEAR_TEXT_RE = re.compile(r"^20\d{2}$")
+_YEAR_HREF_RE = re.compile(
+    r"(?:[?&]year=20\d{2}\b)|(?:20\d{2}_judgments(?:_inquiry)?\.htm\b)",
+    re.IGNORECASE,
+)
+_CASE_REF_RE = re.compile(r"\bMC\s*\d{1,3}\s*/\s*\d{1,4}\b", re.IGNORECASE)
 
 
 class MchkAdapter(BaseSourceAdapter):
@@ -20,7 +28,7 @@ class MchkAdapter(BaseSourceAdapter):
 
     source_id = "mchk_judgments"
     adapter_id = "mchk_html_index"
-    adapter_version = "1.0.0"
+    adapter_version = "1.1.0"
 
     def discover(
         self,
@@ -34,7 +42,11 @@ class MchkAdapter(BaseSourceAdapter):
         if fetch_html is not None:
             for href in _year_links(soup):
                 page_url = urljoin(base_url, href)
-                pages.append((page_url, fetch_html(page_url)))
+                try:
+                    pages.append((page_url, fetch_html(page_url)))
+                except RequestBudgetExceededError:
+                    # Live health checks intentionally use a tiny request budget.
+                    break
 
         items: list[SourceItem] = []
         seen: set[str] = set()
@@ -50,7 +62,7 @@ class MchkAdapter(BaseSourceAdapter):
 
     def normalize_item(self, raw: Mapping[str, Any]) -> SourceItem:
         case_refs = tuple(_split_values(str(raw.get("case_refs") or "")))
-        inquiry_dates = tuple(_split_values(str(raw.get("inquiry_dates") or "")))
+        inquiry_dates = tuple(_split_inquiry_dates(str(raw.get("inquiry_dates") or "")))
         first_ref = case_refs[0] if case_refs else str(raw.get("source_item_key") or "")
         source_item_key = _key(first_ref)
         metadata = {
@@ -61,10 +73,14 @@ class MchkAdapter(BaseSourceAdapter):
         if raw.get("metadata"):
             metadata.update(dict(raw["metadata"]))
 
+        title = _clean(raw.get("title"))
+        if not title and first_ref:
+            title = f"MCHK judgment {first_ref}"
+
         return SourceItem(
             source_id=self.source_id,
             source_item_key=source_item_key,
-            title=_clean(raw.get("title")),
+            title=title,
             source_url=_clean(raw.get("source_url")),
             document_url=_clean(raw.get("document_url")),
             case_refs=case_refs,
@@ -77,15 +93,29 @@ class MchkAdapter(BaseSourceAdapter):
 
 
 def _year_links(soup: BeautifulSoup) -> list[str]:
+    """Collect year index hrefs from synthetic or live root pages."""
     links: list[str] = []
+    seen: set[str] = set()
     for anchor in soup.find_all("a", href=True):
         if not isinstance(anchor, Tag):
             continue
+        href = str(anchor["href"]).strip()
+        if not href or href.startswith("#"):
+            continue
         classes = set(anchor.get("class", []))
-        href = str(anchor["href"])
         text = anchor.get_text(" ", strip=True)
-        if "year-link" in classes or anchor.get("data-year") or re.search(r"\b20\d{2}\b", text):
-            links.append(href)
+        marked = "year-link" in classes or anchor.get("data-year") is not None
+        live_shaped = bool(_YEAR_HREF_RE.search(href)) or (
+            bool(_YEAR_TEXT_RE.fullmatch(text))
+            and ("year=" in href or href.lower().endswith((".htm", ".html", ".php")))
+        )
+        if not (marked or live_shaped):
+            continue
+        key = href.lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        links.append(href)
     return links
 
 
@@ -94,10 +124,32 @@ def _judgment_rows(soup: BeautifulSoup) -> list[Tag]:
     for row in soup.select("[data-judgment-row], tr.judgment-row, table#judgments tbody tr"):
         if isinstance(row, Tag):
             rows.append(row)
+    if rows:
+        return rows
+
+    # Live MCHK pages use unmarked tables: Date of Inquiry | Case Reference No. | Judgment
+    for table in soup.find_all("table"):
+        if not isinstance(table, Tag):
+            continue
+        header = table.find("tr")
+        if not isinstance(header, Tag):
+            continue
+        header_text = header.get_text(" ", strip=True).lower()
+        if "case reference" not in header_text or "inquiry" not in header_text:
+            continue
+        for row in table.find_all("tr")[1:]:
+            if isinstance(row, Tag) and row.find("td"):
+                rows.append(row)
     return rows
 
 
 def _raw_row(row: Tag, page_url: str) -> dict[str, Any]:
+    if row.select_one(".case-refs") or row.get("data-case-refs") or row.select_one(".title"):
+        return _raw_row_synthetic(row, page_url)
+    return _raw_row_live(row, page_url)
+
+
+def _raw_row_synthetic(row: Tag, page_url: str) -> dict[str, Any]:
     pdf_link = _first_link(row, ".pdf-link")
     if pdf_link is None:
         pdf_link = _first_pdf_link(row)
@@ -115,6 +167,34 @@ def _raw_row(row: Tag, page_url: str) -> dict[str, Any]:
         "published_date": row.get("data-published-date") or _text(row, ".published-date"),
         "metadata": {"source_page_url": page_url},
     }
+
+
+def _raw_row_live(row: Tag, page_url: str) -> dict[str, Any]:
+    inquiry_raw = _cell_text(row, 0)
+    case_refs = _cell_text(row, 1)
+    if not case_refs:
+        blob = row.get_text(" ", strip=True)
+        match = _CASE_REF_RE.search(blob or "")
+        case_refs = match.group(0) if match else None
+    pdf_link = _first_pdf_link(row)
+
+    return {
+        "source_item_key": case_refs,
+        "title": f"MCHK judgment {case_refs}" if case_refs else None,
+        "source_url": _canonical_page_url(page_url),
+        "document_url": urljoin(page_url, pdf_link) if pdf_link else None,
+        "case_refs": case_refs,
+        "inquiry_dates": inquiry_raw,
+        # Live index exposes inquiry dates only; do not invent judgment dates.
+        "judgment_date": None,
+        "published_date": None,
+        "metadata": {"source_page_url": page_url, "layout": "live_inquiry_table"},
+    }
+
+
+def _canonical_page_url(page_url: str) -> str:
+    parsed = urlparse(page_url)
+    return urlunparse((parsed.scheme, parsed.netloc, parsed.path, "", parsed.query, ""))
 
 
 def _first_link(row: Tag, selector: str) -> str | None:
@@ -153,6 +233,17 @@ def _split_values(value: str) -> list[str]:
         if cleaned:
             out.append(cleaned)
     return out
+
+
+def _split_inquiry_dates(value: str) -> list[str]:
+    cleaned = _clean(value)
+    if not cleaned:
+        return []
+    # Synthetic fixtures use ISO lists separated by ";" already handled by _split_values.
+    if ";" in cleaned or "|" in cleaned or " / " in cleaned:
+        return _split_values(cleaned)
+    parts = [p for p in (_clean(part) for part in _INQUIRY_SPLIT_RE.split(cleaned)) if p]
+    return parts or [cleaned]
 
 
 def _clean(value: object) -> str | None:

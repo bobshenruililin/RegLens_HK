@@ -10,7 +10,7 @@
   "dataset_mode": "demo",
   "from_label": "Official open-data snapshot dated 2012-07-27",
   "from_version": "cap_614_20120727000000_en_p.xml",
-  "generation_timestamp": "2026-07-12T03:50:46Z",
+  "generation_timestamp": "2026-07-12T03:57:27Z",
   "instrument_id": "cap:614",
   "items": [
     {

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { RedlineView } from "@/components/RedlineView";
+import { ComparePanels } from "@/components/ComparePanels";
 import { StatusNotice } from "@/components/StatusNotice";
 import {
   loadRootManifest,
@@ -61,6 +61,20 @@ export default function ComparePage({
   ).find((i) => i.section_id === sectionId);
   if (!item) notFound();
 
+  const comparisonPayload = {
+    instrument_id: data.instrument_id,
+    transition_id: tid,
+    from_version: from,
+    to_version: to,
+    from_label: data.from_label,
+    to_label: data.to_label,
+    section: item,
+    disclaimer:
+      "Informational comparison of official open-data snapshots only. Not a verified copy.",
+  };
+  const downloadHref = `data:application/json;charset=utf-8,${encodeURIComponent(
+    JSON.stringify(comparisonPayload, null, 2),
+  )}`;
   const downloadName = `${params.id}-${sectionId}-compare.json`;
 
   return (
@@ -100,40 +114,22 @@ export default function ComparePage({
         <br />
         Reconstruction OK: {String(item.reconstruction_ok)}
         <br />
+        Deep link: this page URL (survives refresh)
+        <br />
         Official portal:{" "}
         <a href={HKEL} rel="noreferrer">
           {HKEL}
         </a>
       </p>
 
-      <h2 className="section-title">Inline redline (legal-text channel)</h2>
-      <RedlineView lines={(item.highlight_legal_text as string[]) || []} />
-
-      <h2 className="section-title">Side-by-side canonical plain text</h2>
-      <div className="side-by-side" style={{ marginTop: "0.75rem" }}>
-        <div>
-          <h3>Snapshot A</h3>
-          <pre className="redline">{String(item.plain_text_a || "")}</pre>
-        </div>
-        <div>
-          <h3>Snapshot B</h3>
-          <pre className="redline">{String(item.plain_text_b || "")}</pre>
-        </div>
-      </div>
-
-      <h2 className="section-title">Metadata / status channel</h2>
-      <pre className="redline">
-        {JSON.stringify(item.metadata_ops || [], null, 2)}
-      </pre>
-      <p className="meta">
-        Status-only changes are listed here and are not presented as textual
-        amendments.
-      </p>
-
-      <h2 className="section-title">Structural channel</h2>
-      <pre className="redline">
-        {JSON.stringify(item.structural_ops || [], null, 2)}
-      </pre>
+      <ComparePanels
+        highlightLegalText={(item.highlight_legal_text as string[]) || []}
+        plainTextA={String(item.plain_text_a || "")}
+        plainTextB={String(item.plain_text_b || "")}
+        metadataOps={item.metadata_ops}
+        structuralOps={item.structural_ops}
+        relationship={String(item.relationship)}
+      />
 
       <h2 className="section-title">Provenance</h2>
       <div className="side-by-side">
@@ -142,12 +138,15 @@ export default function ComparePage({
       </div>
 
       <p style={{ marginTop: "1rem" }}>
+        <a className="btn secondary" href={downloadHref} download={downloadName}>
+          Download comparison JSON
+        </a>{" "}
         <a
           className="btn secondary"
           href={`/data/instruments/${params.id}/transitions/${tid}.json`}
-          download={downloadName}
+          download={`${params.id}-transition.json`}
         >
-          Download transition JSON
+          Download full transition JSON
         </a>
       </p>
     </>

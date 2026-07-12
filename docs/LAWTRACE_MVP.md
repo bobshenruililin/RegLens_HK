@@ -27,10 +27,16 @@ make lawtrace-web-data
 # 3) Export (default limiter: 30 even-span versions; omit for all):
 make lawtrace-web-data-local
 
-# App
+# App (dev)
 cd apps/lawtrace && npm ci && npm run dev
-# production build
+
+# Production build (demo)
 make lawtrace-build
+
+# Local showcase with private audit UI
+cd apps/lawtrace && NEXT_PUBLIC_LAWTRACE_AUDIT=1 npm run build
+# Serve out/ with a static server that prefers index.html for directories
+# (plain `npx serve` may show directory listings when index.txt is present).
 ```
 
 ## Modes
@@ -42,3 +48,8 @@ make lawtrace-build
 
 Cap. 599G local export uses `--cap599g-max-versions 30` by default and labels
 the corpus as **sampled, not complete**.
+
+## Note on `make verify`
+
+RegLens `demo-ingest` removes the top-level `data/` directory. Re-place LawTrace
+raw/extracts afterwards if you need Cap. 599G local mode again.

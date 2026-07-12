@@ -332,6 +332,30 @@ table.data th {
   margin: 1rem 0 0.75rem;
 }
 
+.tablist {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  margin: 1rem 0 0.75rem;
+}
+
+.tab {
+  border: 1px solid var(--line);
+  background: #fff;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+.tab.active,
+.tab[aria-selected="true"] {
+  border-color: var(--accent);
+  background: rgba(31, 79, 91, 0.08);
+  font-weight: 600;
+}
+
 .tabs a,
 .tabs button {
   border: 1px solid var(--line);

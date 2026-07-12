@@ -60,11 +60,12 @@ def test_missing_local_cap599g_is_explicit(tmp_path: Path) -> None:
     caps = {i["slug"]: i for i in root["instruments"]}
     assert caps["cap-614"]["available"] is True
     assert caps["cap-599g"]["available"] is False
-    assert "missing" in caps["cap-599g"]["missing_reason"].lower() or "not found" in caps[
-        "cap-599g"
-    ]["missing_reason"].lower() or "absent" in caps["cap-599g"]["missing_reason"].lower() or len(
-        caps["cap-599g"]["missing_reason"]
-    ) > 10
+    assert (
+        "missing" in caps["cap-599g"]["missing_reason"].lower()
+        or "not found" in caps["cap-599g"]["missing_reason"].lower()
+        or "absent" in caps["cap-599g"]["missing_reason"].lower()
+        or len(caps["cap-599g"]["missing_reason"]) > 10
+    )
 
 
 def test_cli_demo_writes_root_manifest(tmp_path: Path) -> None:

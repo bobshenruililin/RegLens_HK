@@ -62,20 +62,27 @@ jobs:
 
       - name: No raw ZIP / bulk XML / private council paths tracked
         run: |
-          set -e
-          if git ls-files '*.zip' | rg -n 'lawtrace|hkel|cap_599|private-data' ; then
+          set -euo pipefail
+          # git ls-files exits 0 even with zero matches — always gate on non-empty output.
+          if git ls-files '*.zip' | grep -E 'lawtrace|hkel|cap_599|private-data' ; then
             echo "Tracked ZIP matching LawTrace/private patterns" >&2
             exit 1
           fi
-          if git ls-files 'apps/lawtrace/public/data/**/*.xml' 'apps/lawtrace/public/data/**/*.zip' ; then
+          if git ls-files \
+              'apps/lawtrace/public/data/**/*.xml' \
+              'apps/lawtrace/public/data/**/*.zip' \
+            | grep -q . ; then
             echo "Raw XML/ZIP under LawTrace public data" >&2
+            git ls-files \
+              'apps/lawtrace/public/data/**/*.xml' \
+              'apps/lawtrace/public/data/**/*.zip' >&2
             exit 1
           fi
-          if git ls-files 'apps/lawtrace/public/data/instruments/cap-599g/**' | head -1 | grep -q . ; then
+          if git ls-files 'apps/lawtrace/public/data/instruments/cap-599g/**' | grep -q . ; then
             echo "Cap. 599G web artifacts must remain untracked" >&2
             exit 1
           fi
-          if git ls-files 'private-data/**' | head -1 | grep -q . ; then
+          if git ls-files 'private-data/**' | grep -q . ; then
             echo "private-data must not be tracked" >&2
             exit 1
           fi

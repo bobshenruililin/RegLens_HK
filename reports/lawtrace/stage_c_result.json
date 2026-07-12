@@ -1,0 +1,32 @@
+{
+  "comparator_version": "lawtrace-comparator/1.0.0",
+  "comparison_count": 398,
+  "determinism": {
+    "artifact_hashes_equal": true,
+    "canonical_hashes_equal": true,
+    "classifications_equal": true,
+    "comparison_count": 398,
+    "diff_ops_equal": true,
+    "pass": true,
+    "summary_equal": true
+  },
+  "disclaimer": "LawTrace displays transformations of open data obtained through DATA.GOV.HK. This comparison shows differences between two official open-data XML versions of a legislative section. It does not claim that displayed text was the law in force on a selected date, that version dates are commencement or effective dates, that LawTrace output is a verified copy, or that an automatically matched structural event is legally conclusive. For an official verified copy, consult Hong Kong e-Legislation (HKeL).",
+  "elapsed_seconds": 1.4,
+  "gate_pass": true,
+  "instrument": "cap:614",
+  "reconstruction_failures": [],
+  "reconstruction_success_rate": 1.0,
+  "relationship_counts": {
+    "added": 6,
+    "status_changed": 13,
+    "text_and_status_changed": 21,
+    "text_changed": 15,
+    "unchanged": 343
+  },
+  "renderability_counts": {
+    "complete": 784
+  },
+  "supported_pairs": 392,
+  "supported_reconstruction_ok": 392,
+  "version_count": 12
+}

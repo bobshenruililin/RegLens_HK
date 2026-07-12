@@ -1,5 +1,6 @@
 .PHONY: verify test lint typecheck fixtures web-ci studio-ci site-ci lock \
-	lawtrace-deps \
+	lawtrace-deps lawtrace-web-data lawtrace-web-data-local lawtrace-build lawtrace-ci \
+	lawtrace-preview lawtrace-preview-local lawtrace-build-local \
 	demo-ingest demo-release demo-enqueue worker-once studio-dev site-dev \
 	site-build pages-artifact public-scan \
 	integration db-up db-down db-reset-local db-migrate db-status \
@@ -278,3 +279,45 @@ lock:
 
 lawtrace-deps:
 	pip install -r services/lawtrace-worker/requirements.txt
+
+lawtrace-web-data:
+	PYTHONPATH=services/lawtrace-worker:$(PYTHONPATH) python -m lawtrace_worker.export_web --mode demo --out apps/lawtrace/public/data
+
+# Complete Cap. 599G local-real export (all available EN snapshots). Gitignored.
+lawtrace-web-data-local:
+	@test -d data/lawtrace/extracted/cap599g || (echo "Missing Cap. 599G extracts at data/lawtrace/extracted/cap599g. See docs/LAWTRACE_MVP.md" >&2; exit 1)
+	PYTHONPATH=services/lawtrace-worker:$(PYTHONPATH) python -m lawtrace_worker.export_web --mode local --out apps/lawtrace/public/data --cap599g-dir data/lawtrace/extracted/cap599g
+
+lawtrace-build: lawtrace-web-data
+	@rm -rf apps/lawtrace/app/review apps/lawtrace/app/audit
+	cd apps/lawtrace && npm ci && npm run typecheck && npm run build
+
+lawtrace-build-local: lawtrace-web-data-local
+	@rm -rf apps/lawtrace/app/review apps/lawtrace/app/audit
+	@if [ "$${LAWTRACE_LOCAL_REVIEW}" = "1" ]; then \
+		mkdir -p apps/lawtrace/app/review && \
+		cp apps/lawtrace/optional/review/page.tsx apps/lawtrace/app/review/page.tsx; \
+	fi
+	cd apps/lawtrace && npm ci && npm run typecheck && npm run build
+	@rm -rf apps/lawtrace/app/review
+
+lawtrace-ci: lawtrace-build
+	@test -f apps/lawtrace/out/index.html
+	@test -f apps/lawtrace/out/methodology/index.html
+	@test -f apps/lawtrace/out/insights/index.html
+	@test -f apps/lawtrace/out/collections/index.html
+	@test -f apps/lawtrace/out/instruments/cap-614/index.html
+	@test ! -d apps/lawtrace/out/review
+	@test ! -d apps/lawtrace/out/audit
+	@echo "LawTrace demo CI build OK"
+
+# Demo preview: generate + build + serve with correct index.html behaviour.
+lawtrace-preview: lawtrace-build
+	@command -v python3 >/dev/null || (echo "python3 required" >&2; exit 1)
+	@test -d apps/lawtrace/node_modules || (echo "Run npm ci in apps/lawtrace first (lawtrace-build should have done this)" >&2; exit 1)
+	python3 scripts/lawtrace_static_server.py --dir apps/lawtrace/out --port 3010
+
+# Local-real Cap. 599G preview (complete export when extracts exist).
+lawtrace-preview-local: lawtrace-build-local
+	@command -v python3 >/dev/null || (echo "python3 required" >&2; exit 1)
+	python3 scripts/lawtrace_static_server.py --dir apps/lawtrace/out --port 3010

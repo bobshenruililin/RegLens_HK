@@ -1,0 +1,112 @@
+name: LawTrace
+
+on:
+  pull_request:
+    paths:
+      - "apps/lawtrace/**"
+      - "services/lawtrace-worker/**"
+      - "tests/lawtrace/**"
+      - "fixtures/lawtrace/**"
+      - "scripts/lawtrace_static_server.py"
+      - "Makefile"
+      - ".github/workflows/lawtrace.yml"
+      - "docs/LAWTRACE_MVP.md"
+  push:
+    branches: [main, "cursor/**"]
+    paths:
+      - "apps/lawtrace/**"
+      - "services/lawtrace-worker/**"
+      - "tests/lawtrace/**"
+      - "fixtures/lawtrace/**"
+      - "scripts/lawtrace_static_server.py"
+      - "Makefile"
+      - ".github/workflows/lawtrace.yml"
+
+jobs:
+  lawtrace:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: apps/lawtrace/package-lock.json
+
+      - name: Install Python deps
+        run: |
+          pip install -r services/worker/requirements.txt
+          if [ -f services/lawtrace-worker/requirements.txt ]; then
+            pip install -r services/lawtrace-worker/requirements.txt
+          fi
+
+      - name: LawTrace pytest
+        env:
+          PYTHONPATH: services/worker:services/lawtrace-worker
+        run: pytest tests/lawtrace -q
+
+      - name: Demo web-data export
+        env:
+          PYTHONPATH: services/worker:services/lawtrace-worker
+        run: make lawtrace-web-data
+
+      - name: Validate demo artifacts
+        env:
+          PYTHONPATH: services/worker:services/lawtrace-worker
+        run: pytest tests/lawtrace/test_demo_artifacts.py tests/lawtrace/test_export_web.py -q
+
+      - name: No raw ZIP / bulk XML / private council paths tracked
+        run: |
+          set -euo pipefail
+          # git ls-files exits 0 even with zero matches — always gate on non-empty output.
+          if git ls-files '*.zip' | grep -E 'lawtrace|hkel|cap_599|private-data' ; then
+            echo "Tracked ZIP matching LawTrace/private patterns" >&2
+            exit 1
+          fi
+          if git ls-files \
+              'apps/lawtrace/public/data/**/*.xml' \
+              'apps/lawtrace/public/data/**/*.zip' \
+            | grep -q . ; then
+            echo "Raw XML/ZIP under LawTrace public data" >&2
+            git ls-files \
+              'apps/lawtrace/public/data/**/*.xml' \
+              'apps/lawtrace/public/data/**/*.zip' >&2
+            exit 1
+          fi
+          if git ls-files 'apps/lawtrace/public/data/instruments/cap-599g/**' | grep -q . ; then
+            echo "Cap. 599G web artifacts must remain untracked" >&2
+            exit 1
+          fi
+          if git ls-files 'private-data/**' | grep -q . ; then
+            echo "private-data must not be tracked" >&2
+            exit 1
+          fi
+          echo "Tracked-data hygiene OK"
+
+      - name: Ensure review route source absent for public build
+        run: |
+          test ! -d apps/lawtrace/app/review
+          test ! -d apps/lawtrace/app/audit
+
+      - name: Typecheck + production build
+        working-directory: apps/lawtrace
+        run: |
+          npm ci
+          npm run typecheck
+          npm run build
+
+      - name: Required pages exist; review route absent
+        run: |
+          test -f apps/lawtrace/out/index.html
+          test -f apps/lawtrace/out/methodology/index.html
+          test -f apps/lawtrace/out/insights/index.html
+          test -f apps/lawtrace/out/collections/index.html
+          test -f apps/lawtrace/out/instruments/cap-614/index.html
+          test ! -d apps/lawtrace/out/review
+          test ! -d apps/lawtrace/out/audit
+          echo "LawTrace CI page checks OK"

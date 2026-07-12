@@ -28,3 +28,10 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 .venv/
+
+# LawTrace MVP
+apps/lawtrace/.next/
+apps/lawtrace/out/
+apps/lawtrace/tsconfig.tsbuildinfo
+apps/lawtrace/public/data/instruments/cap-599g/
+apps/lawtrace/public/data/.local-mode

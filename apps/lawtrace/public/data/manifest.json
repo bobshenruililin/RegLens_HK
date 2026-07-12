@@ -1,0 +1,50 @@
+{
+  "comparator_version": "lawtrace-comparator/1.0.0",
+  "dataset_mode": "demo",
+  "disclaimer": "LawTrace displays transformations of open data obtained through DATA.GOV.HK. This comparison shows differences between two official open-data XML versions of a legislative section. It does not claim that displayed text was the law in force on a selected date, that version dates are commencement or effective dates, that LawTrace output is a verified copy, or that an automatically matched structural event is legally conclusive. For an official verified copy, consult Hong Kong e-Legislation (HKeL).",
+  "generation_timestamp": "2026-07-12T04:28:40Z",
+  "instruments": [
+    {
+      "available": true,
+      "dataset_mode": "demo",
+      "example_comparison": {
+        "from_version": "cap_614_20120116000000_en_p.xml",
+        "heading": "1.",
+        "instrument_id": "cap:614",
+        "relationship": "text_changed",
+        "section_id": "ID_1438403528606_002",
+        "to_version": "cap_614_20120209000000_en_p.xml",
+        "transition_id": "cap_614_20120116000000_en_p.xml__to__cap_614_20120209000000_en_p.xml"
+      },
+      "instrument_id": "cap:614",
+      "path": "instruments/cap-614/manifest.json",
+      "sampling": {
+        "complete": true,
+        "limiter": null,
+        "strategy": "all",
+        "total_available_versions": 12,
+        "versions_included": 12
+      },
+      "section_count": 37,
+      "slug": "cap-614",
+      "title": "Legislation Publication Ordinance (Cap. 614)",
+      "version_count": 12
+    },
+    {
+      "available": false,
+      "dataset_mode": "demo",
+      "instrument_id": "cap:599G",
+      "missing_reason": "Cap. 599G local-real artifacts are gitignored. Run `make lawtrace-web-data-local` after acquiring official extracts.",
+      "path": "instruments/cap-599g/manifest.json",
+      "slug": "cap-599g",
+      "title": "Prevention and Control of Disease (Requirements and Directions) (Business and Premises) Regulation (Cap. 599G)"
+    }
+  ],
+  "normalization_version": "lawtrace-norm/0.2.0",
+  "parser_version": "lawtrace-parser/0.2.0",
+  "paths": {
+    "methodology": "methodology.json"
+  },
+  "product_promise": "Compare two official open-data versions of a Hong Kong legislative section and inspect what changed.",
+  "schema_version": "lawtrace-web/1.0.0"
+}

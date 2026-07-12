@@ -1,0 +1,285 @@
+{
+  "comparator_version": "lawtrace-comparator/1.0.0",
+  "dataset_mode": "demo",
+  "disclaimer": "LawTrace displays transformations of open data obtained through DATA.GOV.HK. This comparison shows differences between two official open-data XML versions of a legislative section. It does not claim that displayed text was the law in force on a selected date, that version dates are commencement or effective dates, that LawTrace output is a verified copy, or that an automatically matched structural event is legally conclusive. For an official verified copy, consult Hong Kong e-Legislation (HKeL).",
+  "generation_timestamp": "2026-07-12T04:28:40Z",
+  "instrument_id": "cap:614",
+  "normalization_version": "lawtrace-norm/0.2.0",
+  "notes": [
+    "All metrics are descriptive corpus measures derived from exported comparisons.",
+    "Change frequency is not a measure of legal importance.",
+    "No normative claims about legislative intent or public-health effect are made."
+  ],
+  "reconstruction": {
+    "ok": 392,
+    "rate": 1.0,
+    "total": 392
+  },
+  "relationship_totals": {
+    "added": 6,
+    "status_changed": 13,
+    "text_and_status_changed": 21,
+    "text_changed": 15,
+    "unchanged": 343
+  },
+  "renderability_distribution": {
+    "complete": 429
+  },
+  "sampling": {
+    "complete": true,
+    "limiter": null,
+    "strategy": "all",
+    "total_available_versions": 12,
+    "versions_included": 12
+  },
+  "schema_version": "lawtrace-web/1.0.0",
+  "sections_changed_most_frequently": [
+    {
+      "descriptive_change_count": 5,
+      "latest_heading": "Contents of database",
+      "latest_num": "4.",
+      "section_id": "ID_1438403528637_004"
+    },
+    {
+      "descriptive_change_count": 3,
+      "latest_heading": "Powers to make editorial amendments",
+      "latest_num": "12.",
+      "section_id": "ID_1438403528777_003"
+    },
+    {
+      "descriptive_change_count": 3,
+      "latest_heading": "Secretary for Justice to compile record of editorial\n amendments\n etc.",
+      "latest_num": "15.",
+      "section_id": "ID_1438403528808_004"
+    },
+    {
+      "descriptive_change_count": 3,
+      "latest_heading": "Interpretation",
+      "latest_num": "2.",
+      "section_id": "ID_1438403528621_001"
+    },
+    {
+      "descriptive_change_count": 2,
+      "latest_heading": "Powers to give chapter numbers etc.",
+      "latest_num": "11.",
+      "section_id": "ID_1438403528777_001"
+    },
+    {
+      "descriptive_change_count": 2,
+      "latest_heading": "Effect of editorial amendments",
+      "latest_num": "14.",
+      "section_id": "ID_1438403528793_004"
+    },
+    {
+      "descriptive_change_count": 2,
+      "latest_heading": null,
+      "latest_num": "16.",
+      "section_id": "ID_1438403528808_006"
+    },
+    {
+      "descriptive_change_count": 2,
+      "latest_heading": null,
+      "latest_num": "22.",
+      "section_id": "ID_1438403528871_001"
+    },
+    {
+      "descriptive_change_count": 2,
+      "latest_heading": null,
+      "latest_num": "29.",
+      "section_id": "ID_1438403528980_003"
+    },
+    {
+      "descriptive_change_count": 1,
+      "latest_heading": "Short title and commencement",
+      "latest_num": "1.",
+      "section_id": "ID_1438403528606_002"
+    },
+    {
+      "descriptive_change_count": 1,
+      "latest_heading": null,
+      "latest_num": "20.",
+      "section_id": "ID_1438403528855_001"
+    },
+    {
+      "descriptive_change_count": 1,
+      "latest_heading": null,
+      "latest_num": "21.",
+      "section_id": "ID_1438403528855_003"
+    },
+    {
+      "descriptive_change_count": 1,
+      "latest_heading": null,
+      "latest_num": "24.",
+      "section_id": "ID_1438403528886_005"
+    },
+    {
+      "descriptive_change_count": 1,
+      "latest_heading": null,
+      "latest_num": "25.",
+      "section_id": "ID_1438403528902_001"
+    },
+    {
+      "descriptive_change_count": 1,
+      "latest_heading": null,
+      "latest_num": "26.",
+      "section_id": "ID_1438403528902_003"
+    },
+    {
+      "descriptive_change_count": 1,
+      "latest_heading": null,
+      "latest_num": "30.",
+      "section_id": "ID_1438403528996_002"
+    },
+    {
+      "descriptive_change_count": 1,
+      "latest_heading": null,
+      "latest_num": "31.",
+      "section_id": "ID_1438403529011_002"
+    },
+    {
+      "descriptive_change_count": 1,
+      "latest_heading": null,
+      "latest_num": "32.",
+      "section_id": "ID_1438403529011_004"
+    },
+    {
+      "descriptive_change_count": 1,
+      "latest_heading": null,
+      "latest_num": "33.",
+      "section_id": "ID_1438403529027_001"
+    },
+    {
+      "descriptive_change_count": 1,
+      "latest_heading": null,
+      "latest_num": "34.",
+      "section_id": "ID_1438403529027_005"
+    }
+  ],
+  "stable_id_coverage_note": "Coverage reflects consecutive same-@id matches over included snapshots; additions/removals reduce matched/old-slot ratios without implying ambiguity.",
+  "textual_vs_status": {
+    "added": 6,
+    "removed": 0,
+    "status_only_events": 13,
+    "text_changed_events": 36
+  },
+  "token_flow": {
+    "legal_text_token_additions": 101,
+    "legal_text_token_deletions": 213
+  },
+  "transitions": [
+    {
+      "changed_count": 5,
+      "counts": {
+        "added": 5,
+        "unchanged": 31
+      },
+      "from_label": "Official open-data snapshot dated 2011-06-30",
+      "to_label": "Official open-data snapshot dated 2012-01-16",
+      "transition_id": "cap_614_20110630000000_en_p.xml__to__cap_614_20120116000000_en_p.xml"
+    },
+    {
+      "changed_count": 13,
+      "counts": {
+        "text_and_status_changed": 12,
+        "text_changed": 1,
+        "unchanged": 23
+      },
+      "from_label": "Official open-data snapshot dated 2012-01-16",
+      "to_label": "Official open-data snapshot dated 2012-02-09",
+      "transition_id": "cap_614_20120116000000_en_p.xml__to__cap_614_20120209000000_en_p.xml"
+    },
+    {
+      "changed_count": 1,
+      "counts": {
+        "text_changed": 1,
+        "unchanged": 35
+      },
+      "from_label": "Official open-data snapshot dated 2012-02-09",
+      "to_label": "Official open-data snapshot dated 2012-07-27",
+      "transition_id": "cap_614_20120209000000_en_p.xml__to__cap_614_20120727000000_en_p.xml"
+    },
+    {
+      "changed_count": 16,
+      "counts": {
+        "status_changed": 13,
+        "text_and_status_changed": 3,
+        "unchanged": 20
+      },
+      "from_label": "Official open-data snapshot dated 2012-07-27",
+      "to_label": "Official open-data snapshot dated 2017-02-24",
+      "transition_id": "cap_614_20120727000000_en_p.xml__to__cap_614_20170224000000_en_p.xml"
+    },
+    {
+      "changed_count": 7,
+      "counts": {
+        "text_and_status_changed": 1,
+        "text_changed": 6,
+        "unchanged": 29
+      },
+      "from_label": "Official open-data snapshot dated 2017-02-24",
+      "to_label": "Official open-data snapshot dated 2018-04-20",
+      "transition_id": "cap_614_20170224000000_en_p.xml__to__cap_614_20180420000000_en_p.xml"
+    },
+    {
+      "changed_count": 3,
+      "counts": {
+        "text_and_status_changed": 3,
+        "unchanged": 33
+      },
+      "from_label": "Official open-data snapshot dated 2018-04-20",
+      "to_label": "Official open-data snapshot dated 2018-06-28",
+      "transition_id": "cap_614_20180420000000_en_p.xml__to__cap_614_20180628000000_en_p.xml"
+    },
+    {
+      "changed_count": 1,
+      "counts": {
+        "text_changed": 1,
+        "unchanged": 35
+      },
+      "from_label": "Official open-data snapshot dated 2018-06-28",
+      "to_label": "Official open-data snapshot dated 2020-06-12",
+      "transition_id": "cap_614_20180628000000_en_p.xml__to__cap_614_20200612000000_en_p.xml"
+    },
+    {
+      "changed_count": 1,
+      "counts": {
+        "text_changed": 1,
+        "unchanged": 35
+      },
+      "from_label": "Official open-data snapshot dated 2020-06-12",
+      "to_label": "Official open-data snapshot dated 2022-02-24",
+      "transition_id": "cap_614_20200612000000_en_p.xml__to__cap_614_20220224000000_en_p.xml"
+    },
+    {
+      "changed_count": 1,
+      "counts": {
+        "text_changed": 1,
+        "unchanged": 35
+      },
+      "from_label": "Official open-data snapshot dated 2022-02-24",
+      "to_label": "Official open-data snapshot dated 2024-03-23",
+      "transition_id": "cap_614_20220224000000_en_p.xml__to__cap_614_20240323000000_en_p.xml"
+    },
+    {
+      "changed_count": 5,
+      "counts": {
+        "added": 1,
+        "text_changed": 4,
+        "unchanged": 32
+      },
+      "from_label": "Official open-data snapshot dated 2024-03-23",
+      "to_label": "Official open-data snapshot dated 2024-07-19",
+      "transition_id": "cap_614_20240323000000_en_p.xml__to__cap_614_20240719000000_en_p.xml"
+    },
+    {
+      "changed_count": 2,
+      "counts": {
+        "text_and_status_changed": 2,
+        "unchanged": 35
+      },
+      "from_label": "Official open-data snapshot dated 2024-07-19",
+      "to_label": "Official open-data snapshot dated 2026-06-01",
+      "transition_id": "cap_614_20240719000000_en_p.xml__to__cap_614_20260601000000_en_c.xml"
+    }
+  ]
+}

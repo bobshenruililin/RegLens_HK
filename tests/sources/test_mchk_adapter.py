@@ -49,12 +49,8 @@ def test_mchk_adapter_does_not_invent_judgment_date_from_inquiry_date() -> None:
 
 def test_mchk_adapter_parses_live_shaped_year_tables() -> None:
     adapter = MchkAdapter()
-    root_html = (FIXTURE_DIR / "index_root.live_shape.synthetic.html").read_text(
-        encoding="utf-8"
-    )
-    year_html = (FIXTURE_DIR / "year_page.live_shape.synthetic.html").read_text(
-        encoding="utf-8"
-    )
+    root_html = (FIXTURE_DIR / "index_root.live_shape.synthetic.html").read_text(encoding="utf-8")
+    year_html = (FIXTURE_DIR / "year_page.live_shape.synthetic.html").read_text(encoding="utf-8")
     fetched: list[str] = []
 
     def fetch_html(url: str) -> str:
@@ -96,12 +92,8 @@ def test_mchk_adapter_parses_live_shaped_year_tables() -> None:
 
 def test_mchk_adapter_stops_year_fetches_when_request_budget_exceeded() -> None:
     adapter = MchkAdapter()
-    root_html = (FIXTURE_DIR / "index_root.live_shape.synthetic.html").read_text(
-        encoding="utf-8"
-    )
-    year_html = (FIXTURE_DIR / "year_page.live_shape.synthetic.html").read_text(
-        encoding="utf-8"
-    )
+    root_html = (FIXTURE_DIR / "index_root.live_shape.synthetic.html").read_text(encoding="utf-8")
+    year_html = (FIXTURE_DIR / "year_page.live_shape.synthetic.html").read_text(encoding="utf-8")
     calls = {"n": 0}
 
     def fetch_html(url: str) -> str:

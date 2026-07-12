@@ -1,0 +1,195 @@
+{
+  "candidate_matrix": [
+    {
+      "ambiguous": 0,
+      "changed_pairs": 134,
+      "coverage": 0.9939731108020399,
+      "elapsed_s": 100.673,
+      "files_available": 231,
+      "instrument": "cap:599J",
+      "limiter": {
+        "max_versions_probe": 40,
+        "selected": 40,
+        "strategy": "even_span_including_ends",
+        "total_available": 231
+      },
+      "peak_mb": 61.432,
+      "recon_rate": 1.0,
+      "renderability": {
+        "complete": 2088,
+        "complete_with_nontext_metadata": 113
+      },
+      "score_total": 88.09,
+      "scores": {
+        "diff_reconstruction": 100.0,
+        "fidelity_complete_share": 94.9,
+        "identity_reliability": 99.4,
+        "manageable_complexity": 60.0,
+        "meaningful_changes": 100.0,
+        "processing_cost": 0.0,
+        "provenance_completeness": 100.0,
+        "user_comprehensibility": 80.0
+      },
+      "unsupported": {},
+      "versions_evaluated": 40
+    },
+    {
+      "ambiguous": 0,
+      "changed_pairs": 171,
+      "coverage": 0.9866548042704626,
+      "elapsed_s": 46.307,
+      "files_available": 125,
+      "instrument": "cap:599F",
+      "limiter": {
+        "max_versions_probe": 40,
+        "selected": 40,
+        "strategy": "even_span_including_ends",
+        "total_available": 125
+      },
+      "peak_mb": 34.745,
+      "recon_rate": 1.0,
+      "renderability": {
+        "complete": 1037,
+        "complete_with_nontext_metadata": 111
+      },
+      "score_total": 89.9,
+      "scores": {
+        "diff_reconstruction": 100.0,
+        "fidelity_complete_share": 90.3,
+        "identity_reliability": 98.7,
+        "manageable_complexity": 60.0,
+        "meaningful_changes": 100.0,
+        "processing_cost": 53.693,
+        "provenance_completeness": 100.0,
+        "user_comprehensibility": 80.0
+      },
+      "unsupported": {},
+      "versions_evaluated": 40
+    },
+    {
+      "ambiguous": 0,
+      "changed_pairs": 148,
+      "coverage": 0.9894498869630746,
+      "elapsed_s": 49.008,
+      "files_available": 101,
+      "instrument": "cap:599G",
+      "limiter": {
+        "max_versions_probe": 40,
+        "selected": 40,
+        "strategy": "even_span_including_ends",
+        "total_available": 101
+      },
+      "peak_mb": 36.856,
+      "recon_rate": 1.0,
+      "renderability": {
+        "complete": 1356
+      },
+      "score_total": 91.27,
+      "scores": {
+        "diff_reconstruction": 100.0,
+        "fidelity_complete_share": 100.0,
+        "identity_reliability": 98.9,
+        "manageable_complexity": 60.0,
+        "meaningful_changes": 100.0,
+        "processing_cost": 50.992,
+        "provenance_completeness": 100.0,
+        "user_comprehensibility": 80.0
+      },
+      "unsupported": {},
+      "versions_evaluated": 40
+    }
+  ],
+  "disclaimer": "LawTrace output is a transformation of official open data and is not a verified copy.",
+  "extract_meta": {
+    "dest": "data/lawtrace/extracted/cap599_probe",
+    "extracts": [
+      {
+        "accepted": 3,
+        "archive": "hkel_c_leg_cap_301_cap_600_en.zip",
+        "archive_sha256": "7f4ea9a3ae0421bb07bcce8cdfa44fb014556ceb650e17c40f7bf7295f58b35c",
+        "collisions": 0,
+        "rejected": 0,
+        "rejected_members": [],
+        "written": 3
+      },
+      {
+        "accepted": 454,
+        "archive": "hkel_p_leg_cap_401_cap_600_en.zip",
+        "archive_sha256": "9b476d1467f2994a306d1d8fca03eba3a119ea3c4e863b9635f32395badc929f",
+        "collisions": 0,
+        "rejected": 0,
+        "rejected_members": [],
+        "written": 454
+      }
+    ]
+  },
+  "gold_note": "No Cap. 599 comparisons are human-confirmed gold; algorithm-generated only.",
+  "limits": {
+    "max_changed_pairs_target": 30,
+    "max_versions_probe": 40,
+    "max_versions_stress": 25
+  },
+  "selection": {
+    "rationale": {
+      "alternate_considered": {
+        "cap:599F": "More changed pairs in probe but lower @id coverage and nontext metadata share."
+      },
+      "not_selected_by_version_count_alone": true,
+      "showcase": "cap:599G has the highest composite score (91.27), 100% complete renderability (no nontext metadata), 100% reconstruction, zero ambiguous events. @id coverage 98.94% on the bounded probe reflects genuine additions/removals in the sampled span, not ambiguous identity.",
+      "stress": "cap:599J selected for technical stress: 231 available versions, highest probe @id coverage (99.40%), 100% reconstruction, and 115 changed pairs under the 25-version stress limiter (target ≥30)."
+    },
+    "recommended_public_showcase_instrument": "cap:599G",
+    "same_instrument": false,
+    "technical_stress_test_instrument": "cap:599J"
+  },
+  "stress_summary": {
+    "added_sections": 16,
+    "ambiguous_events": 0,
+    "changed_section_pairs": 115,
+    "elapsed_seconds": 64.88,
+    "evaluation_set": {
+      "added": 16,
+      "ambiguous_events": 0,
+      "changed_pairs": 115,
+      "changed_pairs_target": 30,
+      "changed_target_met": true,
+      "note": "Comparisons are algorithm-generated; not human-confirmed gold.",
+      "removed_or_unmatched": 13,
+      "unchanged_pairs": 1203
+    },
+    "failure_flags": [],
+    "identity_slots": 1331,
+    "instrument": "cap:599J",
+    "limiter": {
+      "max_versions_probe": 10000,
+      "selected": 25,
+      "strategy": "all",
+      "total_available": 25
+    },
+    "matched_edges": 1318,
+    "reconstruction_ok": 1318,
+    "reconstruction_success_rate": 1.0,
+    "reconstruction_total": 1318,
+    "removed_or_unmatched": 13,
+    "renderability": {
+      "complete": 1307,
+      "complete_with_nontext_metadata": 68
+    },
+    "rss_max_mb": 261.293,
+    "section_count_max": 57,
+    "section_count_min": 41,
+    "stable_id_successor_coverage": 0.9902329075882795,
+    "status_related_pairs": 44,
+    "stress_limiter": {
+      "available": 231,
+      "max_versions_stress": 25,
+      "selected": 25
+    },
+    "stress_pass": true,
+    "text_changed_pairs": 115,
+    "tracemalloc_peak_mb": 38.435,
+    "unsupported_structures": {},
+    "version_files_available": 25,
+    "versions_evaluated": 25
+  }
+}

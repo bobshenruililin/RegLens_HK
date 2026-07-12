@@ -1,0 +1,1089 @@
+<!DOCTYPE html><html lang='en'><head><meta charset='utf-8'><title>Cap. 614 Stage C Evidence</title><style>body{font-family:Georgia,serif;max-width:980px;margin:2rem auto;padding:0 1rem;}.banner{background:#fff3cd;border:1px solid #ffecb5;padding:.75rem;margin-bottom:1rem;}pre{white-space:pre-wrap;background:#f7f7f7;padding:.75rem;}</style></head><body><div class='banner'><strong>Informational only.</strong> LawTrace displays transformations of open data obtained through DATA.GOV.HK. This comparison shows differences between two official open-data XML versions of a legislative section. It does not claim that displayed text was the law in force on a selected date, that version dates are commencement or effective dates, that LawTrace output is a verified copy, or that an automatically matched structural event is legally conclusive. For an official verified copy, consult Hong Kong e-Legislation (HKeL).</div><pre># Cap. 614 Stage C comparison evidence packet
+
+**Status:** Local non-production evidence for Stage C. LawTrace displays transformations of open data obtained through DATA.GOV.HK. This comparison shows differences between two official open-data XML versions of a legislative section. It does not claim that displayed text was the law in force on a selected date, that version dates are commencement or effective dates, that LawTrace output is a verified copy, or that an automatically matched structural event is legally conclusive. For an official verified copy, consult Hong Kong e-Legislation (HKeL).
+
+- Comparator: `lawtrace-comparator/1.0.0`
+- Comparisons evaluated: 398
+- Supported reconstruction: 392/392
+- Gate pass: **True**
+
+## Example 1: `unchanged`
+
+- Instrument: `cap:614`
+- Version A: `cap_614_20110630000000_en_p.xml`
+- Version B: `cap_614_20120116000000_en_p.xml`
+- Section @id: `ID_1438403528606_002`
+- Section number A→B: `1.` → `1.`
+- Renderability A/B: `complete` / `complete`
+- Ordinary redline supported: `True`
+- Limitation: `None`
+- Reconstruction OK: `True`
+- Provenance A file sha256: `5666ebaecb0cabb0074dd738da352636f846c10dc85aa6ff1ed6d553f15bdaf2`
+- Provenance B file sha256: `95e1bdf4dd11269079848a302944e59b80b65de4b49f83fba4ee5f6562636b2a`
+- Official portal: https://www.elegislation.gov.hk/
+
+### Canonical A (token preview)
+
+```
+SECTION_OPEN|
+NUM|1.
+HEADING|Short title and commencement
+SUBSECTION_OPEN|
+NUM|(1)
+CONTENT|This Ordinance may be cited as the Legislation Publication Ordinance.
+SUBSECTION_CLOSE|
+SUBSECTION_OPEN|
+NUM|(2)
+CONTENT|Subject to subsection (3), this Ordinance comes into operation on a day to be appointed by the Secretary for Justice by notice published in the Gazette.
+SUBSECTION_CLOSE|
+SUBSECTION_OPEN|
+NUM|(3)
+CONTENT|This Part, Part 5 and Division 1, Division 2 (except section 27), Division 4 (except sections 29 and 30) and Division 5 of Part 7 come into operation on the day on which this Ordinance is published in
+SUBSECTION_CLOSE|
+SECTION_CLOSE|
+```
+
+### Canonical B (token preview)
+
+```
+SECTION_OPEN|
+NUM|1.
+HEADING|Short title and commencement
+SUBSECTION_OPEN|
+NUM|(1)
+CONTENT|This Ordinance may be cited as the Legislation Publication Ordinance.
+SUBSECTION_CLOSE|
+SUBSECTION_OPEN|
+NUM|(2)
+CONTENT|Subject to subsection (3), this Ordinance comes into operation on a day to be appointed by the Secretary for Justice by notice published in the Gazette.
+SUBSECTION_CLOSE|
+SUBSECTION_OPEN|
+NUM|(3)
+CONTENT|This Part, Part 5 and Division 1, Division 2 (except section 27), Division 4 (except sections 29 and 30) and Division 5 of Part 7 come into operation on the day on which this Ordinance is published in
+SUBSECTION_CLOSE|
+SECTION_CLOSE|
+```
+
+### Highlighted legal-text changes
+
+```diff
+(no legal-text token operations)
+```
+
+### Metadata/status channel
+
+```json
+[]
+```
+
+---
+
+## Example 2: `text_changed`
+
+- Instrument: `cap:614`
+- Version A: `cap_614_20120116000000_en_p.xml`
+- Version B: `cap_614_20120209000000_en_p.xml`
+- Section @id: `ID_1438403528606_002`
+- Section number A→B: `1.` → `1.`
+- Renderability A/B: `complete` / `complete`
+- Ordinary redline supported: `True`
+- Limitation: `None`
+- Reconstruction OK: `True`
+- Provenance A file sha256: `95e1bdf4dd11269079848a302944e59b80b65de4b49f83fba4ee5f6562636b2a`
+- Provenance B file sha256: `090993446333fec63ab3ea53013a6ebd7c6590ba553bcc2a8355959934a39e0b`
+- Official portal: https://www.elegislation.gov.hk/
+
+### Canonical A (token preview)
+
+```
+SECTION_OPEN|
+NUM|1.
+HEADING|Short title and commencement
+SUBSECTION_OPEN|
+NUM|(1)
+CONTENT|This Ordinance may be cited as the Legislation Publication Ordinance.
+SUBSECTION_CLOSE|
+SUBSECTION_OPEN|
+NUM|(2)
+CONTENT|Subject to subsection (3), this Ordinance comes into operation on a day to be appointed by the Secretary for Justice by notice published in the Gazette.
+SUBSECTION_CLOSE|
+SUBSECTION_OPEN|
+NUM|(3)
+CONTENT|This Part, Part 5 and Division 1, Division 2 (except section 27), Division 4 (except sections 29 and 30) and Division 5 of Part 7 come into operation on the day on which this Ordinance is published in
+SUBSECTION_CLOSE|
+SECTION_CLOSE|
+```
+
+### Canonical B (token preview)
+
+```
+SECTION_OPEN|
+NUM|1.
+HEADING|Short title and commencement
+SUBSECTION_OPEN|
+NUM|(1)
+CONTENT|This Ordinance may be cited as the Legislation Publication Ordinance.
+SUBSECTION_CLOSE|
+SUBSECTION_OPEN|
+NUM|(2)
+CONTENT|Subject to subsection (3), this Ordinance comes into operation on a day to be appointed by the Secretary for Justice by notice published in the Gazette.
+SUBSECTION_CLOSE|
+SUBSECTION_OPEN|
+NUM|(3)
+SOURCENOTE|(Omitted as spent—E.R. 1 of 2012)
+SUBSECTION_CLOSE|
+SECTION_CLOSE|
+```
+
+### Highlighted legal-text changes
+
+```diff
+- CONTENT|This Part, Part 5 and Division 1, Division 2 (except section 27), Division 4 (except sections 29 and 30) and Division 5 of Part 7 come into operation on the day on which this Ordinance is published in the Gazette.
++ SOURCENOTE|(Omitted as spent—E.R. 1 of 2012)
+```
+
+### Metadata/status channel
+
+```json
+[
+  {
+    "field": "start_period",
+    "a": "2011-06-30",
+    "b": "2012-02-09"
+  }
+]
+```
+
+---
+
+## Example 3: `text_changed`
+
+- Instrument: `cap:614`
+- Version A: `cap_614_20120209000000_en_p.xml`
+- Version B: `cap_614_20120727000000_en_p.xml`
+- Section @id: `ID_1438403528824_004`
+- Section number A→B: `17.` → `17.`
+- Renderability A/B: `complete` / `complete`
+- Ordinary redline supported: `True`
+- Limitation: `None`
+- Reconstruction OK: `True`
+- Provenance A file sha256: `090993446333fec63ab3ea53013a6ebd7c6590ba553bcc2a8355959934a39e0b`
+- Provenance B file sha256: `692748f6fca2b19e54c0753f41afae1548f087875c1d6d29649dc5d9625f2484`
+- Official portal: https://www.elegislation.gov.hk/
+
+### Canonical A (token preview)
+
+```
+SECTION_OPEN|
+NUM|17.
+HEADING|Powers to make revisions
+LEADIN|The Secretary for Justice may, by order in the Gazette—
+PARAGRAPH_OPEN|
+NUM|(a)
+CONTENT|make an alteration to an Ordinance for the purpose of securing uniformity in expression within the Ordinance or with another Ordinance;
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(b)
+CONTENT|alter the form or arrangement of a section of an Ordinance, by transferring words, by combining it in whole or in part with another section or other sections of the Ordinance or by dividing it into su
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(c)
+CONTENT|transfer a saving or transitional provision in an Ordinance to another Ordinance to which that provision relates;
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(d)
+CONTENT|organize the provisions of an Ordinance into, and assign numbers and headings to, groups of provisions, without changing the sequence of those provisions;
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(e)
+CONTENT|amend the heading of a provision or a group of provisions in an Ordinance to reflect the contents of the provision or the group of provisions;
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(f)
+CONTENT|if the name, title, location or address of a department, office, officer or place has changed, make an alteration to that name, title, location or address appearing in an Ordinance to reflect the chan
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(g)
+CONTENT|amend an Ordinance to effect the replacement of a reference to a date in the form of a description by the actual calendar date;
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(h)
+LEADIN|amend an Ordinance to effect the replacement of a general reference to another Ordinance by—
+SUBPARAGRAPH_OPEN|
+NUM|(i)
+CONTENT|the short title or citation of that other Ordinance;
+SUBPARAGRAPH_CLOSE|
+SUBPARAGRAPH_OPEN|
+NUM|(ii)
+CONTENT|its number among the Ordinances of the year in which it was enacted or made; or
+SUBPARAGRAPH_CLOSE|
+SUBPARAGRAPH_OPEN|
+NUM|(iii)
+CONTENT|the chapter number given to it under section 11(a);
+SUBPARAGRAPH_CLOSE|
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(i)
+CONTENT|replace a word or expression in an Ordinance indicating gender or that could be taken to indicate gender by a gender-neutral word or expression;
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(j)
+CONTENT|amend an Ordinance to change the way of referring to a provision; and
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(k)
+CONTENT|make an amendment to an Ordinance that is consequential on any amendment made under this section (other than this paragraph).
+PARAGRAPH_CLOSE|
+SECTION_CLOSE|
+```
+
+### Canonical B (token preview)
+
+```
+SECTION_OPEN|
+NUM|17.
+HEADING|Powers to make revisions
+LEADIN|The Secretary for Justice may, by order in the Gazette—
+PARAGRAPH_OPEN|
+NUM|(a)
+CONTENT|make an alteration to an Ordinance for the purpose of securing uniformity in expression within the Ordinance or with another Ordinance;
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(b)
+CONTENT|alter the form or arrangement of a section of an Ordinance, by transferring words, by combining it in whole or in part with another section or other sections of the Ordinance or by dividing it into su
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(c)
+CONTENT|transfer a saving or transitional provision in an Ordinance to another Ordinance to which that provision relates;
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(d)
+CONTENT|organize the provisions of an Ordinance into, and assign numbers and headings to, groups of provisions, without changing the sequence of those provisions;
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(e)
+CONTENT|amend the heading of a provision or a group of provisions in an Ordinance to reflect the contents of the provision or the group of provisions;
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(f)
+CONTENT|if the name, title, location or address of a department, office, officer or place has changed, make an alteration to that name, title, location or address appearing in an Ordinance to reflect the chan
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(g)
+CONTENT|amend an Ordinance to effect the replacement of a reference to a date in the form of a description by the actual calendar date;
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(h)
+LEADIN|amend an Ordinance to effect the replacement of a general reference to another Ordinance by—
+SUBPARAGRAPH_OPEN|
+NUM|(i)
+CONTENT|the title, short title or citation of that other Ordinance; (Amended 26 of 2012 s. 19)
+SUBPARAGRAPH_CLOSE|
+SUBPARAGRAPH_OPEN|
+NUM|(ii)
+CONTENT|its number among the Ordinances of the year in which it was enacted or made; or
+SUBPARAGRAPH_CLOSE|
+SUBPARAGRAPH_OPEN|
+NUM|(iii)
+CONTENT|the chapter number given to it under section 11(a);
+SUBPARAGRAPH_CLOSE|
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(i)
+CONTENT|replace a word or expression in an Ordinance indicating gender or that could be taken to indicate gender by a gender-neutral word or expression;
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(j)
+CONTENT|amend an Ordinance to change the way of referring to a provision; and
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(k)
+CONTENT|make an amendment to an Ordinance that is consequential on any amendment made under this section (other than this paragraph).
+PARAGRAPH_CLOSE|
+SECTION_CLOSE|
+```
+
+### Highlighted legal-text changes
+
+```diff
+- CONTENT|the short title or citation of that other Ordinance;
++ CONTENT|the title, short title or citation of that other Ordinance; (Amended 26 of 2012 s. 19)
+```
+
+### Metadata/status channel
+
+```json
+[
+  {
+    "field": "start_period",
+    "a": "2011-06-30",
+    "b": "2012-07-27"
+  }
+]
+```
+
+---
+
+## Example 4: `text_changed`
+
+- Instrument: `cap:614`
+- Version A: `cap_614_20170224000000_en_p.xml`
+- Version B: `cap_614_20180420000000_en_p.xml`
+- Section @id: `ID_1438403528621_001`
+- Section number A→B: `2.` → `2.`
+- Renderability A/B: `complete` / `complete`
+- Ordinary redline supported: `True`
+- Limitation: `None`
+- Reconstruction OK: `True`
+- Provenance A file sha256: `7fc515b9395de0275f889754e7ec309097bf9b3ac924af4994eca782dd3589b0`
+- Provenance B file sha256: `cc2b93e57bbc7c8a11403eb6cfb4533f78786a108f161a6a2d27c1e6853efbd7`
+- Official portal: https://www.elegislation.gov.hk/
+
+### Canonical A (token preview)
+
+```
+SECTION_OPEN|
+NUM|2.
+HEADING|Interpretation
+SUBSECTION_OPEN|
+NUM|(1)
+LEADIN|In this Ordinance—
+DEF_OPEN|
+TERM|approved website
+CONTENT|(
+TERM|認可網站
+CONTENT|) means a website approved under
+REF|section 3(b)
+CONTENT|;
+DEF_CLOSE|
+DEF_OPEN|
+TERM|consolidated copy
+CONTENT|(
+TERM|編訂文本
+CONTENT|), in relation to an Ordinance, means a copy of the Ordinance showing its text as amended by all permitted amendments that have taken effect as at a date specified in the copy;
+DEF_CLOSE|
+DEF_OPEN|
+TERM|database
+CONTENT|(
+TERM|資料庫
+CONTENT|) means the electronic database of the legislation applying in Hong Kong established under
+REF|section 3(a)
+CONTENT|;
+DEF_CLOSE|
+DEF_OPEN|
+TERM|database instrument
+CONTENT|(
+TERM|資料庫文書
+CONTENT|) means an Ordinance, the Basic Law, a national law applying in Hong Kong or an item of materials or information referred to in
+REF|section 4(2)(b)
+CONTENT|;
+DEF_CLOSE|
+DEF_OPEN|
+TERM|editorial amendment
+CONTENT|(
+TERM|編輯修訂
+CONTENT|) means an amendment to an Ordinance made under
+REF|section 12
+CONTENT|;
+DEF_CLOSE|
+DEF_OPEN|
+TERM|gazetted copy
+CONTENT|(
+TERM|刊憲文本
+CONTENT|), in relation to an Ordinance, means a copy of the Ordinance as originally enacted or made, and published in the Gazette;
+DEF_CLOSE|
+DEF_OPEN|
+TERM|official verification mark
+CONTENT|(
+TERM|官方核證標記
+CONTENT|) means a symbol, word or statement, or a combination of any of them, specified by the Law Draftsman on an approved website for the purposes of
+REF|Part 2
+CONTENT|;
+DEF_CLOSE|
+DEF_OPEN|
+LEADIN|permitted amendment (許可修訂), in relation to an Ordinance, means—
+PARAGRAPH_OPEN|
+NUM|(a)
+CONTENT|an amendment to the Ordinance made by another Ordinance;
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(b)
+CONTENT|an editorial amendment to the Ordinance; or
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(c)
+CONTENT|an amendment to the Ordinance made under section 2A(1) of the Laws (Loose-leaf Publication) Ordinance 1990 (51 of 1990);
+PARAGRAPH_CLOSE|
+DEF_CLOSE|
+DEF_OPEN|
+TERM|verified copy
+CONTENT|(
+TERM|經核證文本
+CONTENT|)—see
+REF|section 5(1)
+CONTENT|.
+...
+```
+
+### Canonical B (token preview)
+
+```
+SECTION_OPEN|
+NUM|2.
+HEADING|Interpretation
+SUBSECTION_OPEN|
+NUM|(1)
+LEADIN|In this Ordinance—
+DEF_OPEN|
+TERM|approved website
+CONTENT|(
+TERM|認可網站
+CONTENT|) means a website approved under
+REF|section 3(b)
+CONTENT|;
+DEF_CLOSE|
+DEF_OPEN|
+TERM|consolidated copy
+CONTENT|(
+TERM|編訂文本
+CONTENT|), in relation to an Ordinance, means a copy of the Ordinance
+ showing its text as amended by all permitted amendments
+ (if any)
+ that have taken effect as at a date specified in the copy;
+SOURCENOTE|(Amended 17 of 2018 s.
+ 21)
+DEF_CLOSE|
+DEF_OPEN|
+TERM|database
+CONTENT|(
+TERM|資料庫
+CONTENT|)
+ means the electronic database of the legislation applying in Hong Kong established
+ under
+REF|section 3(a)
+CONTENT|;
+DEF_CLOSE|
+DEF_OPEN|
+TERM|database instrument
+CONTENT|(
+TERM|資料庫文書
+CONTENT|) means an Ordinance, the Basic Law, a
+ national law applying in Hong Kong or an item of materials or information referred
+ to in
+REF|section 4(2)(b)
+CONTENT|;
+DEF_CLOSE|
+DEF_OPEN|
+TERM|editorial amendment
+CONTENT|(
+TERM|編輯修訂
+CONTENT|) means an amendment to an Ordinance made under
+REF|section 12
+CONTENT|;
+DEF_CLOSE|
+DEF_OPEN|
+TERM|gazetted copy
+CONTENT|(
+TERM|刊憲文本
+CONTENT|), in relation to an Ordinance, means a copy of the Ordinance as
+ originally enacted or made, and published in the Gazette;
+DEF_CLOSE|
+DEF_OPEN|
+TERM|official verification mark
+CONTENT|(
+TERM|官方核證標記
+CONTENT|) means a symbol, word or statement, or a
+ combination of any of them, specified by the Law Draftsman on an approved website
+ for the purposes of
+REF|Part 2
+CONTENT|;
+DEF_CLOSE|
+DEF_OPEN|
+LEADIN|permitted amendment (許可修訂),
+ in relation to an Ordinance, means—
+PARAGRAPH_OPEN|
+NUM|(a)
+CONTENT|an amendment to the Ordinance made by another Ordinance;
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(b)
+CONTENT|an editorial amendment to the Ordinance; or
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(c)
+CONTENT|an amendment to the Ordinance made under section 2A(1) of
+ the Laws (Loose-leaf Publication) Ordinance 1990 (51
+ of 1990);
+PARAGRAPH_CLOSE|
+DEF_CLOSE|
+DEF_OPEN|
+TERM|verified copy
+CONTENT|(
+TERM|經核證文本
+CONTENT|)—see
+REF|section 5(1)
+...
+```
+
+### Highlighted legal-text changes
+
+```diff
+- CONTENT|), in relation to an Ordinance, means a copy of the Ordinance showing its text as amended by all permitted amendments that have taken effect as at a date specified in the copy;
++ CONTENT|), in relation to an Ordinance, means a copy of the Ordinance\n showing its text as amended by all permitted amendments\n (if any)\n that have taken effect as at a date specified in the copy;
++ SOURCENOTE|(Amended 17 of 2018 s.\n 21)
+- CONTENT|) means the electronic database of the legislation applying in Hong Kong established under
++ CONTENT|)\n means the electronic database of the legislation applying in Hong Kong established\n under
+- CONTENT|) means an Ordinance, the Basic Law, a national law applying in Hong Kong or an item of materials or information referred to in
++ CONTENT|) means an Ordinance, the Basic Law, a\n national law applying in Hong Kong or an item of materials or information referred\n to in
+- CONTENT|), in relation to an Ordinance, means a copy of the Ordinance as originally enacted or made, and published in the Gazette;
++ CONTENT|), in relation to an Ordinance, means a copy of the Ordinance as\n originally enacted or made, and published in the Gazette;
+- CONTENT|) means a symbol, word or statement, or a combination of any of them, specified by the Law Draftsman on an approved website for the purposes of
++ CONTENT|) means a symbol, word or statement, or a\n combination of any of them, specified by the Law Draftsman on an approved website\n for the purposes of
+- LEADIN|permitted amendment (許可修訂), in relation to an Ordinance, means—
++ LEADIN|permitted amendment (許可修訂),\n in relation to an Ordinance, means—
+- CONTENT|an amendment to the Ordinance made under section 2A(1) of the Laws (Loose-leaf Publication) Ordinance 1990 (51 of 1990);
++ CONTENT|an amendment to the Ordinance made under section 2A(1) of\n the Laws (Loose-leaf Publication) Ordinance 1990 (51\n of 1990);
++ CONTENT|
+- CONTENT|In this Ordinance, a reference to a database instrument as at a date specified in a copy or reproduction of a copy of the instrument includes, if a time on that date is specified in the copy or reproduction, a reference to the instrument as at that time on that date.
++ CONTENT|In this Ordinance, a reference to\n a\n database instrument as at a date specified in a copy or reproduction of a copy of\n the instrument includes, if a time on that date is specified in the copy or\n reproduction, a reference to the instrument as at that time on that date.
+```
+
+### Metadata/status channel
+
+```json
+[
+  {
+    "field": "start_period",
+    "a": "2011-06-30",
+    "b": "2018-04-20"
+  }
+]
+```
+
+---
+
+## Example 5: `text_changed`
+
+- Instrument: `cap:614`
+- Version A: `cap_614_20170224000000_en_p.xml`
+- Version B: `cap_614_20180420000000_en_p.xml`
+- Section @id: `ID_1438403528637_004`
+- Section number A→B: `4.` → `4.`
+- Renderability A/B: `complete` / `complete`
+- Ordinary redline supported: `True`
+- Limitation: `None`
+- Reconstruction OK: `True`
+- Provenance A file sha256: `7fc515b9395de0275f889754e7ec309097bf9b3ac924af4994eca782dd3589b0`
+- Provenance B file sha256: `cc2b93e57bbc7c8a11403eb6cfb4533f78786a108f161a6a2d27c1e6853efbd7`
+- Official portal: https://www.elegislation.gov.hk/
+
+### Canonical A (token preview)
+
+```
+SECTION_OPEN|
+NUM|4.
+HEADING|Contents of database
+SUBSECTION_OPEN|
+NUM|(1)
+LEADIN|The database is to contain—
+PARAGRAPH_OPEN|
+NUM|(a)
+CONTENT|consolidated copies of Ordinances that have been given chapter numbers under section 11(a);
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(b)
+CONTENT|gazetted copies of Ordinances published in the Gazette on or after the date on which this Part comes into operation;
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(c)
+CONTENT|the Basic Law;
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(d)
+CONTENT|national laws applying in Hong Kong; and
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(e)
+CONTENT|the record of editorial amendments compiled under section 15.
+PARAGRAPH_CLOSE|
+SUBSECTION_CLOSE|
+SUBSECTION_OPEN|
+NUM|(2)
+LEADIN|The database may also contain—
+PARAGRAPH_OPEN|
+NUM|(a)
+CONTENT|bills to be introduced or introduced into the Legislative Council; and
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(b)
+CONTENT|other materials and information that the Secretary for Justice considers useful to users of an approved website.
+PARAGRAPH_CLOSE|
+SUBSECTION_CLOSE|
+SECTION_CLOSE|
+```
+
+### Canonical B (token preview)
+
+```
+SECTION_OPEN|
+NUM|4.
+HEADING|Contents of database
+SUBSECTION_OPEN|
+NUM|(1)
+LEADIN|The database is to contain—
+PARAGRAPH_OPEN|
+NUM|(a)
+CONTENT|consolidated copies of Ordinances that have been given chapter numbers
+ under section
+ 11(a)
+ and of the following Ordinances— (Amended 17
+ of 2018 s. 22)
+CONTENT_OPEN|
+SUBPARAGRAPH_OPEN|
+NUM|(i)
+CONTENT|the Revised Edition of the Laws Ordinance 1965
+ (53 of 1965);
+SUBPARAGRAPH_CLOSE|
+SUBPARAGRAPH_OPEN|
+NUM|(ii)
+CONTENT|the Laws (Loose-leaf Publication) Ordinance 1990
+ (51 of 1990);
+SUBPARAGRAPH_CLOSE|
+SUBPARAGRAPH_OPEN|
+NUM|(iii)
+CONTENT|the Hong Kong Reunification Ordinance
+ (110 of 1997);
+SUBPARAGRAPH_CLOSE|
+SUBPARAGRAPH_OPEN|
+NUM|(iv)
+CONTENT|the National Flag and National Emblem Ordinance
+ (116 of 1997);
+SUBPARAGRAPH_CLOSE|
+SUBPARAGRAPH_OPEN|
+NUM|(v)
+CONTENT|the Regional Flag and Regional Emblem Ordinance
+ (117 of 1997); (Amended 17 of 2018 s.
+ 22)
+SUBPARAGRAPH_CLOSE|
+CONTENT_CLOSE|
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(b)
+CONTENT|gazetted copies of Ordinances published in the Gazette on or after the date on which this Part comes into operation;
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(c)
+CONTENT|the Basic Law;
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(d)
+CONTENT|national laws applying in Hong Kong; and
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(e)
+CONTENT|the record of editorial amendments compiled under section 15.
+PARAGRAPH_CLOSE|
+SUBSECTION_CLOSE|
+SUBSECTION_OPEN|
+NUM|(2)
+LEADIN|The database may also contain—
+PARAGRAPH_OPEN|
+NUM|(a)
+CONTENT|bills to be introduced or introduced into the Legislative Council; and
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(b)
+CONTENT|other materials and information that the Secretary for Justice considers useful to users of an approved website.
+PARAGRAPH_CLOSE|
+SUBSECTION_CLOSE|
+SECTION_CLOSE|
+```
+
+### Highlighted legal-text changes
+
+```diff
+- CONTENT|consolidated copies of Ordinances that have been given chapter numbers under section 11(a);
++ CONTENT|consolidated copies of Ordinances that have been given chapter numbers\n under section\n 11(a)\n and of the following Ordinances— (Amended 17\n of 2018 s. 22)
++ NUM|(i)
++ CONTENT|the Revised Edition of the Laws Ordinance 1965\n (53 of 1965);
++ NUM|(ii)
++ CONTENT|the Laws (Loose-leaf Publication) Ordinance 1990\n (51 of 1990);
++ NUM|(iii)
++ CONTENT|the Hong Kong Reunification Ordinance\n (110 of 1997);
++ NUM|(iv)
++ CONTENT|the National Flag and National Emblem Ordinance\n (116 of 1997);
++ NUM|(v)
++ CONTENT|the Regional Flag and Regional Emblem Ordinance\n (117 of 1997); (Amended 17 of 2018 s.\n 22)
+```
+
+### Metadata/status channel
+
+```json
+[
+  {
+    "field": "start_period",
+    "a": "2017-02-24",
+    "b": "2018-04-20"
+  }
+]
+```
+
+---
+
+## Example 6: `text_changed`
+
+- Instrument: `cap:614`
+- Version A: `cap_614_20170224000000_en_p.xml`
+- Version B: `cap_614_20180420000000_en_p.xml`
+- Section @id: `ID_1438403528777_001`
+- Section number A→B: `11.` → `11.`
+- Renderability A/B: `complete` / `complete`
+- Ordinary redline supported: `True`
+- Limitation: `None`
+- Reconstruction OK: `True`
+- Provenance A file sha256: `7fc515b9395de0275f889754e7ec309097bf9b3ac924af4994eca782dd3589b0`
+- Provenance B file sha256: `cc2b93e57bbc7c8a11403eb6cfb4533f78786a108f161a6a2d27c1e6853efbd7`
+- Official portal: https://www.elegislation.gov.hk/
+
+### Canonical A (token preview)
+
+```
+SECTION_OPEN|
+NUM|11.
+HEADING|Powers to give chapter numbers etc.
+LEADIN|The Secretary for Justice may—
+PARAGRAPH_OPEN|
+NUM|(a)
+CONTENT|give a chapter number to an Ordinance and alter the title, short title or citation of the Ordinance; and
+ (Amended 26 of 2012 s. 17)
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(b)
+CONTENT|in the database, arrange the grouping and sequence of database instruments.
+PARAGRAPH_CLOSE|
+SECTION_CLOSE|
+```
+
+### Canonical B (token preview)
+
+```
+SECTION_OPEN|
+NUM|11.
+HEADING|Powers to give chapter numbers etc.
+LEADIN|The Secretary for Justice may—
+PARAGRAPH_OPEN|
+NUM|(a)
+CONTENT|give a chapter number to an
+ Ordinance; and
+ (Amended 26 of 2012 s.
+ 17; 17 of 2018 s.
+ 23)
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(b)
+CONTENT|in the database, arrange the grouping and sequence of database instruments.
+PARAGRAPH_CLOSE|
+SECTION_CLOSE|
+```
+
+### Highlighted legal-text changes
+
+```diff
+- CONTENT|give a chapter number to an Ordinance and alter the title, short title or citation of the Ordinance; and\n (Amended 26 of 2012 s. 17)
++ CONTENT|give a chapter number to an\n Ordinance; and\n (Amended 26 of 2012 s.\n 17; 17 of 2018 s.\n 23)
+```
+
+### Metadata/status channel
+
+```json
+[
+  {
+    "field": "start_period",
+    "a": "2017-02-24",
+    "b": "2018-04-20"
+  }
+]
+```
+
+---
+
+## Example 7: `status_changed`
+
+- Instrument: `cap:614`
+- Version A: `cap_614_20120727000000_en_p.xml`
+- Version B: `cap_614_20170224000000_en_p.xml`
+- Section @id: `ID_1438403528637_002`
+- Section number A→B: `3.` → `3.`
+- Renderability A/B: `complete` / `complete`
+- Ordinary redline supported: `True`
+- Limitation: `None`
+- Reconstruction OK: `True`
+- Provenance A file sha256: `692748f6fca2b19e54c0753f41afae1548f087875c1d6d29649dc5d9625f2484`
+- Provenance B file sha256: `7fc515b9395de0275f889754e7ec309097bf9b3ac924af4994eca782dd3589b0`
+- Official portal: https://www.elegislation.gov.hk/
+
+### Canonical A (token preview)
+
+```
+SECTION_OPEN|
+NUM|3.
+HEADING|Establishment of database
+LEADIN|The Secretary for Justice may—
+PARAGRAPH_OPEN|
+NUM|(a)
+CONTENT|establish and maintain an electronic database of the legislation applying in Hong Kong; and
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(b)
+CONTENT|approve a website on which the information in the database may be published and accessed.
+PARAGRAPH_CLOSE|
+SECTION_CLOSE|
+```
+
+### Canonical B (token preview)
+
+```
+SECTION_OPEN|
+NUM|3.
+HEADING|Establishment of database
+LEADIN|The Secretary for Justice may—
+PARAGRAPH_OPEN|
+NUM|(a)
+CONTENT|establish and maintain an electronic database of the legislation applying in Hong Kong; and
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(b)
+CONTENT|approve a website on which the information in the database may be published and accessed.
+PARAGRAPH_CLOSE|
+SECTION_CLOSE|
+```
+
+### Highlighted legal-text changes
+
+```diff
+(no legal-text token operations)
+```
+
+### Metadata/status channel
+
+```json
+[
+  {
+    "field": "reason",
+    "a": "notYetInOperation",
+    "b": "inEffect"
+  },
+  {
+    "field": "start_period",
+    "a": null,
+    "b": "2017-02-24"
+  },
+  {
+    "field": "status",
+    "a": "pending",
+    "b": "operational"
+  }
+]
+```
+
+---
+
+## Example 8: `text_and_status_changed`
+
+- Instrument: `cap:614`
+- Version A: `cap_614_20120116000000_en_p.xml`
+- Version B: `cap_614_20120209000000_en_p.xml`
+- Section @id: `ID_1438403528855_001`
+- Section number A→B: `20.` → `20.`
+- Renderability A/B: `complete` / `complete`
+- Ordinary redline supported: `True`
+- Limitation: `None`
+- Reconstruction OK: `True`
+- Provenance A file sha256: `95e1bdf4dd11269079848a302944e59b80b65de4b49f83fba4ee5f6562636b2a`
+- Provenance B file sha256: `090993446333fec63ab3ea53013a6ebd7c6590ba553bcc2a8355959934a39e0b`
+- Official portal: https://www.elegislation.gov.hk/
+
+### Canonical A (token preview)
+
+```
+SECTION_OPEN|
+NUM|20.
+HEADING|Section 2 amended (Publication of Ordinances, etc. in a loose-leaf edition)
+SUBSECTION_OPEN|
+NUM|(1)
+AMENDINGFORMULA_OPEN|
+LEADIN|Section 2—
+ACTION_OPEN|
+B|Repeal subsection (2)
+ACTION_CLOSE|
+ACTION_OPEN|
+B|Substitute
+ACTION_CLOSE|
+QUOTEDSTRUCTURE_OPEN|
+SUBSECTION_OPEN|
+NUM|“(2)
+LEADIN|The Secretary for Justice may, in the loose-leaf edition—
+PARAGRAPH_OPEN|
+NUM|(a)
+CONTENT|give a chapter number to an Ordinance and alter the short title or citation of the Ordinance; and
+PARAGRAPH_CLOSE|
+PARAGRAPH_OPEN|
+NUM|(b)
+CONTENT|arrange the grouping and sequence of legislation.”.
+PARAGRAPH_CLOSE|
+SUBSECTION_CLOSE|
+QUOTEDSTRUCTURE_CLOSE|
+AMENDINGFORMULA_CLOSE|
+SUBSECTION_CLOSE|
+SUBSECTION_OPEN|
+NUM|(2)
+AMENDINGFORMULA_OPEN|
+LEADIN|Section 2—
+ACTION_OPEN|
+B|Repeal subsection (7).
+ACTION_CLOSE|
+AMENDINGFORMULA_CLOSE|
+SUBSECTION_CLOSE|
+SECTION_CLOSE|
+```
+
+### Canonical B (token preview)
+
+```
+SECTION_OPEN|
+NUM|20.
+SOURCENOTE|(Omitted as spent—E.R. 1 of 2012)
+SECTION_CLOSE|
+```
+
+### Highlighted legal-text changes
+
+```diff
+- HEADING|Section 2 amended (Publication of Ordinances, etc. in a loose-leaf edition)
+- NUM|(1)
+- LEADIN|Section 2—
+- B|Repeal subsection (2)
+- B|Substitute
+- NUM|“(2)
+- LEADIN|The Secretary for Justice may, in the loose-leaf edition—
+- NUM|(a)
+- CONTENT|give a chapter number to an Ordinance and alter the short title or citation of the Ordinance; and
+- NUM|(b)
+- CONTENT|arrange the grouping and sequence of legislation.”.
+- NUM|(2)
+- LEADIN|Section 2—
+- B|Repeal subsection (7).
++ SOURCENOTE|(Omitted as spent—E.R. 1 of 2012)
+```
+
+### Metadata/status channel
+
+```json
+[
+  {
+    "field": "heading",
+    "a": "Section 2 amended (Publication of Ordinances, etc. in a loose-leaf edition)",
+    "b": null
+  },
+  {
+    "field": "reason",
+    "a": "inEffect",
+    "b": "omittedAsSpent"
+  },
+  {
+    "field": "start_period",
+    "a": "2012-01-16",
+    "b": "2012-02-09"
+  },
+  {
+    "field": "status",
+    "a": "operational",
+    "b": "omitted"
+  }
+]
+```
+
+---
+
+## Example 9: `added`
+
+- Instrument: `cap:614`
+- Version A: `cap_614_20110630000000_en_p.xml`
+- Version B: `cap_614_20120116000000_en_p.xml`
+- Section @id: `ID_1438403528840_005`
+- Section number A→B: `None` → `19.`
+- Renderability A/B: `complete` / `complete`
+- Ordinary redline supported: `True`
+- Limitation: `None`
+- Reconstruction OK: `True`
+- Provenance A file sha256: `None`
+- Provenance B file sha256: `95e1bdf4dd11269079848a302944e59b80b65de4b49f83fba4ee5f6562636b2a`
+- Official portal: https://www.elegislation.gov.hk/
+
+### Canonical A (token preview)
+
+```
+```
+
+### Canonical B (token preview)
+
+```
+SECTION_OPEN|
+NUM|19.
+HEADING|Laws (Loose-leaf Publication) Ordinance 1990 amended
+CONTENT|The Laws (Loose-leaf Publication) Ordinance 1990 (51 of 1990) is amended as set out in sections 20, 21 and 22.
+SECTION_CLOSE|
+```
+
+### Highlighted legal-text changes
+
+```diff
++ NUM|19.
++ HEADING|Laws (Loose-leaf Publication) Ordinance 1990 amended
++ CONTENT|The Laws (Loose-leaf Publication) Ordinance 1990 (51 of 1990) is amended as set out in sections 20, 21 and 22.
+```
+
+### Metadata/status channel
+
+```json
+[
+  {
+    "field": "element_id",
+    "a": null,
+    "b": "ID_1438403528840_005"
+  },
+  {
+    "field": "heading",
+    "a": null,
+    "b": "Laws (Loose-leaf Publication) Ordinance 1990 amended"
+  },
+  {
+    "field": "reason",
+    "a": null,
+    "b": "inEffect"
+  },
+  {
+    "field": "section_num",
+    "a": null,
+    "b": "19."
+  },
+  {
+    "field": "start_period",
+    "a": null,
+    "b": "2012-01-16"
+  },
+  {
+    "field": "status",
+    "a": null,
+    "b": "operational"
+  },
+  {
+    "field": "temporal_id",
+    "a": null,
+    "b": "s19"
+  }
+]
+```
+
+---
+</pre></body></html>

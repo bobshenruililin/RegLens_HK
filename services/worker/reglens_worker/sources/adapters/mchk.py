@@ -9,8 +9,8 @@ from urllib.parse import urljoin, urlparse, urlunparse
 
 from bs4 import BeautifulSoup, Tag
 
-from .base import BaseSourceAdapter, FetchHtml, SourceItem
 from ..http_client import RequestBudgetExceededError
+from .base import BaseSourceAdapter, FetchHtml, SourceItem
 
 _SPLIT_RE = re.compile(r"\s*(?:;|\||\n|,|\s/\s)\s*")
 _INQUIRY_SPLIT_RE = re.compile(r"\s*(?:,|\band\b)\s*", re.IGNORECASE)

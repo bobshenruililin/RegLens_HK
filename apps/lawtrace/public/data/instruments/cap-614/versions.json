@@ -1,0 +1,125 @@
+{
+  "instrument_id": "cap:614",
+  "versions": [
+    {
+      "archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+      "file_sha256": "5666ebaecb0cabb0074dd738da352636f846c10dc85aa6ff1ed6d553f15bdaf2",
+      "snapshot_label": "Official open-data snapshot dated 2011-06-30",
+      "source_version_datetime": "20110630000000",
+      "title": "Cap. 614",
+      "top_level_section_count": 31,
+      "version_class": "p",
+      "version_id": "cap_614_20110630000000_en_p.xml"
+    },
+    {
+      "archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+      "file_sha256": "95e1bdf4dd11269079848a302944e59b80b65de4b49f83fba4ee5f6562636b2a",
+      "snapshot_label": "Official open-data snapshot dated 2012-01-16",
+      "source_version_datetime": "20120116000000",
+      "title": "Cap. 614",
+      "top_level_section_count": 36,
+      "version_class": "p",
+      "version_id": "cap_614_20120116000000_en_p.xml"
+    },
+    {
+      "archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+      "file_sha256": "090993446333fec63ab3ea53013a6ebd7c6590ba553bcc2a8355959934a39e0b",
+      "snapshot_label": "Official open-data snapshot dated 2012-02-09",
+      "source_version_datetime": "20120209000000",
+      "title": "Cap. 614",
+      "top_level_section_count": 36,
+      "version_class": "p",
+      "version_id": "cap_614_20120209000000_en_p.xml"
+    },
+    {
+      "archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+      "file_sha256": "692748f6fca2b19e54c0753f41afae1548f087875c1d6d29649dc5d9625f2484",
+      "snapshot_label": "Official open-data snapshot dated 2012-07-27",
+      "source_version_datetime": "20120727000000",
+      "title": "Cap. 614",
+      "top_level_section_count": 36,
+      "version_class": "p",
+      "version_id": "cap_614_20120727000000_en_p.xml"
+    },
+    {
+      "archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+      "file_sha256": "7fc515b9395de0275f889754e7ec309097bf9b3ac924af4994eca782dd3589b0",
+      "snapshot_label": "Official open-data snapshot dated 2017-02-24",
+      "source_version_datetime": "20170224000000",
+      "title": "Cap. 614",
+      "top_level_section_count": 36,
+      "version_class": "p",
+      "version_id": "cap_614_20170224000000_en_p.xml"
+    },
+    {
+      "archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+      "file_sha256": "cc2b93e57bbc7c8a11403eb6cfb4533f78786a108f161a6a2d27c1e6853efbd7",
+      "snapshot_label": "Official open-data snapshot dated 2018-04-20",
+      "source_version_datetime": "20180420000000",
+      "title": "Cap. 614",
+      "top_level_section_count": 36,
+      "version_class": "p",
+      "version_id": "cap_614_20180420000000_en_p.xml"
+    },
+    {
+      "archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+      "file_sha256": "b660429c53af0d075fd346c28044506e4652879eebdaaad794b75a66c5728fb2",
+      "snapshot_label": "Official open-data snapshot dated 2018-06-28",
+      "source_version_datetime": "20180628000000",
+      "title": "Cap. 614",
+      "top_level_section_count": 36,
+      "version_class": "p",
+      "version_id": "cap_614_20180628000000_en_p.xml"
+    },
+    {
+      "archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+      "file_sha256": "6a6564007d02f933b0e2575648eb42fb60b3d6d707654c1be57d21757ebb9673",
+      "snapshot_label": "Official open-data snapshot dated 2020-06-12",
+      "source_version_datetime": "20200612000000",
+      "title": "Cap. 614",
+      "top_level_section_count": 36,
+      "version_class": "p",
+      "version_id": "cap_614_20200612000000_en_p.xml"
+    },
+    {
+      "archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+      "file_sha256": "20d5bd28c3729dd6d5af6d9a5b7a3ea882836407749be75254b7285fe612c9fc",
+      "snapshot_label": "Official open-data snapshot dated 2022-02-24",
+      "source_version_datetime": "20220224000000",
+      "title": "Cap. 614",
+      "top_level_section_count": 36,
+      "version_class": "p",
+      "version_id": "cap_614_20220224000000_en_p.xml"
+    },
+    {
+      "archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+      "file_sha256": "d150ce25d313e6465f6489970a213ab80512fe9bbae262715e1b85fca0aa0b1f",
+      "snapshot_label": "Official open-data snapshot dated 2024-03-23",
+      "source_version_datetime": "20240323000000",
+      "title": "Cap. 614",
+      "top_level_section_count": 36,
+      "version_class": "p",
+      "version_id": "cap_614_20240323000000_en_p.xml"
+    },
+    {
+      "archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+      "file_sha256": "285e52a9e6c1763a2b4db5f2bc448477b487bff4bbd4524200a474cd7400290a",
+      "snapshot_label": "Official open-data snapshot dated 2024-07-19",
+      "source_version_datetime": "20240719000000",
+      "title": "Cap. 614",
+      "top_level_section_count": 37,
+      "version_class": "p",
+      "version_id": "cap_614_20240719000000_en_p.xml"
+    },
+    {
+      "archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+      "file_sha256": "41a601f6025ad37357a58e5c15fe277c35be4d26d83a71df776d2c55dc55737e",
+      "snapshot_label": "Official open-data snapshot dated 2026-06-01",
+      "source_version_datetime": "20260601000000",
+      "title": "Cap. 614",
+      "top_level_section_count": 37,
+      "version_class": "c",
+      "version_id": "cap_614_20260601000000_en_c.xml"
+    }
+  ]
+}

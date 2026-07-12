@@ -1,0 +1,1560 @@
+{
+  "change_events": [
+    {
+      "from_label": "Official open-data snapshot dated 2012-07-27",
+      "from_version": "cap_614_20120727000000_en_p.xml",
+      "relationship": "status_changed",
+      "section_num_a": "15.",
+      "section_num_b": "15.",
+      "to_label": "Official open-data snapshot dated 2017-02-24",
+      "to_version": "cap_614_20170224000000_en_p.xml"
+    },
+    {
+      "from_label": "Official open-data snapshot dated 2017-02-24",
+      "from_version": "cap_614_20170224000000_en_p.xml",
+      "relationship": "text_changed",
+      "section_num_a": "15.",
+      "section_num_b": "15.",
+      "to_label": "Official open-data snapshot dated 2018-04-20",
+      "to_version": "cap_614_20180420000000_en_p.xml"
+    },
+    {
+      "from_label": "Official open-data snapshot dated 2024-03-23",
+      "from_version": "cap_614_20240323000000_en_p.xml",
+      "relationship": "text_changed",
+      "section_num_a": "15.",
+      "section_num_b": "15.",
+      "to_label": "Official open-data snapshot dated 2024-07-19",
+      "to_version": "cap_614_20240719000000_en_p.xml"
+    }
+  ],
+  "dataset_mode": "demo",
+  "descriptive_change_count": 3,
+  "frequency_disclaimer": "Change frequency is a descriptive corpus measure for this dataset, not a measure of legal importance.",
+  "generation_timestamp": "2026-07-12T03:50:47Z",
+  "instrument_id": "cap:614",
+  "schema_version": "lawtrace-web/1.0.0",
+  "section_id": "ID_1438403528808_004",
+  "snapshots": {
+    "cap_614_20110630000000_en_p.xml": {
+      "canonical_sha256": "d77a919f8ae0e8a21aba65f15c377ce8bf7865869bf79f6f4a0c774b89b20306",
+      "heading": "Secretary for Justice to compile record of editorial amendments",
+      "num": "15.",
+      "partial": null,
+      "plain_text": "15.\nSecretary for Justice to compile record of editorial amendments\n(1)\nThe Secretary for Justice must compile a record containing—\n(a)\ndescriptions of editorial amendments made;\n(b)\nthe time and date on which each description of editorial amendments is entered in the record; and\n(c)\nother information that the Secretary for Justice considers useful to users of the record.\n(2)\nThe record is to be kept in a form that the Secretary for Justice considers appropriate.",
+      "provenance": {
+        "canonical_xpath": "/ordinance/main/part[4]/division[2]/section[1]",
+        "comparator_version": "lawtrace-comparator/1.0.0",
+        "element_id": "ID_1438403528808_004",
+        "normalization_version": "lawtrace-norm/0.2.0",
+        "official_portal": "https://www.elegislation.gov.hk/",
+        "parser_version": "lawtrace-parser/0.2.0",
+        "source_archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+        "source_file": "cap_614_20110630000000_en_p.xml",
+        "source_file_sha256": "5666ebaecb0cabb0074dd738da352636f846c10dc85aa6ff1ed6d553f15bdaf2",
+        "source_version_datetime": "20110630000000",
+        "temporal_id": "s15"
+      },
+      "reason": "notYetInOperation",
+      "renderability": "complete",
+      "status": "pending",
+      "tokens": [
+        {
+          "kind": "SECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "15."
+        },
+        {
+          "kind": "HEADING",
+          "text": "Secretary for Justice to compile record of editorial amendments"
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(1)"
+        },
+        {
+          "kind": "LEADIN",
+          "text": "The Secretary for Justice must compile a record containing—"
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(a)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "descriptions of editorial amendments made;"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(b)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "the time and date on which each description of editorial amendments is entered in the record; and"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(c)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "other information that the Secretary for Justice considers useful to users of the record."
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(2)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "The record is to be kept in a form that the Secretary for Justice considers appropriate."
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SECTION_CLOSE",
+          "text": ""
+        }
+      ]
+    },
+    "cap_614_20120116000000_en_p.xml": {
+      "canonical_sha256": "d77a919f8ae0e8a21aba65f15c377ce8bf7865869bf79f6f4a0c774b89b20306",
+      "heading": "Secretary for Justice to compile record of editorial amendments",
+      "num": "15.",
+      "partial": null,
+      "plain_text": "15.\nSecretary for Justice to compile record of editorial amendments\n(1)\nThe Secretary for Justice must compile a record containing—\n(a)\ndescriptions of editorial amendments made;\n(b)\nthe time and date on which each description of editorial amendments is entered in the record; and\n(c)\nother information that the Secretary for Justice considers useful to users of the record.\n(2)\nThe record is to be kept in a form that the Secretary for Justice considers appropriate.",
+      "provenance": {
+        "canonical_xpath": "/ordinance/main/part[4]/division[2]/section[1]",
+        "comparator_version": "lawtrace-comparator/1.0.0",
+        "element_id": "ID_1438403528808_004",
+        "normalization_version": "lawtrace-norm/0.2.0",
+        "official_portal": "https://www.elegislation.gov.hk/",
+        "parser_version": "lawtrace-parser/0.2.0",
+        "source_archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+        "source_file": "cap_614_20120116000000_en_p.xml",
+        "source_file_sha256": "95e1bdf4dd11269079848a302944e59b80b65de4b49f83fba4ee5f6562636b2a",
+        "source_version_datetime": "20120116000000",
+        "temporal_id": "s15"
+      },
+      "reason": "notYetInOperation",
+      "renderability": "complete",
+      "status": "pending",
+      "tokens": [
+        {
+          "kind": "SECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "15."
+        },
+        {
+          "kind": "HEADING",
+          "text": "Secretary for Justice to compile record of editorial amendments"
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(1)"
+        },
+        {
+          "kind": "LEADIN",
+          "text": "The Secretary for Justice must compile a record containing—"
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(a)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "descriptions of editorial amendments made;"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(b)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "the time and date on which each description of editorial amendments is entered in the record; and"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(c)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "other information that the Secretary for Justice considers useful to users of the record."
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(2)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "The record is to be kept in a form that the Secretary for Justice considers appropriate."
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SECTION_CLOSE",
+          "text": ""
+        }
+      ]
+    },
+    "cap_614_20120209000000_en_p.xml": {
+      "canonical_sha256": "d77a919f8ae0e8a21aba65f15c377ce8bf7865869bf79f6f4a0c774b89b20306",
+      "heading": "Secretary for Justice to compile record of editorial amendments",
+      "num": "15.",
+      "partial": null,
+      "plain_text": "15.\nSecretary for Justice to compile record of editorial amendments\n(1)\nThe Secretary for Justice must compile a record containing—\n(a)\ndescriptions of editorial amendments made;\n(b)\nthe time and date on which each description of editorial amendments is entered in the record; and\n(c)\nother information that the Secretary for Justice considers useful to users of the record.\n(2)\nThe record is to be kept in a form that the Secretary for Justice considers appropriate.",
+      "provenance": {
+        "canonical_xpath": "/ordinance/main/part[4]/division[2]/section[1]",
+        "comparator_version": "lawtrace-comparator/1.0.0",
+        "element_id": "ID_1438403528808_004",
+        "normalization_version": "lawtrace-norm/0.2.0",
+        "official_portal": "https://www.elegislation.gov.hk/",
+        "parser_version": "lawtrace-parser/0.2.0",
+        "source_archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+        "source_file": "cap_614_20120209000000_en_p.xml",
+        "source_file_sha256": "090993446333fec63ab3ea53013a6ebd7c6590ba553bcc2a8355959934a39e0b",
+        "source_version_datetime": "20120209000000",
+        "temporal_id": "s15"
+      },
+      "reason": "notYetInOperation",
+      "renderability": "complete",
+      "status": "pending",
+      "tokens": [
+        {
+          "kind": "SECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "15."
+        },
+        {
+          "kind": "HEADING",
+          "text": "Secretary for Justice to compile record of editorial amendments"
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(1)"
+        },
+        {
+          "kind": "LEADIN",
+          "text": "The Secretary for Justice must compile a record containing—"
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(a)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "descriptions of editorial amendments made;"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(b)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "the time and date on which each description of editorial amendments is entered in the record; and"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(c)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "other information that the Secretary for Justice considers useful to users of the record."
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(2)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "The record is to be kept in a form that the Secretary for Justice considers appropriate."
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SECTION_CLOSE",
+          "text": ""
+        }
+      ]
+    },
+    "cap_614_20120727000000_en_p.xml": {
+      "canonical_sha256": "d77a919f8ae0e8a21aba65f15c377ce8bf7865869bf79f6f4a0c774b89b20306",
+      "heading": "Secretary for Justice to compile record of editorial amendments",
+      "num": "15.",
+      "partial": null,
+      "plain_text": "15.\nSecretary for Justice to compile record of editorial amendments\n(1)\nThe Secretary for Justice must compile a record containing—\n(a)\ndescriptions of editorial amendments made;\n(b)\nthe time and date on which each description of editorial amendments is entered in the record; and\n(c)\nother information that the Secretary for Justice considers useful to users of the record.\n(2)\nThe record is to be kept in a form that the Secretary for Justice considers appropriate.",
+      "provenance": {
+        "canonical_xpath": "/ordinance/main/part[4]/division[2]/section[1]",
+        "comparator_version": "lawtrace-comparator/1.0.0",
+        "element_id": "ID_1438403528808_004",
+        "normalization_version": "lawtrace-norm/0.2.0",
+        "official_portal": "https://www.elegislation.gov.hk/",
+        "parser_version": "lawtrace-parser/0.2.0",
+        "source_archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+        "source_file": "cap_614_20120727000000_en_p.xml",
+        "source_file_sha256": "692748f6fca2b19e54c0753f41afae1548f087875c1d6d29649dc5d9625f2484",
+        "source_version_datetime": "20120727000000",
+        "temporal_id": "s15"
+      },
+      "reason": "notYetInOperation",
+      "renderability": "complete",
+      "status": "pending",
+      "tokens": [
+        {
+          "kind": "SECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "15."
+        },
+        {
+          "kind": "HEADING",
+          "text": "Secretary for Justice to compile record of editorial amendments"
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(1)"
+        },
+        {
+          "kind": "LEADIN",
+          "text": "The Secretary for Justice must compile a record containing—"
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(a)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "descriptions of editorial amendments made;"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(b)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "the time and date on which each description of editorial amendments is entered in the record; and"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(c)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "other information that the Secretary for Justice considers useful to users of the record."
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(2)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "The record is to be kept in a form that the Secretary for Justice considers appropriate."
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SECTION_CLOSE",
+          "text": ""
+        }
+      ]
+    },
+    "cap_614_20170224000000_en_p.xml": {
+      "canonical_sha256": "bc3005e2fcde1c92b25201327be221ae6f2c3a52790cf589501a2a04c362a451",
+      "heading": "Secretary for Justice to compile record of editorial amendments",
+      "num": "15.",
+      "partial": null,
+      "plain_text": "15.\nSecretary for Justice to compile record of editorial amendments\n(1)\nThe Secretary for Justice must compile a record containing—\n(a)\ndescriptions of editorial amendments made;\n(b)\nthe time and date on which each description of editorial amendments is entered in the record; and\n(c)\nother information that the Secretary for Justice considers useful to users of the record.\n(2)\nThe record is to be kept in a form that the Secretary for Justice considers appropriate.",
+      "provenance": {
+        "canonical_xpath": "/ordinance/main/part[4]/division[2]/section[1]",
+        "comparator_version": "lawtrace-comparator/1.0.0",
+        "element_id": "ID_1438403528808_004",
+        "normalization_version": "lawtrace-norm/0.2.0",
+        "official_portal": "https://www.elegislation.gov.hk/",
+        "parser_version": "lawtrace-parser/0.2.0",
+        "source_archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+        "source_file": "cap_614_20170224000000_en_p.xml",
+        "source_file_sha256": "7fc515b9395de0275f889754e7ec309097bf9b3ac924af4994eca782dd3589b0",
+        "source_version_datetime": "20170224000000",
+        "temporal_id": "s15"
+      },
+      "reason": "inEffect",
+      "renderability": "complete",
+      "status": "operational",
+      "tokens": [
+        {
+          "kind": "SECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "15."
+        },
+        {
+          "kind": "HEADING",
+          "text": "Secretary for Justice to compile record of editorial amendments"
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(1)"
+        },
+        {
+          "kind": "LEADIN",
+          "text": "The Secretary for Justice must compile a record containing—"
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(a)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "descriptions of editorial amendments made;"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(b)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "the time and date on which each description of editorial amendments is entered in the record; and"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(c)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "other information that the Secretary for Justice considers useful to users of the record."
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(2)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "The record is to be kept in a form that the Secretary for Justice considers appropriate."
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SECTION_CLOSE",
+          "text": ""
+        }
+      ]
+    },
+    "cap_614_20180420000000_en_p.xml": {
+      "canonical_sha256": "ec9fce58ca10494a7b462830336010aab599c197f06a6b244e2892caa155d14a",
+      "heading": "Secretary for Justice to compile record of editorial amendments",
+      "num": "15.",
+      "partial": null,
+      "plain_text": "15.\nSecretary for Justice to compile record of editorial amendments\n(1)\nThe Secretary for Justice must compile a record containing—\n(a)\ndescriptions of editorial amendments\n made;\n and\n(b)\n(Repealed 17 of 2018 s. 26)\n(c)\nother information that the Secretary for Justice considers useful to users\n of the record.\n(2)\nThe record is to be\n published\n on an approved website in a form that the Secretary for Justice\n considers appropriate.\n(Amended 17 of 2018 s. 26)",
+      "provenance": {
+        "canonical_xpath": "/ordinance/main/part[4]/division[2]/section[1]",
+        "comparator_version": "lawtrace-comparator/1.0.0",
+        "element_id": "ID_1438403528808_004",
+        "normalization_version": "lawtrace-norm/0.2.0",
+        "official_portal": "https://www.elegislation.gov.hk/",
+        "parser_version": "lawtrace-parser/0.2.0",
+        "source_archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+        "source_file": "cap_614_20180420000000_en_p.xml",
+        "source_file_sha256": "cc2b93e57bbc7c8a11403eb6cfb4533f78786a108f161a6a2d27c1e6853efbd7",
+        "source_version_datetime": "20180420000000",
+        "temporal_id": "s15"
+      },
+      "reason": "inEffect",
+      "renderability": "complete",
+      "status": "operational",
+      "tokens": [
+        {
+          "kind": "SECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "15."
+        },
+        {
+          "kind": "HEADING",
+          "text": "Secretary for Justice to compile record of editorial amendments"
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(1)"
+        },
+        {
+          "kind": "LEADIN",
+          "text": "The Secretary for Justice must compile a record containing—"
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(a)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "descriptions of editorial amendments\n made;\n and"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(b)"
+        },
+        {
+          "kind": "SOURCENOTE",
+          "text": "(Repealed 17 of 2018 s. 26)"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(c)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "other information that the Secretary for Justice considers useful to users\n of the record."
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(2)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "The record is to be\n published\n on an approved website in a form that the Secretary for Justice\n considers appropriate."
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SOURCENOTE",
+          "text": "(Amended 17 of 2018 s. 26)"
+        },
+        {
+          "kind": "SECTION_CLOSE",
+          "text": ""
+        }
+      ]
+    },
+    "cap_614_20180628000000_en_p.xml": {
+      "canonical_sha256": "ec9fce58ca10494a7b462830336010aab599c197f06a6b244e2892caa155d14a",
+      "heading": "Secretary for Justice to compile record of editorial amendments",
+      "num": "15.",
+      "partial": null,
+      "plain_text": "15.\nSecretary for Justice to compile record of editorial amendments\n(1)\nThe Secretary for Justice must compile a record containing—\n(a)\ndescriptions of editorial amendments\n made;\n and\n(b)\n(Repealed 17 of 2018 s. 26)\n(c)\nother information that the Secretary for Justice considers useful to users\n of the record.\n(2)\nThe record is to be\n published\n on an approved website in a form that the Secretary for Justice\n considers appropriate.\n(Amended 17 of 2018 s. 26)",
+      "provenance": {
+        "canonical_xpath": "/ordinance/main/part[4]/division[2]/section[1]",
+        "comparator_version": "lawtrace-comparator/1.0.0",
+        "element_id": "ID_1438403528808_004",
+        "normalization_version": "lawtrace-norm/0.2.0",
+        "official_portal": "https://www.elegislation.gov.hk/",
+        "parser_version": "lawtrace-parser/0.2.0",
+        "source_archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+        "source_file": "cap_614_20180628000000_en_p.xml",
+        "source_file_sha256": "b660429c53af0d075fd346c28044506e4652879eebdaaad794b75a66c5728fb2",
+        "source_version_datetime": "20180628000000",
+        "temporal_id": "s15"
+      },
+      "reason": "inEffect",
+      "renderability": "complete",
+      "status": "operational",
+      "tokens": [
+        {
+          "kind": "SECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "15."
+        },
+        {
+          "kind": "HEADING",
+          "text": "Secretary for Justice to compile record of editorial amendments"
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(1)"
+        },
+        {
+          "kind": "LEADIN",
+          "text": "The Secretary for Justice must compile a record containing—"
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(a)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "descriptions of editorial amendments\n made;\n and"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(b)"
+        },
+        {
+          "kind": "SOURCENOTE",
+          "text": "(Repealed 17 of 2018 s. 26)"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(c)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "other information that the Secretary for Justice considers useful to users\n of the record."
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(2)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "The record is to be\n published\n on an approved website in a form that the Secretary for Justice\n considers appropriate."
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SOURCENOTE",
+          "text": "(Amended 17 of 2018 s. 26)"
+        },
+        {
+          "kind": "SECTION_CLOSE",
+          "text": ""
+        }
+      ]
+    },
+    "cap_614_20200612000000_en_p.xml": {
+      "canonical_sha256": "ec9fce58ca10494a7b462830336010aab599c197f06a6b244e2892caa155d14a",
+      "heading": "Secretary for Justice to compile record of editorial amendments",
+      "num": "15.",
+      "partial": null,
+      "plain_text": "15.\nSecretary for Justice to compile record of editorial amendments\n(1)\nThe Secretary for Justice must compile a record containing—\n(a)\ndescriptions of editorial amendments\n made;\n and\n(b)\n(Repealed 17 of 2018 s. 26)\n(c)\nother information that the Secretary for Justice considers useful to users\n of the record.\n(2)\nThe record is to be\n published\n on an approved website in a form that the Secretary for Justice\n considers appropriate.\n(Amended 17 of 2018 s. 26)",
+      "provenance": {
+        "canonical_xpath": "/ordinance/main/part[4]/division[2]/section[1]",
+        "comparator_version": "lawtrace-comparator/1.0.0",
+        "element_id": "ID_1438403528808_004",
+        "normalization_version": "lawtrace-norm/0.2.0",
+        "official_portal": "https://www.elegislation.gov.hk/",
+        "parser_version": "lawtrace-parser/0.2.0",
+        "source_archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+        "source_file": "cap_614_20200612000000_en_p.xml",
+        "source_file_sha256": "6a6564007d02f933b0e2575648eb42fb60b3d6d707654c1be57d21757ebb9673",
+        "source_version_datetime": "20200612000000",
+        "temporal_id": "s15"
+      },
+      "reason": "inEffect",
+      "renderability": "complete",
+      "status": "operational",
+      "tokens": [
+        {
+          "kind": "SECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "15."
+        },
+        {
+          "kind": "HEADING",
+          "text": "Secretary for Justice to compile record of editorial amendments"
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(1)"
+        },
+        {
+          "kind": "LEADIN",
+          "text": "The Secretary for Justice must compile a record containing—"
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(a)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "descriptions of editorial amendments\n made;\n and"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(b)"
+        },
+        {
+          "kind": "SOURCENOTE",
+          "text": "(Repealed 17 of 2018 s. 26)"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(c)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "other information that the Secretary for Justice considers useful to users\n of the record."
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(2)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "The record is to be\n published\n on an approved website in a form that the Secretary for Justice\n considers appropriate."
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SOURCENOTE",
+          "text": "(Amended 17 of 2018 s. 26)"
+        },
+        {
+          "kind": "SECTION_CLOSE",
+          "text": ""
+        }
+      ]
+    },
+    "cap_614_20220224000000_en_p.xml": {
+      "canonical_sha256": "ec9fce58ca10494a7b462830336010aab599c197f06a6b244e2892caa155d14a",
+      "heading": "Secretary for Justice to compile record of editorial amendments",
+      "num": "15.",
+      "partial": null,
+      "plain_text": "15.\nSecretary for Justice to compile record of editorial amendments\n(1)\nThe Secretary for Justice must compile a record containing—\n(a)\ndescriptions of editorial amendments\n made;\n and\n(b)\n(Repealed 17 of 2018 s. 26)\n(c)\nother information that the Secretary for Justice considers useful to users\n of the record.\n(2)\nThe record is to be\n published\n on an approved website in a form that the Secretary for Justice\n considers appropriate.\n(Amended 17 of 2018 s. 26)",
+      "provenance": {
+        "canonical_xpath": "/ordinance/main/part[4]/division[2]/section[1]",
+        "comparator_version": "lawtrace-comparator/1.0.0",
+        "element_id": "ID_1438403528808_004",
+        "normalization_version": "lawtrace-norm/0.2.0",
+        "official_portal": "https://www.elegislation.gov.hk/",
+        "parser_version": "lawtrace-parser/0.2.0",
+        "source_archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+        "source_file": "cap_614_20220224000000_en_p.xml",
+        "source_file_sha256": "20d5bd28c3729dd6d5af6d9a5b7a3ea882836407749be75254b7285fe612c9fc",
+        "source_version_datetime": "20220224000000",
+        "temporal_id": "s15"
+      },
+      "reason": "inEffect",
+      "renderability": "complete",
+      "status": "operational",
+      "tokens": [
+        {
+          "kind": "SECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "15."
+        },
+        {
+          "kind": "HEADING",
+          "text": "Secretary for Justice to compile record of editorial amendments"
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(1)"
+        },
+        {
+          "kind": "LEADIN",
+          "text": "The Secretary for Justice must compile a record containing—"
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(a)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "descriptions of editorial amendments\n made;\n and"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(b)"
+        },
+        {
+          "kind": "SOURCENOTE",
+          "text": "(Repealed 17 of 2018 s. 26)"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(c)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "other information that the Secretary for Justice considers useful to users\n of the record."
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(2)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "The record is to be\n published\n on an approved website in a form that the Secretary for Justice\n considers appropriate."
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SOURCENOTE",
+          "text": "(Amended 17 of 2018 s. 26)"
+        },
+        {
+          "kind": "SECTION_CLOSE",
+          "text": ""
+        }
+      ]
+    },
+    "cap_614_20240323000000_en_p.xml": {
+      "canonical_sha256": "ec9fce58ca10494a7b462830336010aab599c197f06a6b244e2892caa155d14a",
+      "heading": "Secretary for Justice to compile record of editorial amendments",
+      "num": "15.",
+      "partial": null,
+      "plain_text": "15.\nSecretary for Justice to compile record of editorial amendments\n(1)\nThe Secretary for Justice must compile a record containing—\n(a)\ndescriptions of editorial amendments\n made;\n and\n(b)\n(Repealed 17 of 2018 s. 26)\n(c)\nother information that the Secretary for Justice considers useful to users\n of the record.\n(2)\nThe record is to be\n published\n on an approved website in a form that the Secretary for Justice\n considers appropriate.\n(Amended 17 of 2018 s. 26)",
+      "provenance": {
+        "canonical_xpath": "/ordinance/main/part[4]/division[2]/section[1]",
+        "comparator_version": "lawtrace-comparator/1.0.0",
+        "element_id": "ID_1438403528808_004",
+        "normalization_version": "lawtrace-norm/0.2.0",
+        "official_portal": "https://www.elegislation.gov.hk/",
+        "parser_version": "lawtrace-parser/0.2.0",
+        "source_archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+        "source_file": "cap_614_20240323000000_en_p.xml",
+        "source_file_sha256": "d150ce25d313e6465f6489970a213ab80512fe9bbae262715e1b85fca0aa0b1f",
+        "source_version_datetime": "20240323000000",
+        "temporal_id": "s15"
+      },
+      "reason": "inEffect",
+      "renderability": "complete",
+      "status": "operational",
+      "tokens": [
+        {
+          "kind": "SECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "15."
+        },
+        {
+          "kind": "HEADING",
+          "text": "Secretary for Justice to compile record of editorial amendments"
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(1)"
+        },
+        {
+          "kind": "LEADIN",
+          "text": "The Secretary for Justice must compile a record containing—"
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(a)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "descriptions of editorial amendments\n made;\n and"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(b)"
+        },
+        {
+          "kind": "SOURCENOTE",
+          "text": "(Repealed 17 of 2018 s. 26)"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(c)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "other information that the Secretary for Justice considers useful to users\n of the record."
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(2)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "The record is to be\n published\n on an approved website in a form that the Secretary for Justice\n considers appropriate."
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SOURCENOTE",
+          "text": "(Amended 17 of 2018 s. 26)"
+        },
+        {
+          "kind": "SECTION_CLOSE",
+          "text": ""
+        }
+      ]
+    },
+    "cap_614_20240719000000_en_p.xml": {
+      "canonical_sha256": "95c90ba20d1aa8e6b7c2b6da2fee66b08f238b33c4c2d05114d7c2d2cd5bc635",
+      "heading": "Secretary for Justice to compile record of editorial\n amendments\n etc.",
+      "num": "15.",
+      "partial": null,
+      "plain_text": "15.\nSecretary for Justice to compile record of editorial\n amendments\n etc.\n(Amended 21 of 2024 s. 38)\n(1)\nThe Secretary for Justice must compile a record containing—\n(a)\ndescriptions of editorial amendments made;\n (Amended 21 of 2024 s. 38)\n(ab)\ndescriptions of formatting amendments made; and (Added 21 of 2024 s. 38)\n(b)\n(Repealed 17 of 2018 s. 26)\n(c)\nother information that the Secretary for Justice considers useful to users\n of the record.\n(2)\nThe record is to be\n published\n on an approved website in a form that the Secretary for Justice\n considers appropriate.\n(Amended 17 of 2018 s. 26)",
+      "provenance": {
+        "canonical_xpath": "/ordinance/main/part[4]/division[2]/section[1]",
+        "comparator_version": "lawtrace-comparator/1.0.0",
+        "element_id": "ID_1438403528808_004",
+        "normalization_version": "lawtrace-norm/0.2.0",
+        "official_portal": "https://www.elegislation.gov.hk/",
+        "parser_version": "lawtrace-parser/0.2.0",
+        "source_archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+        "source_file": "cap_614_20240719000000_en_p.xml",
+        "source_file_sha256": "285e52a9e6c1763a2b4db5f2bc448477b487bff4bbd4524200a474cd7400290a",
+        "source_version_datetime": "20240719000000",
+        "temporal_id": "s15"
+      },
+      "reason": "inEffect",
+      "renderability": "complete",
+      "status": "operational",
+      "tokens": [
+        {
+          "kind": "SECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "15."
+        },
+        {
+          "kind": "HEADING",
+          "text": "Secretary for Justice to compile record of editorial\n amendments\n etc."
+        },
+        {
+          "kind": "SOURCENOTE",
+          "text": "(Amended 21 of 2024 s. 38)"
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(1)"
+        },
+        {
+          "kind": "LEADIN",
+          "text": "The Secretary for Justice must compile a record containing—"
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(a)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "descriptions of editorial amendments made;\n (Amended 21 of 2024 s. 38)"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(ab)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "descriptions of formatting amendments made; and (Added 21 of 2024 s. 38)"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(b)"
+        },
+        {
+          "kind": "SOURCENOTE",
+          "text": "(Repealed 17 of 2018 s. 26)"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(c)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "other information that the Secretary for Justice considers useful to users\n of the record."
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(2)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "The record is to be\n published\n on an approved website in a form that the Secretary for Justice\n considers appropriate."
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SOURCENOTE",
+          "text": "(Amended 17 of 2018 s. 26)"
+        },
+        {
+          "kind": "SECTION_CLOSE",
+          "text": ""
+        }
+      ]
+    },
+    "cap_614_20260601000000_en_c.xml": {
+      "canonical_sha256": "95c90ba20d1aa8e6b7c2b6da2fee66b08f238b33c4c2d05114d7c2d2cd5bc635",
+      "heading": "Secretary for Justice to compile record of editorial\n amendments\n etc.",
+      "num": "15.",
+      "partial": null,
+      "plain_text": "15.\nSecretary for Justice to compile record of editorial\n amendments\n etc.\n(Amended 21 of 2024 s. 38)\n(1)\nThe Secretary for Justice must compile a record containing—\n(a)\ndescriptions of editorial amendments made;\n (Amended 21 of 2024 s. 38)\n(ab)\ndescriptions of formatting amendments made; and (Added 21 of 2024 s. 38)\n(b)\n(Repealed 17 of 2018 s. 26)\n(c)\nother information that the Secretary for Justice considers useful to users\n of the record.\n(2)\nThe record is to be\n published\n on an approved website in a form that the Secretary for Justice\n considers appropriate.\n(Amended 17 of 2018 s. 26)",
+      "provenance": {
+        "canonical_xpath": "/ordinance/main/part[4]/division[2]/section[1]",
+        "comparator_version": "lawtrace-comparator/1.0.0",
+        "element_id": "ID_1438403528808_004",
+        "normalization_version": "lawtrace-norm/0.2.0",
+        "official_portal": "https://www.elegislation.gov.hk/",
+        "parser_version": "lawtrace-parser/0.2.0",
+        "source_archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+        "source_file": "cap_614_20260601000000_en_c.xml",
+        "source_file_sha256": "41a601f6025ad37357a58e5c15fe277c35be4d26d83a71df776d2c55dc55737e",
+        "source_version_datetime": "20260601000000",
+        "temporal_id": "s15"
+      },
+      "reason": "inEffect",
+      "renderability": "complete",
+      "status": "operational",
+      "tokens": [
+        {
+          "kind": "SECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "15."
+        },
+        {
+          "kind": "HEADING",
+          "text": "Secretary for Justice to compile record of editorial\n amendments\n etc."
+        },
+        {
+          "kind": "SOURCENOTE",
+          "text": "(Amended 21 of 2024 s. 38)"
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(1)"
+        },
+        {
+          "kind": "LEADIN",
+          "text": "The Secretary for Justice must compile a record containing—"
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(a)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "descriptions of editorial amendments made;\n (Amended 21 of 2024 s. 38)"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(ab)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "descriptions of formatting amendments made; and (Added 21 of 2024 s. 38)"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(b)"
+        },
+        {
+          "kind": "SOURCENOTE",
+          "text": "(Repealed 17 of 2018 s. 26)"
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(c)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "other information that the Secretary for Justice considers useful to users\n of the record."
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(2)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "The record is to be\n published\n on an approved website in a form that the Secretary for Justice\n considers appropriate."
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SOURCENOTE",
+          "text": "(Amended 17 of 2018 s. 26)"
+        },
+        {
+          "kind": "SECTION_CLOSE",
+          "text": ""
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,174 @@
+{
+  "instrument_id": "cap:614",
+  "transitions": [
+    {
+      "ambiguous_count": 0,
+      "changed_count": 5,
+      "content_hash": "ec1ee3165870670438be57d0a84f4d20bd0b66248a0bf42449a93597fab68f45",
+      "counts": {
+        "added": 5,
+        "unchanged": 31
+      },
+      "from_label": "Official open-data snapshot dated 2011-06-30",
+      "from_version": "cap_614_20110630000000_en_p.xml",
+      "to_label": "Official open-data snapshot dated 2012-01-16",
+      "to_version": "cap_614_20120116000000_en_p.xml",
+      "transition_id": "cap_614_20110630000000_en_p.xml__to__cap_614_20120116000000_en_p.xml",
+      "unchanged_count": 31
+    },
+    {
+      "ambiguous_count": 0,
+      "changed_count": 13,
+      "content_hash": "39de88019254343edffb0e9528421a8fac995afc3f3ebb9a2cbdaaa9ad3ee800",
+      "counts": {
+        "text_and_status_changed": 12,
+        "text_changed": 1,
+        "unchanged": 23
+      },
+      "from_label": "Official open-data snapshot dated 2012-01-16",
+      "from_version": "cap_614_20120116000000_en_p.xml",
+      "to_label": "Official open-data snapshot dated 2012-02-09",
+      "to_version": "cap_614_20120209000000_en_p.xml",
+      "transition_id": "cap_614_20120116000000_en_p.xml__to__cap_614_20120209000000_en_p.xml",
+      "unchanged_count": 23
+    },
+    {
+      "ambiguous_count": 0,
+      "changed_count": 1,
+      "content_hash": "3fc48dcc9c5676fae66c28dfff1e6b3e97945ed9aff844b767b7692dd590a9dc",
+      "counts": {
+        "text_changed": 1,
+        "unchanged": 35
+      },
+      "from_label": "Official open-data snapshot dated 2012-02-09",
+      "from_version": "cap_614_20120209000000_en_p.xml",
+      "to_label": "Official open-data snapshot dated 2012-07-27",
+      "to_version": "cap_614_20120727000000_en_p.xml",
+      "transition_id": "cap_614_20120209000000_en_p.xml__to__cap_614_20120727000000_en_p.xml",
+      "unchanged_count": 35
+    },
+    {
+      "ambiguous_count": 0,
+      "changed_count": 16,
+      "content_hash": "6f1c6a236ecf63efdbde66c9e83453cbebb096c7d50bf39e2df140294c349bc7",
+      "counts": {
+        "status_changed": 13,
+        "text_and_status_changed": 3,
+        "unchanged": 20
+      },
+      "from_label": "Official open-data snapshot dated 2012-07-27",
+      "from_version": "cap_614_20120727000000_en_p.xml",
+      "to_label": "Official open-data snapshot dated 2017-02-24",
+      "to_version": "cap_614_20170224000000_en_p.xml",
+      "transition_id": "cap_614_20120727000000_en_p.xml__to__cap_614_20170224000000_en_p.xml",
+      "unchanged_count": 20
+    },
+    {
+      "ambiguous_count": 0,
+      "changed_count": 7,
+      "content_hash": "38b0f0af90ff6b1f6edfccf5cda14fcb5a02dcaa1b52e9acfd0243ffd9d401b2",
+      "counts": {
+        "text_and_status_changed": 1,
+        "text_changed": 6,
+        "unchanged": 29
+      },
+      "from_label": "Official open-data snapshot dated 2017-02-24",
+      "from_version": "cap_614_20170224000000_en_p.xml",
+      "to_label": "Official open-data snapshot dated 2018-04-20",
+      "to_version": "cap_614_20180420000000_en_p.xml",
+      "transition_id": "cap_614_20170224000000_en_p.xml__to__cap_614_20180420000000_en_p.xml",
+      "unchanged_count": 29
+    },
+    {
+      "ambiguous_count": 0,
+      "changed_count": 3,
+      "content_hash": "20b683b2385adb17febb89101408c55fef96743346e81148772fefa0162df647",
+      "counts": {
+        "text_and_status_changed": 3,
+        "unchanged": 33
+      },
+      "from_label": "Official open-data snapshot dated 2018-04-20",
+      "from_version": "cap_614_20180420000000_en_p.xml",
+      "to_label": "Official open-data snapshot dated 2018-06-28",
+      "to_version": "cap_614_20180628000000_en_p.xml",
+      "transition_id": "cap_614_20180420000000_en_p.xml__to__cap_614_20180628000000_en_p.xml",
+      "unchanged_count": 33
+    },
+    {
+      "ambiguous_count": 0,
+      "changed_count": 1,
+      "content_hash": "3cafddddb1250b63567ce8f8984769afe59e5763b2e563c28e5e0d8bb2b0b189",
+      "counts": {
+        "text_changed": 1,
+        "unchanged": 35
+      },
+      "from_label": "Official open-data snapshot dated 2018-06-28",
+      "from_version": "cap_614_20180628000000_en_p.xml",
+      "to_label": "Official open-data snapshot dated 2020-06-12",
+      "to_version": "cap_614_20200612000000_en_p.xml",
+      "transition_id": "cap_614_20180628000000_en_p.xml__to__cap_614_20200612000000_en_p.xml",
+      "unchanged_count": 35
+    },
+    {
+      "ambiguous_count": 0,
+      "changed_count": 1,
+      "content_hash": "92ff92a3f49f0416db2920f409d0ad8f84c3a34d1a56c0205783718fa4370191",
+      "counts": {
+        "text_changed": 1,
+        "unchanged": 35
+      },
+      "from_label": "Official open-data snapshot dated 2020-06-12",
+      "from_version": "cap_614_20200612000000_en_p.xml",
+      "to_label": "Official open-data snapshot dated 2022-02-24",
+      "to_version": "cap_614_20220224000000_en_p.xml",
+      "transition_id": "cap_614_20200612000000_en_p.xml__to__cap_614_20220224000000_en_p.xml",
+      "unchanged_count": 35
+    },
+    {
+      "ambiguous_count": 0,
+      "changed_count": 1,
+      "content_hash": "281c0cc42d433b8d7d7bbc541a983886348b99fd48c3630d6645aa9740fe6a23",
+      "counts": {
+        "text_changed": 1,
+        "unchanged": 35
+      },
+      "from_label": "Official open-data snapshot dated 2022-02-24",
+      "from_version": "cap_614_20220224000000_en_p.xml",
+      "to_label": "Official open-data snapshot dated 2024-03-23",
+      "to_version": "cap_614_20240323000000_en_p.xml",
+      "transition_id": "cap_614_20220224000000_en_p.xml__to__cap_614_20240323000000_en_p.xml",
+      "unchanged_count": 35
+    },
+    {
+      "ambiguous_count": 0,
+      "changed_count": 5,
+      "content_hash": "be9fa90a68e26bf3db9f320de608c887582342caf721cfa29cf041197f269250",
+      "counts": {
+        "added": 1,
+        "text_changed": 4,
+        "unchanged": 32
+      },
+      "from_label": "Official open-data snapshot dated 2024-03-23",
+      "from_version": "cap_614_20240323000000_en_p.xml",
+      "to_label": "Official open-data snapshot dated 2024-07-19",
+      "to_version": "cap_614_20240719000000_en_p.xml",
+      "transition_id": "cap_614_20240323000000_en_p.xml__to__cap_614_20240719000000_en_p.xml",
+      "unchanged_count": 32
+    },
+    {
+      "ambiguous_count": 0,
+      "changed_count": 2,
+      "content_hash": "1837af4ad45295d0ba5ecffbaa932d18c717b13130b40a5dac59b06f58de85bb",
+      "counts": {
+        "text_and_status_changed": 2,
+        "unchanged": 35
+      },
+      "from_label": "Official open-data snapshot dated 2024-07-19",
+      "from_version": "cap_614_20240719000000_en_p.xml",
+      "to_label": "Official open-data snapshot dated 2026-06-01",
+      "to_version": "cap_614_20260601000000_en_c.xml",
+      "transition_id": "cap_614_20240719000000_en_p.xml__to__cap_614_20260601000000_en_c.xml",
+      "unchanged_count": 35
+    }
+  ]
+}

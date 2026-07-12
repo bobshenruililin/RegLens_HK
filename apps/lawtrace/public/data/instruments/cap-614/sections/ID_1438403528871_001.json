@@ -1,0 +1,1795 @@
+{
+  "change_events": [
+    {
+      "from_label": "Official open-data snapshot dated 2012-07-27",
+      "from_version": "cap_614_20120727000000_en_p.xml",
+      "relationship": "text_and_status_changed",
+      "section_num_a": "22.",
+      "section_num_b": "22.",
+      "to_label": "Official open-data snapshot dated 2017-02-24",
+      "to_version": "cap_614_20170224000000_en_p.xml"
+    },
+    {
+      "from_label": "Official open-data snapshot dated 2018-04-20",
+      "from_version": "cap_614_20180420000000_en_p.xml",
+      "relationship": "text_and_status_changed",
+      "section_num_a": "22.",
+      "section_num_b": "22.",
+      "to_label": "Official open-data snapshot dated 2018-06-28",
+      "to_version": "cap_614_20180628000000_en_p.xml"
+    }
+  ],
+  "dataset_mode": "demo",
+  "descriptive_change_count": 2,
+  "frequency_disclaimer": "Change frequency is a descriptive corpus measure for this dataset, not a measure of legal importance.",
+  "generation_timestamp": "2026-07-12T03:50:47Z",
+  "instrument_id": "cap:614",
+  "schema_version": "lawtrace-web/1.0.0",
+  "section_id": "ID_1438403528871_001",
+  "snapshots": {
+    "cap_614_20110630000000_en_p.xml": {
+      "canonical_sha256": "39de629837f1f0eb72c0836d7b9626ab8a66f06d4debc1df1adb6974da924a62",
+      "heading": "Section 3A added",
+      "num": "22.",
+      "partial": null,
+      "plain_text": "22.\nSection 3A added\nAfter section 3—\nAdd\n“3A.\nOmission of Ordinances\n(1)\nThe Secretary for Justice may omit a verified Ordinance from the loose-leaf edition.\n(2)\nFor the purposes of subsection (1), an Ordinance is verified if a consolidated copy of the Ordinance, as published on an approved website, bears an official verification mark.\n(3)\nIn this section—\napproved website\n(\n認可網站\n) has the meaning given by\nsection 2(1)\nof the Legislation Publication Ordinance (\nCap. 614\n);\nconsolidated copy\n(\n編訂文本\n) has the meaning given by\nsection 2(1)\nof the Legislation Publication Ordinance (\nCap. 614\n);\nofficial verification mark\n(\n官方核證標記\n) has the meaning given by\nsection 2(1)\nof the Legislation Publication Ordinance (\nCap. 614\n).”.",
+      "provenance": {
+        "canonical_xpath": "/ordinance/main/part[5]/section[3]",
+        "comparator_version": "lawtrace-comparator/1.0.0",
+        "element_id": "ID_1438403528871_001",
+        "normalization_version": "lawtrace-norm/0.2.0",
+        "official_portal": "https://www.elegislation.gov.hk/",
+        "parser_version": "lawtrace-parser/0.2.0",
+        "source_archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+        "source_file": "cap_614_20110630000000_en_p.xml",
+        "source_file_sha256": "5666ebaecb0cabb0074dd738da352636f846c10dc85aa6ff1ed6d553f15bdaf2",
+        "source_version_datetime": "20110630000000",
+        "temporal_id": "s22"
+      },
+      "reason": "notYetInOperation",
+      "renderability": "complete",
+      "status": "pending",
+      "tokens": [
+        {
+          "kind": "SECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "22."
+        },
+        {
+          "kind": "HEADING",
+          "text": "Section 3A added"
+        },
+        {
+          "kind": "AMENDINGFORMULA_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "LEADIN",
+          "text": "After section 3—"
+        },
+        {
+          "kind": "ACTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "B",
+          "text": "Add"
+        },
+        {
+          "kind": "ACTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "QUOTEDSTRUCTURE_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "“3A."
+        },
+        {
+          "kind": "HEADING",
+          "text": "Omission of Ordinances"
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(1)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "The Secretary for Justice may omit a verified Ordinance from the loose-leaf edition."
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(2)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "For the purposes of subsection (1), an Ordinance is verified if a consolidated copy of the Ordinance, as published on an approved website, bears an official verification mark."
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(3)"
+        },
+        {
+          "kind": "LEADIN",
+          "text": "In this section—"
+        },
+        {
+          "kind": "DEF_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "TERM",
+          "text": "approved website"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "("
+        },
+        {
+          "kind": "TERM",
+          "text": "認可網站"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ") has the meaning given by"
+        },
+        {
+          "kind": "REF",
+          "text": "section 2(1)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "of the Legislation Publication Ordinance ("
+        },
+        {
+          "kind": "REF",
+          "text": "Cap. 614"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ");"
+        },
+        {
+          "kind": "DEF_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "DEF_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "TERM",
+          "text": "consolidated copy"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "("
+        },
+        {
+          "kind": "TERM",
+          "text": "編訂文本"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ") has the meaning given by"
+        },
+        {
+          "kind": "REF",
+          "text": "section 2(1)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "of the Legislation Publication Ordinance ("
+        },
+        {
+          "kind": "REF",
+          "text": "Cap. 614"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ");"
+        },
+        {
+          "kind": "DEF_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "DEF_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "TERM",
+          "text": "official verification mark"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "("
+        },
+        {
+          "kind": "TERM",
+          "text": "官方核證標記"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ") has the meaning given by"
+        },
+        {
+          "kind": "REF",
+          "text": "section 2(1)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "of the Legislation Publication Ordinance ("
+        },
+        {
+          "kind": "REF",
+          "text": "Cap. 614"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ").”."
+        },
+        {
+          "kind": "DEF_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "QUOTEDSTRUCTURE_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "AMENDINGFORMULA_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SECTION_CLOSE",
+          "text": ""
+        }
+      ]
+    },
+    "cap_614_20120116000000_en_p.xml": {
+      "canonical_sha256": "39de629837f1f0eb72c0836d7b9626ab8a66f06d4debc1df1adb6974da924a62",
+      "heading": "Section 3A added",
+      "num": "22.",
+      "partial": null,
+      "plain_text": "22.\nSection 3A added\nAfter section 3—\nAdd\n“3A.\nOmission of Ordinances\n(1)\nThe Secretary for Justice may omit a verified Ordinance from the loose-leaf edition.\n(2)\nFor the purposes of subsection (1), an Ordinance is verified if a consolidated copy of the Ordinance, as published on an approved website, bears an official verification mark.\n(3)\nIn this section—\napproved website\n(\n認可網站\n) has the meaning given by\nsection 2(1)\nof the Legislation Publication Ordinance (\nCap. 614\n);\nconsolidated copy\n(\n編訂文本\n) has the meaning given by\nsection 2(1)\nof the Legislation Publication Ordinance (\nCap. 614\n);\nofficial verification mark\n(\n官方核證標記\n) has the meaning given by\nsection 2(1)\nof the Legislation Publication Ordinance (\nCap. 614\n).”.",
+      "provenance": {
+        "canonical_xpath": "/ordinance/main/part[6]/section[4]",
+        "comparator_version": "lawtrace-comparator/1.0.0",
+        "element_id": "ID_1438403528871_001",
+        "normalization_version": "lawtrace-norm/0.2.0",
+        "official_portal": "https://www.elegislation.gov.hk/",
+        "parser_version": "lawtrace-parser/0.2.0",
+        "source_archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+        "source_file": "cap_614_20120116000000_en_p.xml",
+        "source_file_sha256": "95e1bdf4dd11269079848a302944e59b80b65de4b49f83fba4ee5f6562636b2a",
+        "source_version_datetime": "20120116000000",
+        "temporal_id": "s22"
+      },
+      "reason": "notYetInOperation",
+      "renderability": "complete",
+      "status": "pending",
+      "tokens": [
+        {
+          "kind": "SECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "22."
+        },
+        {
+          "kind": "HEADING",
+          "text": "Section 3A added"
+        },
+        {
+          "kind": "AMENDINGFORMULA_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "LEADIN",
+          "text": "After section 3—"
+        },
+        {
+          "kind": "ACTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "B",
+          "text": "Add"
+        },
+        {
+          "kind": "ACTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "QUOTEDSTRUCTURE_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "“3A."
+        },
+        {
+          "kind": "HEADING",
+          "text": "Omission of Ordinances"
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(1)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "The Secretary for Justice may omit a verified Ordinance from the loose-leaf edition."
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(2)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "For the purposes of subsection (1), an Ordinance is verified if a consolidated copy of the Ordinance, as published on an approved website, bears an official verification mark."
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(3)"
+        },
+        {
+          "kind": "LEADIN",
+          "text": "In this section—"
+        },
+        {
+          "kind": "DEF_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "TERM",
+          "text": "approved website"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "("
+        },
+        {
+          "kind": "TERM",
+          "text": "認可網站"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ") has the meaning given by"
+        },
+        {
+          "kind": "REF",
+          "text": "section 2(1)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "of the Legislation Publication Ordinance ("
+        },
+        {
+          "kind": "REF",
+          "text": "Cap. 614"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ");"
+        },
+        {
+          "kind": "DEF_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "DEF_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "TERM",
+          "text": "consolidated copy"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "("
+        },
+        {
+          "kind": "TERM",
+          "text": "編訂文本"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ") has the meaning given by"
+        },
+        {
+          "kind": "REF",
+          "text": "section 2(1)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "of the Legislation Publication Ordinance ("
+        },
+        {
+          "kind": "REF",
+          "text": "Cap. 614"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ");"
+        },
+        {
+          "kind": "DEF_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "DEF_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "TERM",
+          "text": "official verification mark"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "("
+        },
+        {
+          "kind": "TERM",
+          "text": "官方核證標記"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ") has the meaning given by"
+        },
+        {
+          "kind": "REF",
+          "text": "section 2(1)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "of the Legislation Publication Ordinance ("
+        },
+        {
+          "kind": "REF",
+          "text": "Cap. 614"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ").”."
+        },
+        {
+          "kind": "DEF_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "QUOTEDSTRUCTURE_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "AMENDINGFORMULA_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SECTION_CLOSE",
+          "text": ""
+        }
+      ]
+    },
+    "cap_614_20120209000000_en_p.xml": {
+      "canonical_sha256": "39de629837f1f0eb72c0836d7b9626ab8a66f06d4debc1df1adb6974da924a62",
+      "heading": "Section 3A added",
+      "num": "22.",
+      "partial": null,
+      "plain_text": "22.\nSection 3A added\nAfter section 3—\nAdd\n“3A.\nOmission of Ordinances\n(1)\nThe Secretary for Justice may omit a verified Ordinance from the loose-leaf edition.\n(2)\nFor the purposes of subsection (1), an Ordinance is verified if a consolidated copy of the Ordinance, as published on an approved website, bears an official verification mark.\n(3)\nIn this section—\napproved website\n(\n認可網站\n) has the meaning given by\nsection 2(1)\nof the Legislation Publication Ordinance (\nCap. 614\n);\nconsolidated copy\n(\n編訂文本\n) has the meaning given by\nsection 2(1)\nof the Legislation Publication Ordinance (\nCap. 614\n);\nofficial verification mark\n(\n官方核證標記\n) has the meaning given by\nsection 2(1)\nof the Legislation Publication Ordinance (\nCap. 614\n).”.",
+      "provenance": {
+        "canonical_xpath": "/ordinance/main/part[6]/section[4]",
+        "comparator_version": "lawtrace-comparator/1.0.0",
+        "element_id": "ID_1438403528871_001",
+        "normalization_version": "lawtrace-norm/0.2.0",
+        "official_portal": "https://www.elegislation.gov.hk/",
+        "parser_version": "lawtrace-parser/0.2.0",
+        "source_archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+        "source_file": "cap_614_20120209000000_en_p.xml",
+        "source_file_sha256": "090993446333fec63ab3ea53013a6ebd7c6590ba553bcc2a8355959934a39e0b",
+        "source_version_datetime": "20120209000000",
+        "temporal_id": "s22"
+      },
+      "reason": "notYetInOperation",
+      "renderability": "complete",
+      "status": "pending",
+      "tokens": [
+        {
+          "kind": "SECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "22."
+        },
+        {
+          "kind": "HEADING",
+          "text": "Section 3A added"
+        },
+        {
+          "kind": "AMENDINGFORMULA_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "LEADIN",
+          "text": "After section 3—"
+        },
+        {
+          "kind": "ACTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "B",
+          "text": "Add"
+        },
+        {
+          "kind": "ACTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "QUOTEDSTRUCTURE_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "“3A."
+        },
+        {
+          "kind": "HEADING",
+          "text": "Omission of Ordinances"
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(1)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "The Secretary for Justice may omit a verified Ordinance from the loose-leaf edition."
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(2)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "For the purposes of subsection (1), an Ordinance is verified if a consolidated copy of the Ordinance, as published on an approved website, bears an official verification mark."
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(3)"
+        },
+        {
+          "kind": "LEADIN",
+          "text": "In this section—"
+        },
+        {
+          "kind": "DEF_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "TERM",
+          "text": "approved website"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "("
+        },
+        {
+          "kind": "TERM",
+          "text": "認可網站"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ") has the meaning given by"
+        },
+        {
+          "kind": "REF",
+          "text": "section 2(1)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "of the Legislation Publication Ordinance ("
+        },
+        {
+          "kind": "REF",
+          "text": "Cap. 614"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ");"
+        },
+        {
+          "kind": "DEF_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "DEF_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "TERM",
+          "text": "consolidated copy"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "("
+        },
+        {
+          "kind": "TERM",
+          "text": "編訂文本"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ") has the meaning given by"
+        },
+        {
+          "kind": "REF",
+          "text": "section 2(1)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "of the Legislation Publication Ordinance ("
+        },
+        {
+          "kind": "REF",
+          "text": "Cap. 614"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ");"
+        },
+        {
+          "kind": "DEF_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "DEF_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "TERM",
+          "text": "official verification mark"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "("
+        },
+        {
+          "kind": "TERM",
+          "text": "官方核證標記"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ") has the meaning given by"
+        },
+        {
+          "kind": "REF",
+          "text": "section 2(1)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "of the Legislation Publication Ordinance ("
+        },
+        {
+          "kind": "REF",
+          "text": "Cap. 614"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ").”."
+        },
+        {
+          "kind": "DEF_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "QUOTEDSTRUCTURE_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "AMENDINGFORMULA_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SECTION_CLOSE",
+          "text": ""
+        }
+      ]
+    },
+    "cap_614_20120727000000_en_p.xml": {
+      "canonical_sha256": "39de629837f1f0eb72c0836d7b9626ab8a66f06d4debc1df1adb6974da924a62",
+      "heading": "Section 3A added",
+      "num": "22.",
+      "partial": null,
+      "plain_text": "22.\nSection 3A added\nAfter section 3—\nAdd\n“3A.\nOmission of Ordinances\n(1)\nThe Secretary for Justice may omit a verified Ordinance from the loose-leaf edition.\n(2)\nFor the purposes of subsection (1), an Ordinance is verified if a consolidated copy of the Ordinance, as published on an approved website, bears an official verification mark.\n(3)\nIn this section—\napproved website\n(\n認可網站\n) has the meaning given by\nsection 2(1)\nof the Legislation Publication Ordinance (\nCap. 614\n);\nconsolidated copy\n(\n編訂文本\n) has the meaning given by\nsection 2(1)\nof the Legislation Publication Ordinance (\nCap. 614\n);\nofficial verification mark\n(\n官方核證標記\n) has the meaning given by\nsection 2(1)\nof the Legislation Publication Ordinance (\nCap. 614\n).”.",
+      "provenance": {
+        "canonical_xpath": "/ordinance/main/part[6]/section[4]",
+        "comparator_version": "lawtrace-comparator/1.0.0",
+        "element_id": "ID_1438403528871_001",
+        "normalization_version": "lawtrace-norm/0.2.0",
+        "official_portal": "https://www.elegislation.gov.hk/",
+        "parser_version": "lawtrace-parser/0.2.0",
+        "source_archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+        "source_file": "cap_614_20120727000000_en_p.xml",
+        "source_file_sha256": "692748f6fca2b19e54c0753f41afae1548f087875c1d6d29649dc5d9625f2484",
+        "source_version_datetime": "20120727000000",
+        "temporal_id": "s22"
+      },
+      "reason": "notYetInOperation",
+      "renderability": "complete",
+      "status": "pending",
+      "tokens": [
+        {
+          "kind": "SECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "22."
+        },
+        {
+          "kind": "HEADING",
+          "text": "Section 3A added"
+        },
+        {
+          "kind": "AMENDINGFORMULA_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "LEADIN",
+          "text": "After section 3—"
+        },
+        {
+          "kind": "ACTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "B",
+          "text": "Add"
+        },
+        {
+          "kind": "ACTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "QUOTEDSTRUCTURE_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "“3A."
+        },
+        {
+          "kind": "HEADING",
+          "text": "Omission of Ordinances"
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(1)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "The Secretary for Justice may omit a verified Ordinance from the loose-leaf edition."
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(2)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "For the purposes of subsection (1), an Ordinance is verified if a consolidated copy of the Ordinance, as published on an approved website, bears an official verification mark."
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(3)"
+        },
+        {
+          "kind": "LEADIN",
+          "text": "In this section—"
+        },
+        {
+          "kind": "DEF_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "TERM",
+          "text": "approved website"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "("
+        },
+        {
+          "kind": "TERM",
+          "text": "認可網站"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ") has the meaning given by"
+        },
+        {
+          "kind": "REF",
+          "text": "section 2(1)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "of the Legislation Publication Ordinance ("
+        },
+        {
+          "kind": "REF",
+          "text": "Cap. 614"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ");"
+        },
+        {
+          "kind": "DEF_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "DEF_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "TERM",
+          "text": "consolidated copy"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "("
+        },
+        {
+          "kind": "TERM",
+          "text": "編訂文本"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ") has the meaning given by"
+        },
+        {
+          "kind": "REF",
+          "text": "section 2(1)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "of the Legislation Publication Ordinance ("
+        },
+        {
+          "kind": "REF",
+          "text": "Cap. 614"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ");"
+        },
+        {
+          "kind": "DEF_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "DEF_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "TERM",
+          "text": "official verification mark"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "("
+        },
+        {
+          "kind": "TERM",
+          "text": "官方核證標記"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ") has the meaning given by"
+        },
+        {
+          "kind": "REF",
+          "text": "section 2(1)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "of the Legislation Publication Ordinance ("
+        },
+        {
+          "kind": "REF",
+          "text": "Cap. 614"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ").”."
+        },
+        {
+          "kind": "DEF_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "QUOTEDSTRUCTURE_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "AMENDINGFORMULA_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SECTION_CLOSE",
+          "text": ""
+        }
+      ]
+    },
+    "cap_614_20170224000000_en_p.xml": {
+      "canonical_sha256": "18f0f78299fe5edf6a2f9405662c6141072ba5716214b2f3c501d893f93a5fd3",
+      "heading": "Section 3A added",
+      "num": "22.",
+      "partial": null,
+      "plain_text": "22.\nSection 3A added\nAfter section 3—\nAdd\n“3A.\nOmission of Ordinances\n(1)\nThe Secretary for Justice may omit a verified Ordinance from the loose-leaf edition.\n(2)\nFor the purposes of subsection (1), an Ordinance is verified if a consolidated copy of the Ordinance, as published on an approved website, bears an official verification mark.\n(3)\nIn this section—\napproved website\n(\n認可網站\n) has the meaning given by\nsection 2(1)\nof the Legislation Publication Ordinance\n (\nCap. 614\n);\nconsolidated copy\n(\n編訂文本\n) has the meaning given by\nsection 2(1)\nof the Legislation Publication Ordinance\n (\nCap. 614\n);\nofficial verification mark\n(\n官方核證標記\n) has the meaning given by\nsection 2(1)\nof the Legislation Publication Ordinance\n (\nCap. 614\n).”.",
+      "provenance": {
+        "canonical_xpath": "/ordinance/main/part[6]/section[4]",
+        "comparator_version": "lawtrace-comparator/1.0.0",
+        "element_id": "ID_1438403528871_001",
+        "normalization_version": "lawtrace-norm/0.2.0",
+        "official_portal": "https://www.elegislation.gov.hk/",
+        "parser_version": "lawtrace-parser/0.2.0",
+        "source_archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+        "source_file": "cap_614_20170224000000_en_p.xml",
+        "source_file_sha256": "7fc515b9395de0275f889754e7ec309097bf9b3ac924af4994eca782dd3589b0",
+        "source_version_datetime": "20170224000000",
+        "temporal_id": "s22"
+      },
+      "reason": "inEffect",
+      "renderability": "complete",
+      "status": "operational",
+      "tokens": [
+        {
+          "kind": "SECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "22."
+        },
+        {
+          "kind": "HEADING",
+          "text": "Section 3A added"
+        },
+        {
+          "kind": "AMENDINGFORMULA_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "LEADIN",
+          "text": "After section 3—"
+        },
+        {
+          "kind": "ACTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "B",
+          "text": "Add"
+        },
+        {
+          "kind": "ACTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "QUOTEDSTRUCTURE_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "“3A."
+        },
+        {
+          "kind": "HEADING",
+          "text": "Omission of Ordinances"
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(1)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "The Secretary for Justice may omit a verified Ordinance from the loose-leaf edition."
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(2)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "For the purposes of subsection (1), an Ordinance is verified if a consolidated copy of the Ordinance, as published on an approved website, bears an official verification mark."
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(3)"
+        },
+        {
+          "kind": "LEADIN",
+          "text": "In this section—"
+        },
+        {
+          "kind": "DEF_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "TERM",
+          "text": "approved website"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "("
+        },
+        {
+          "kind": "TERM",
+          "text": "認可網站"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ") has the meaning given by"
+        },
+        {
+          "kind": "REF",
+          "text": "section 2(1)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "of the Legislation Publication Ordinance\n ("
+        },
+        {
+          "kind": "REF",
+          "text": "Cap. 614"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ");"
+        },
+        {
+          "kind": "DEF_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "DEF_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "TERM",
+          "text": "consolidated copy"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "("
+        },
+        {
+          "kind": "TERM",
+          "text": "編訂文本"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ") has the meaning given by"
+        },
+        {
+          "kind": "REF",
+          "text": "section 2(1)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "of the Legislation Publication Ordinance\n ("
+        },
+        {
+          "kind": "REF",
+          "text": "Cap. 614"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ");"
+        },
+        {
+          "kind": "DEF_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "CONTENT",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "DEF_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "TERM",
+          "text": "official verification mark"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "("
+        },
+        {
+          "kind": "TERM",
+          "text": "官方核證標記"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ") has the meaning given by"
+        },
+        {
+          "kind": "REF",
+          "text": "section 2(1)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "of the Legislation Publication Ordinance\n ("
+        },
+        {
+          "kind": "REF",
+          "text": "Cap. 614"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ").”."
+        },
+        {
+          "kind": "DEF_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "QUOTEDSTRUCTURE_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "AMENDINGFORMULA_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SECTION_CLOSE",
+          "text": ""
+        }
+      ]
+    },
+    "cap_614_20180420000000_en_p.xml": {
+      "canonical_sha256": "18f0f78299fe5edf6a2f9405662c6141072ba5716214b2f3c501d893f93a5fd3",
+      "heading": "Section 3A added",
+      "num": "22.",
+      "partial": null,
+      "plain_text": "22.\nSection 3A added\nAfter section 3—\nAdd\n“3A.\nOmission of Ordinances\n(1)\nThe Secretary for Justice may omit a verified Ordinance from the loose-leaf edition.\n(2)\nFor the purposes of subsection (1), an Ordinance is verified if a consolidated copy of the Ordinance, as published on an approved website, bears an official verification mark.\n(3)\nIn this section—\napproved website\n(\n認可網站\n) has the meaning given by\nsection 2(1)\nof the Legislation Publication Ordinance\n (\nCap. 614\n);\nconsolidated copy\n(\n編訂文本\n) has the meaning given by\nsection 2(1)\nof the Legislation Publication Ordinance\n (\nCap. 614\n);\nofficial verification mark\n(\n官方核證標記\n) has the meaning given by\nsection 2(1)\nof the Legislation Publication Ordinance\n (\nCap. 614\n).”.",
+      "provenance": {
+        "canonical_xpath": "/ordinance/main/part[6]/section[4]",
+        "comparator_version": "lawtrace-comparator/1.0.0",
+        "element_id": "ID_1438403528871_001",
+        "normalization_version": "lawtrace-norm/0.2.0",
+        "official_portal": "https://www.elegislation.gov.hk/",
+        "parser_version": "lawtrace-parser/0.2.0",
+        "source_archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+        "source_file": "cap_614_20180420000000_en_p.xml",
+        "source_file_sha256": "cc2b93e57bbc7c8a11403eb6cfb4533f78786a108f161a6a2d27c1e6853efbd7",
+        "source_version_datetime": "20180420000000",
+        "temporal_id": "s22"
+      },
+      "reason": "inEffect",
+      "renderability": "complete",
+      "status": "operational",
+      "tokens": [
+        {
+          "kind": "SECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "22."
+        },
+        {
+          "kind": "HEADING",
+          "text": "Section 3A added"
+        },
+        {
+          "kind": "AMENDINGFORMULA_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "LEADIN",
+          "text": "After section 3—"
+        },
+        {
+          "kind": "ACTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "B",
+          "text": "Add"
+        },
+        {
+          "kind": "ACTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "QUOTEDSTRUCTURE_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "“3A."
+        },
+        {
+          "kind": "HEADING",
+          "text": "Omission of Ordinances"
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(1)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "The Secretary for Justice may omit a verified Ordinance from the loose-leaf edition."
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(2)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "For the purposes of subsection (1), an Ordinance is verified if a consolidated copy of the Ordinance, as published on an approved website, bears an official verification mark."
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "(3)"
+        },
+        {
+          "kind": "LEADIN",
+          "text": "In this section—"
+        },
+        {
+          "kind": "DEF_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "TERM",
+          "text": "approved website"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "("
+        },
+        {
+          "kind": "TERM",
+          "text": "認可網站"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ") has the meaning given by"
+        },
+        {
+          "kind": "REF",
+          "text": "section 2(1)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "of the Legislation Publication Ordinance\n ("
+        },
+        {
+          "kind": "REF",
+          "text": "Cap. 614"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ");"
+        },
+        {
+          "kind": "DEF_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "DEF_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "TERM",
+          "text": "consolidated copy"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "("
+        },
+        {
+          "kind": "TERM",
+          "text": "編訂文本"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ") has the meaning given by"
+        },
+        {
+          "kind": "REF",
+          "text": "section 2(1)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "of the Legislation Publication Ordinance\n ("
+        },
+        {
+          "kind": "REF",
+          "text": "Cap. 614"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ");"
+        },
+        {
+          "kind": "DEF_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "CONTENT",
+          "text": ""
+        },
+        {
+          "kind": "PARAGRAPH_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "DEF_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "TERM",
+          "text": "official verification mark"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "("
+        },
+        {
+          "kind": "TERM",
+          "text": "官方核證標記"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ") has the meaning given by"
+        },
+        {
+          "kind": "REF",
+          "text": "section 2(1)"
+        },
+        {
+          "kind": "CONTENT",
+          "text": "of the Legislation Publication Ordinance\n ("
+        },
+        {
+          "kind": "REF",
+          "text": "Cap. 614"
+        },
+        {
+          "kind": "CONTENT",
+          "text": ").”."
+        },
+        {
+          "kind": "DEF_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SUBSECTION_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "QUOTEDSTRUCTURE_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "AMENDINGFORMULA_CLOSE",
+          "text": ""
+        },
+        {
+          "kind": "SECTION_CLOSE",
+          "text": ""
+        }
+      ]
+    },
+    "cap_614_20180628000000_en_p.xml": {
+      "canonical_sha256": "df5660c588e1278e2540e6b904be3421423dc96b20c3a4aea6f01877eeefd857",
+      "heading": null,
+      "num": "22.",
+      "partial": null,
+      "plain_text": "22.\n(Omitted as spent—E.R. 3 of 2018)",
+      "provenance": {
+        "canonical_xpath": "/ordinance/main/part[6]/section[4]",
+        "comparator_version": "lawtrace-comparator/1.0.0",
+        "element_id": "ID_1438403528871_001",
+        "normalization_version": "lawtrace-norm/0.2.0",
+        "official_portal": "https://www.elegislation.gov.hk/",
+        "parser_version": "lawtrace-parser/0.2.0",
+        "source_archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+        "source_file": "cap_614_20180628000000_en_p.xml",
+        "source_file_sha256": "b660429c53af0d075fd346c28044506e4652879eebdaaad794b75a66c5728fb2",
+        "source_version_datetime": "20180628000000",
+        "temporal_id": "s22"
+      },
+      "reason": "omittedAsSpent",
+      "renderability": "complete",
+      "status": "omitted",
+      "tokens": [
+        {
+          "kind": "SECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "22."
+        },
+        {
+          "kind": "SOURCENOTE",
+          "text": "(Omitted as spent—E.R. 3 of 2018)"
+        },
+        {
+          "kind": "SECTION_CLOSE",
+          "text": ""
+        }
+      ]
+    },
+    "cap_614_20200612000000_en_p.xml": {
+      "canonical_sha256": "df5660c588e1278e2540e6b904be3421423dc96b20c3a4aea6f01877eeefd857",
+      "heading": null,
+      "num": "22.",
+      "partial": null,
+      "plain_text": "22.\n(Omitted as spent—E.R. 3 of 2018)",
+      "provenance": {
+        "canonical_xpath": "/ordinance/main/part[6]/section[4]",
+        "comparator_version": "lawtrace-comparator/1.0.0",
+        "element_id": "ID_1438403528871_001",
+        "normalization_version": "lawtrace-norm/0.2.0",
+        "official_portal": "https://www.elegislation.gov.hk/",
+        "parser_version": "lawtrace-parser/0.2.0",
+        "source_archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+        "source_file": "cap_614_20200612000000_en_p.xml",
+        "source_file_sha256": "6a6564007d02f933b0e2575648eb42fb60b3d6d707654c1be57d21757ebb9673",
+        "source_version_datetime": "20200612000000",
+        "temporal_id": "s22"
+      },
+      "reason": "omittedAsSpent",
+      "renderability": "complete",
+      "status": "omitted",
+      "tokens": [
+        {
+          "kind": "SECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "22."
+        },
+        {
+          "kind": "SOURCENOTE",
+          "text": "(Omitted as spent—E.R. 3 of 2018)"
+        },
+        {
+          "kind": "SECTION_CLOSE",
+          "text": ""
+        }
+      ]
+    },
+    "cap_614_20220224000000_en_p.xml": {
+      "canonical_sha256": "df5660c588e1278e2540e6b904be3421423dc96b20c3a4aea6f01877eeefd857",
+      "heading": null,
+      "num": "22.",
+      "partial": null,
+      "plain_text": "22.\n(Omitted as spent—E.R. 3 of 2018)",
+      "provenance": {
+        "canonical_xpath": "/ordinance/main/part[6]/section[4]",
+        "comparator_version": "lawtrace-comparator/1.0.0",
+        "element_id": "ID_1438403528871_001",
+        "normalization_version": "lawtrace-norm/0.2.0",
+        "official_portal": "https://www.elegislation.gov.hk/",
+        "parser_version": "lawtrace-parser/0.2.0",
+        "source_archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+        "source_file": "cap_614_20220224000000_en_p.xml",
+        "source_file_sha256": "20d5bd28c3729dd6d5af6d9a5b7a3ea882836407749be75254b7285fe612c9fc",
+        "source_version_datetime": "20220224000000",
+        "temporal_id": "s22"
+      },
+      "reason": "omittedAsSpent",
+      "renderability": "complete",
+      "status": "omitted",
+      "tokens": [
+        {
+          "kind": "SECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "22."
+        },
+        {
+          "kind": "SOURCENOTE",
+          "text": "(Omitted as spent—E.R. 3 of 2018)"
+        },
+        {
+          "kind": "SECTION_CLOSE",
+          "text": ""
+        }
+      ]
+    },
+    "cap_614_20240323000000_en_p.xml": {
+      "canonical_sha256": "df5660c588e1278e2540e6b904be3421423dc96b20c3a4aea6f01877eeefd857",
+      "heading": null,
+      "num": "22.",
+      "partial": null,
+      "plain_text": "22.\n(Omitted as spent—E.R. 3 of 2018)",
+      "provenance": {
+        "canonical_xpath": "/ordinance/main/part[6]/section[4]",
+        "comparator_version": "lawtrace-comparator/1.0.0",
+        "element_id": "ID_1438403528871_001",
+        "normalization_version": "lawtrace-norm/0.2.0",
+        "official_portal": "https://www.elegislation.gov.hk/",
+        "parser_version": "lawtrace-parser/0.2.0",
+        "source_archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+        "source_file": "cap_614_20240323000000_en_p.xml",
+        "source_file_sha256": "d150ce25d313e6465f6489970a213ab80512fe9bbae262715e1b85fca0aa0b1f",
+        "source_version_datetime": "20240323000000",
+        "temporal_id": "s22"
+      },
+      "reason": "omittedAsSpent",
+      "renderability": "complete",
+      "status": "omitted",
+      "tokens": [
+        {
+          "kind": "SECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "22."
+        },
+        {
+          "kind": "SOURCENOTE",
+          "text": "(Omitted as spent—E.R. 3 of 2018)"
+        },
+        {
+          "kind": "SECTION_CLOSE",
+          "text": ""
+        }
+      ]
+    },
+    "cap_614_20240719000000_en_p.xml": {
+      "canonical_sha256": "df5660c588e1278e2540e6b904be3421423dc96b20c3a4aea6f01877eeefd857",
+      "heading": null,
+      "num": "22.",
+      "partial": null,
+      "plain_text": "22.\n(Omitted as spent—E.R. 3 of 2018)",
+      "provenance": {
+        "canonical_xpath": "/ordinance/main/part[6]/section[4]",
+        "comparator_version": "lawtrace-comparator/1.0.0",
+        "element_id": "ID_1438403528871_001",
+        "normalization_version": "lawtrace-norm/0.2.0",
+        "official_portal": "https://www.elegislation.gov.hk/",
+        "parser_version": "lawtrace-parser/0.2.0",
+        "source_archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+        "source_file": "cap_614_20240719000000_en_p.xml",
+        "source_file_sha256": "285e52a9e6c1763a2b4db5f2bc448477b487bff4bbd4524200a474cd7400290a",
+        "source_version_datetime": "20240719000000",
+        "temporal_id": "s22"
+      },
+      "reason": "omittedAsSpent",
+      "renderability": "complete",
+      "status": "omitted",
+      "tokens": [
+        {
+          "kind": "SECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "22."
+        },
+        {
+          "kind": "SOURCENOTE",
+          "text": "(Omitted as spent—E.R. 3 of 2018)"
+        },
+        {
+          "kind": "SECTION_CLOSE",
+          "text": ""
+        }
+      ]
+    },
+    "cap_614_20260601000000_en_c.xml": {
+      "canonical_sha256": "df5660c588e1278e2540e6b904be3421423dc96b20c3a4aea6f01877eeefd857",
+      "heading": null,
+      "num": "22.",
+      "partial": null,
+      "plain_text": "22.\n(Omitted as spent—E.R. 3 of 2018)",
+      "provenance": {
+        "canonical_xpath": "/ordinance/main/part[6]/section[4]",
+        "comparator_version": "lawtrace-comparator/1.0.0",
+        "element_id": "ID_1438403528871_001",
+        "normalization_version": "lawtrace-norm/0.2.0",
+        "official_portal": "https://www.elegislation.gov.hk/",
+        "parser_version": "lawtrace-parser/0.2.0",
+        "source_archive_sha256": "3b1348f1678c5ebb6ef7c4fa99b4aaba2691575d2a7695751ae7466f9e21c064",
+        "source_file": "cap_614_20260601000000_en_c.xml",
+        "source_file_sha256": "41a601f6025ad37357a58e5c15fe277c35be4d26d83a71df776d2c55dc55737e",
+        "source_version_datetime": "20260601000000",
+        "temporal_id": "s22"
+      },
+      "reason": "omittedAsSpent",
+      "renderability": "complete",
+      "status": "omitted",
+      "tokens": [
+        {
+          "kind": "SECTION_OPEN",
+          "text": ""
+        },
+        {
+          "kind": "NUM",
+          "text": "22."
+        },
+        {
+          "kind": "SOURCENOTE",
+          "text": "(Omitted as spent—E.R. 3 of 2018)"
+        },
+        {
+          "kind": "SECTION_CLOSE",
+          "text": ""
+        }
+      ]
+    }
+  }
+}

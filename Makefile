@@ -1,5 +1,5 @@
 .PHONY: verify test lint typecheck fixtures web-ci studio-ci site-ci lock \
-	lawtrace-deps \
+	lawtrace-deps lawtrace-web-data lawtrace-web-data-local lawtrace-build lawtrace-ci \
 	demo-ingest demo-release demo-enqueue worker-once studio-dev site-dev \
 	site-build pages-artifact public-scan \
 	integration db-up db-down db-reset-local db-migrate db-status \
@@ -278,3 +278,18 @@ lock:
 
 lawtrace-deps:
 	pip install -r services/lawtrace-worker/requirements.txt
+
+lawtrace-web-data:
+	PYTHONPATH=services/lawtrace-worker:$(PYTHONPATH) python -m lawtrace_worker.export_web --mode demo --out apps/lawtrace/public/data
+
+lawtrace-web-data-local:
+	PYTHONPATH=services/lawtrace-worker:$(PYTHONPATH) python -m lawtrace_worker.export_web --mode local --out apps/lawtrace/public/data --cap599g-dir data/lawtrace/extracted/cap599g --cap599g-max-versions 30
+
+lawtrace-build: lawtrace-web-data
+	cd apps/lawtrace && npm ci && npm run typecheck && npm run build
+
+lawtrace-ci: lawtrace-build
+	@test -f apps/lawtrace/out/index.html
+	@test -f apps/lawtrace/out/methodology/index.html
+	@test -f apps/lawtrace/out/instruments/cap-614/index.html
+	@echo "LawTrace demo CI build OK"

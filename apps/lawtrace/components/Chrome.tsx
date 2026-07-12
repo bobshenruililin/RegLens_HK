@@ -1,6 +1,13 @@
 import Link from "next/link";
+import type { ModeBadge } from "@/lib/mode";
 
-export function SiteHeader({ audit = false }: { audit?: boolean }) {
+export function SiteHeader({
+  mode,
+  review = false,
+}: {
+  mode?: ModeBadge;
+  review?: boolean;
+}) {
   return (
     <header className="header">
       <div className="header-inner">
@@ -8,13 +15,17 @@ export function SiteHeader({ audit = false }: { audit?: boolean }) {
           LawTrace HK
         </Link>
         <nav className="nav" aria-label="Primary">
-          <Link href="/">Home</Link>
-          <Link href="/instruments/cap-614/">Cap. 614</Link>
-          <Link href="/instruments/cap-599g/">Cap. 599G</Link>
+          <Link href="/">Explore</Link>
+          <Link href="/collections/">Collections</Link>
           <Link href="/insights/">Insights</Link>
           <Link href="/methodology/">Methodology</Link>
-          {audit ? <Link href="/audit/">Audit</Link> : null}
+          {review ? <Link href="/review/">Local review</Link> : null}
         </nav>
+        {mode ? (
+          <span className={`mode-badge tone-${mode.tone}`} title={mode.detail}>
+            {mode.label}
+          </span>
+        ) : null}
       </div>
     </header>
   );

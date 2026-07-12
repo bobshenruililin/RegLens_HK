@@ -1,6 +1,12 @@
 import Link from "next/link";
 import { StatusNotice } from "@/components/StatusNotice";
-import { loadInsights, loadRootManifest } from "@/lib/data";
+import {
+  loadInsights,
+  loadRootManifest,
+  loadTransitionsIndex,
+} from "@/lib/data";
+import { FREQUENCY_NOTE } from "@/lib/disclaimer";
+import { instrumentCompletenessBadge } from "@/lib/mode";
 
 export default function InsightsPage() {
   const root = loadRootManifest();
@@ -9,12 +15,16 @@ export default function InsightsPage() {
   return (
     <>
       <h1 className="page-title">Insights</h1>
-      <StatusNotice compact />
+      <StatusNotice variant="inline" />
       <p className="meta">
-        Deterministic descriptive metrics only. These figures do not measure
-        legal importance, legislative intent, or public-health effect.
+        Deterministic descriptive metrics only. {FREQUENCY_NOTE} Figures do not
+        measure legislative intent or public-health effect.
       </p>
+      {!available.length ? (
+        <p className="muted">No instruments available in this dataset mode.</p>
+      ) : null}
       {available.map((inst) => {
+        const badge = instrumentCompletenessBadge(inst);
         const insights = loadInsights(inst.slug) as {
           relationship_totals: Record<string, number>;
           sections_changed_most_frequently: Array<{
@@ -27,9 +37,10 @@ export default function InsightsPage() {
             transition_id: string;
             from_label: string;
             to_label: string;
+            from_version?: string;
+            to_version?: string;
             changed_count: number;
           }>;
-          renderability_distribution: Record<string, number>;
           textual_vs_status?: {
             text_changed_events: number;
             status_only_events: number;
@@ -40,16 +51,38 @@ export default function InsightsPage() {
             legal_text_token_additions: number;
             legal_text_token_deletions: number;
           };
+          renderability_distribution: Record<string, number>;
           reconstruction: { ok: number; total: number; rate: number };
-          sampling: { complete: boolean; versions_included: number; total_available_versions: number };
+          sampling: {
+            complete: boolean;
+            versions_included: number;
+            total_available_versions: number;
+          };
         };
         const maxChanged = Math.max(
           1,
           ...insights.transitions.map((t) => t.changed_count),
         );
+        const transitionsIndex = loadTransitionsIndex(inst.slug)
+          .transitions as Array<{
+          transition_id: string;
+          from_version: string;
+          to_version: string;
+        }>;
+        const byId = Object.fromEntries(
+          transitionsIndex.map((t) => [t.transition_id, t]),
+        );
+
         return (
           <section key={inst.slug} style={{ marginTop: "2rem" }}>
-            <h2 className="section-title">{inst.title}</h2>
+            <div className="card-head">
+              <h2 className="section-title">{inst.title}</h2>
+              {badge ? (
+                <span className={`mode-badge tone-${badge.tone}`}>
+                  {badge.label}
+                </span>
+              ) : null}
+            </div>
             <p className="meta">
               Sampling:{" "}
               {insights.sampling.complete
@@ -59,18 +92,20 @@ export default function InsightsPage() {
               Reconstruction {insights.reconstruction.ok}/
               {insights.reconstruction.total}
             </p>
+
             <h3>Relationship totals</h3>
-            <ul>
+            <ul className="plain-list">
               {Object.entries(insights.relationship_totals).map(([k, v]) => (
                 <li key={k}>
                   {k}: {v}
                 </li>
               ))}
             </ul>
+
             {insights.textual_vs_status ? (
               <>
-                <h3>Textual versus status channels</h3>
-                <ul>
+                <h3>Textual versus status</h3>
+                <ul className="plain-list">
                   <li>
                     Textual change events:{" "}
                     {insights.textual_vs_status.text_changed_events}
@@ -84,40 +119,57 @@ export default function InsightsPage() {
                 </ul>
               </>
             ) : null}
+
             {insights.token_flow ? (
               <>
                 <h3>Legal-text token flow</h3>
-                <ul>
+                <ul className="plain-list">
                   <li>
-                    Token additions:{" "}
-                    {insights.token_flow.legal_text_token_additions}
+                    Additions: {insights.token_flow.legal_text_token_additions}
                   </li>
                   <li>
-                    Token deletions:{" "}
-                    {insights.token_flow.legal_text_token_deletions}
+                    Deletions: {insights.token_flow.legal_text_token_deletions}
                   </li>
                 </ul>
               </>
             ) : null}
-            <h3>Change activity by transition</h3>
-            {insights.transitions.map((t) => (
-              <div className="bar-row" key={t.transition_id}>
-                <div className="meta">{t.to_label.replace("Official open-data snapshot dated ", "")}</div>
-                <div className="bar" aria-hidden="true">
-                  <span
-                    style={{ width: `${(100 * t.changed_count) / maxChanged}%` }}
-                  />
+
+            <h3>Activity by transition</h3>
+            {insights.transitions.map((t) => {
+              const meta = byId[t.transition_id];
+              const href = meta
+                ? `/instruments/${inst.slug}/transitions/${encodeURIComponent(meta.from_version)}/${encodeURIComponent(meta.to_version)}/`
+                : `/instruments/${inst.slug}/`;
+              return (
+                <div className="bar-row" key={t.transition_id}>
+                  <div className="meta">
+                    <Link href={href}>
+                      {t.to_label.replace(
+                        "Official open-data snapshot dated ",
+                        "",
+                      )}
+                    </Link>
+                  </div>
+                  <div className="bar" aria-hidden="true">
+                    <span
+                      style={{
+                        width: `${(100 * t.changed_count) / maxChanged}%`,
+                      }}
+                    />
+                  </div>
+                  <div>{t.changed_count}</div>
                 </div>
-                <div>{t.changed_count}</div>
-              </div>
-            ))}
+              );
+            })}
+
             <h3>Sections with most descriptive changes</h3>
+            <p className="meta">{FREQUENCY_NOTE}</p>
             <div className="table-wrap">
               <table className="data">
                 <thead>
                   <tr>
                     <th>Section</th>
-                    <th>Descriptive count</th>
+                    <th>Count</th>
                     <th />
                   </tr>
                 </thead>
@@ -140,8 +192,9 @@ export default function InsightsPage() {
                 </tbody>
               </table>
             </div>
+
             <h3>Renderability distribution</h3>
-            <ul>
+            <ul className="plain-list">
               {Object.entries(insights.renderability_distribution).map(
                 ([k, v]) => (
                   <li key={k}>

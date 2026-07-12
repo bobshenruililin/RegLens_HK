@@ -1,8 +1,11 @@
-import { notFound } from "next/navigation";
-import AuditClient from "@/components/AuditClient";
-import { auditEnabled, loadRootManifest, loadTransition, loadTransitionsIndex } from "@/lib/data";
+import ReviewClient from "@/components/ReviewClient";
+import {
+  loadRootManifest,
+  loadTransition,
+  loadTransitionsIndex,
+} from "@/lib/data";
 
-function pickAuditPairs(): Array<{
+function pickReviewPairs(): Array<{
   id: string;
   instrument: string;
   from: string;
@@ -87,8 +90,8 @@ function pickAuditPairs(): Array<{
   return selected.slice(0, 30);
 }
 
-export default function AuditPage() {
-  if (!auditEnabled()) notFound();
-  const pairs = pickAuditPairs();
-  return <AuditClient pairs={pairs} />;
+/** Copied into app/review only when LAWTRACE_LOCAL_REVIEW=1. */
+export default function ReviewPage() {
+  const pairs = pickReviewPairs();
+  return <ReviewClient pairs={pairs} />;
 }

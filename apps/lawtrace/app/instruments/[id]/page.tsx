@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { StatusNotice } from "@/components/StatusNotice";
-import { SearchList } from "@/components/SearchList";
+import { SectionTable } from "@/components/SectionTable";
 import {
   loadInstrumentManifest,
   loadRootManifest,
@@ -9,7 +9,8 @@ import {
   loadTransitionsIndex,
   loadVersions,
 } from "@/lib/data";
-import { relationshipLabel } from "@/lib/format";
+import { FREQUENCY_NOTE } from "@/lib/disclaimer";
+import { instrumentCompletenessBadge } from "@/lib/mode";
 
 export function generateStaticParams() {
   return loadRootManifest().instruments.map((i) => ({ id: i.slug }));
@@ -19,17 +20,22 @@ export default function InstrumentPage({ params }: { params: { id: string } }) {
   const root = loadRootManifest();
   const card = root.instruments.find((i) => i.slug === params.id);
   if (!card) notFound();
+  const badge = instrumentCompletenessBadge(card);
 
   if (!card.available) {
     return (
       <>
         <h1 className="page-title">{card.title}</h1>
+        {badge ? (
+          <span className={`mode-badge tone-${badge.tone}`}>{badge.label}</span>
+        ) : null}
         <StatusNotice />
         <div className="card" style={{ marginTop: "1rem" }}>
           <p>{card.missing_reason}</p>
           <p className="meta">
             After official Cap. 599G extracts are available locally, run{" "}
-            <code>make lawtrace-web-data-local</code>.
+            <code>make lawtrace-web-data-local</code> then{" "}
+            <code>make lawtrace-preview-local</code>.
           </p>
         </div>
       </>
@@ -41,7 +47,11 @@ export default function InstrumentPage({ params }: { params: { id: string } }) {
     version_count: number;
     section_count: number;
     relationship_totals: Record<string, number>;
-    sampling: { complete: boolean; total_available_versions: number; versions_included: number };
+    sampling: {
+      complete: boolean;
+      total_available_versions: number;
+      versions_included: number;
+    };
     reconstruction: { ok: number; total: number; rate: number };
   };
   const versions = loadVersions(params.id).versions as Array<{
@@ -67,91 +77,76 @@ export default function InstrumentPage({ params }: { params: { id: string } }) {
     headings_seen: string[];
   }>;
 
-  const searchItems = sections.map((s) => ({
-    href: `/instruments/${params.id}/sections/${encodeURIComponent(s.section_id)}/`,
-    title: `§ ${s.latest_num || s.nums_seen[0] || "—"}`,
-    subtitle: `${s.latest_heading || ""} · descriptive changes: ${s.descriptive_change_count}`,
-    haystack: [s.section_id, ...(s.nums_seen || []), ...(s.headings_seen || [])].join(" "),
-  }));
+  const maxChanged = Math.max(1, ...transitions.map((t) => t.changed_count));
+  const mostActive = [...sections]
+    .sort((a, b) => b.descriptive_change_count - a.descriptive_change_count)
+    .slice(0, 8);
 
   return (
     <>
-      <h1 className="page-title">{manifest.title || card.title}</h1>
-      <StatusNotice compact />
-      <p className="meta" style={{ marginTop: "1rem" }}>
-        {manifest.version_count} snapshots
-        {!manifest.sampling?.complete
-          ? ` (sampled ${manifest.sampling.versions_included} of ${manifest.sampling.total_available_versions} available — not a complete corpus)`
-          : " (complete for this export)"}{" "}
-        · {manifest.section_count} top-level sections · reconstruction{" "}
-        {manifest.reconstruction.ok}/{manifest.reconstruction.total}
+      <div className="card-head">
+        <h1 className="page-title">{manifest.title || card.title}</h1>
+        {badge ? (
+          <span className={`mode-badge tone-${badge.tone}`}>{badge.label}</span>
+        ) : null}
+      </div>
+      <StatusNotice variant="inline" />
+      <p className="meta">
+        {manifest.version_count} snapshots · {manifest.section_count} tracked
+        top-level sections · Reconstruction {manifest.reconstruction.ok}/
+        {manifest.reconstruction.total}
+        {!manifest.sampling.complete
+          ? ` · Sampled ${manifest.sampling.versions_included}/${manifest.sampling.total_available_versions} (not complete)`
+          : " · Complete for available snapshots"}
       </p>
 
       <h2 className="section-title">Snapshot timeline</h2>
-      <div className="table-wrap" style={{ margin: "0.75rem 0 1.5rem" }}>
-        <table className="data">
-          <thead>
-            <tr>
-              <th>Snapshot</th>
-              <th>Sections</th>
-            </tr>
-          </thead>
-          <tbody>
-            {versions.map((v) => (
-              <tr key={v.version_id}>
-                <td>
-                  {v.snapshot_label}
-                  <div className="meta">
-                    <code>{v.version_id}</code>
-                  </div>
-                </td>
-                <td>{v.top_level_section_count}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <ol className="timeline">
+        {versions.map((v) => (
+          <li key={v.version_id}>
+            <strong>{v.snapshot_label}</strong>
+            <div className="meta">
+              {v.top_level_section_count} top-level sections ·{" "}
+              <code>{v.version_id}</code>
+            </div>
+          </li>
+        ))}
+      </ol>
 
-      <h2 className="section-title">Transitions (consecutive only)</h2>
-      <div className="table-wrap" style={{ margin: "0.75rem 0 1.5rem" }}>
-        <table className="data">
-          <thead>
-            <tr>
-              <th>From → To</th>
-              <th>Changed</th>
-              <th>Classes</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {transitions.map((t) => (
-              <tr key={t.transition_id}>
-                <td>
-                  <div>{t.from_label}</div>
-                  <div className="meta">→ {t.to_label}</div>
-                </td>
-                <td>{t.changed_count}</td>
-                <td className="meta">
-                  {Object.entries(t.counts)
-                    .filter(([k]) => k !== "unchanged")
-                    .map(([k, v]) => `${relationshipLabel(k)}: ${v}`)
-                    .join(" · ") || "—"}
-                </td>
-                <td>
-                  <Link
-                    href={`/instruments/${params.id}/transitions/${encodeURIComponent(t.from_version)}/${encodeURIComponent(t.to_version)}/`}
-                  >
-                    Open
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <h2 className="section-title">Change activity by transition</h2>
+      {transitions.map((t) => (
+        <div className="bar-row" key={t.transition_id}>
+          <div className="meta">
+            <Link
+              href={`/instruments/${params.id}/transitions/${encodeURIComponent(t.from_version)}/${encodeURIComponent(t.to_version)}/`}
+            >
+              {t.to_label.replace("Official open-data snapshot dated ", "→ ")}
+            </Link>
+          </div>
+          <div className="bar" aria-hidden="true">
+            <span style={{ width: `${(100 * t.changed_count) / maxChanged}%` }} />
+          </div>
+          <div>{t.changed_count}</div>
+        </div>
+      ))}
+
+      <h2 className="section-title">Most active sections</h2>
+      <p className="meta">{FREQUENCY_NOTE}</p>
+      <ul className="plain-list">
+        {mostActive.map((s) => (
+          <li key={s.section_id}>
+            <Link
+              href={`/instruments/${params.id}/sections/${encodeURIComponent(s.section_id)}/`}
+            >
+              § {s.latest_num || "—"} {s.latest_heading}
+            </Link>{" "}
+            <span className="meta">({s.descriptive_change_count})</span>
+          </li>
+        ))}
+      </ul>
 
       <h2 className="section-title">Sections</h2>
-      <SearchList items={searchItems} placeholder="Filter sections by number, heading, or @id" />
+      <SectionTable instrumentId={params.id} sections={sections} />
     </>
   );
 }

@@ -2,7 +2,7 @@
   "comparator_version": "lawtrace-comparator/1.0.0",
   "dataset_mode": "demo",
   "disclaimer": "LawTrace displays transformations of open data obtained through DATA.GOV.HK. This comparison shows differences between two official open-data XML versions of a legislative section. It does not claim that displayed text was the law in force on a selected date, that version dates are commencement or effective dates, that LawTrace output is a verified copy, or that an automatically matched structural event is legally conclusive. For an official verified copy, consult Hong Kong e-Legislation (HKeL).",
-  "generation_timestamp": "2026-07-12T03:57:28Z",
+  "generation_timestamp": "2026-07-12T04:28:40Z",
   "instruments": [
     {
       "available": true,

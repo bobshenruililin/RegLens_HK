@@ -17,28 +17,28 @@ type Pair = {
 type Decision = "CONFIRM" | "REJECT" | "UNCERTAIN" | "";
 
 /**
- * Private audit workspace. Enabled only when NEXT_PUBLIC_LAWTRACE_AUDIT=1.
- * Decisions stay in browser localStorage until exported; they are never written
- * back into source/web artifacts automatically.
+ * Local review workspace — opt-in build only (LAWTRACE_LOCAL_REVIEW=1).
+ * Not authentication. Decisions stay in browser localStorage until exported.
+ * Reviewer-entered status is distinct from algorithmic relationship labels.
  */
-export default function AuditClient({ pairs }: { pairs: Pair[] }) {
-  const storageKey = "lawtrace-audit-v1";
-  const [notes, setNotes] = useState<Record<string, { decision: Decision; note: string }>>(
-    () => {
-      if (typeof window === "undefined") return {};
-      try {
-        return JSON.parse(localStorage.getItem(storageKey) || "{}");
-      } catch {
-        return {};
-      }
-    },
-  );
+export default function ReviewClient({ pairs }: { pairs: Pair[] }) {
+  const storageKey = "lawtrace-local-review-v1";
+  const [notes, setNotes] = useState<
+    Record<string, { decision: Decision; note: string }>
+  >(() => {
+    if (typeof window === "undefined") return {};
+    try {
+      return JSON.parse(localStorage.getItem(storageKey) || "{}");
+    } catch {
+      return {};
+    }
+  });
 
   const stratified = useMemo(() => pairs, [pairs]);
 
   function setDecision(id: string, decision: Decision) {
     setNotes((prev) => {
-      const next: Record<string, { decision: Decision; note: string }> = {
+      const next = {
         ...prev,
         [id]: { decision, note: prev[id]?.note || "" },
       };
@@ -49,7 +49,7 @@ export default function AuditClient({ pairs }: { pairs: Pair[] }) {
 
   function setNote(id: string, note: string) {
     setNotes((prev) => {
-      const next: Record<string, { decision: Decision; note: string }> = {
+      const next = {
         ...prev,
         [id]: { decision: (prev[id]?.decision || "") as Decision, note },
       };
@@ -61,10 +61,13 @@ export default function AuditClient({ pairs }: { pairs: Pair[] }) {
   function exportJson() {
     const payload = {
       exported_at: new Date().toISOString(),
-      note: "Local audit export only. Not imported as human-confirmed gold.",
+      workspace: "local_review",
+      note:
+        "Local review export only. Reviewer-entered decision is distinct from algorithmic relationship labels. Not imported as human-confirmed gold.",
       reviews: stratified.map((p) => ({
         ...p,
-        decision: notes[p.id]?.decision || "",
+        algorithmic_relationship: p.relationship,
+        reviewer_decision: notes[p.id]?.decision || "",
         reviewer_note: notes[p.id]?.note || "",
       })),
     };
@@ -74,19 +77,19 @@ export default function AuditClient({ pairs }: { pairs: Pair[] }) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "lawtrace-audit-export.json";
+    a.download = "lawtrace-local-review-export.json";
     a.click();
     URL.revokeObjectURL(url);
   }
 
   return (
     <>
-      <h1 className="page-title">Private audit workspace</h1>
+      <h1 className="page-title">Local review workspace</h1>
       <StatusNotice compact />
       <p className="meta">
-        {stratified.length} deterministically selected changed pairs. Decisions
-        remain local until you export. This UI does not mark source artifacts as
-        human-confirmed.
+        {stratified.length} deterministically selected changed pairs. This is a
+        local development aid — not access control and not a public review
+        service. Reviewer decisions remain in this browser until exported.
       </p>
       <p>
         <button type="button" className="btn" onClick={exportJson}>
@@ -99,7 +102,7 @@ export default function AuditClient({ pairs }: { pairs: Pair[] }) {
             <tr>
               <th>#</th>
               <th>Pair</th>
-              <th>Decision</th>
+              <th>Reviewer decision</th>
               <th>Note</th>
             </tr>
           </thead>
@@ -110,7 +113,7 @@ export default function AuditClient({ pairs }: { pairs: Pair[] }) {
                 <td>
                   <div className="meta">{p.instrument}</div>
                   <div>
-                    {p.relationship} · § {p.heading || "—"}
+                    Algorithmic class: {p.relationship} · § {p.heading || "—"}
                   </div>
                   <div className="meta">
                     <code>{p.section_id}</code>

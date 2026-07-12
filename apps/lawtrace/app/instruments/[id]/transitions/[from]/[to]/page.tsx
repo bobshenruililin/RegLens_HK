@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { StatusNotice } from "@/components/StatusNotice";
+import { TransitionFilter } from "@/components/TransitionFilter";
 import {
   loadRootManifest,
   loadTransition,
   loadTransitionsIndex,
 } from "@/lib/data";
-import { relationshipLabel } from "@/lib/format";
+import { countTokenDelta, type Op } from "@/lib/ops";
 
 export function generateStaticParams() {
   const params: Array<{ id: string; from: string; to: string }> = [];
@@ -42,91 +43,58 @@ export default function TransitionPage({
   const counts = (data.counts as Record<string, number>) || {};
   const changed = items.filter((i) => i.relationship !== "unchanged");
 
+  let tokenAdd = 0;
+  let tokenDel = 0;
+  for (const item of changed) {
+    const d = countTokenDelta(item.legal_text_ops as Op[] | undefined);
+    tokenAdd += d.additions;
+    tokenDel += d.deletions;
+  }
+
+  const rows = changed.map((item) => {
+    const sid = String(item.section_id);
+    const rel = String(item.relationship);
+    const href = `/instruments/${params.id}/sections/${encodeURIComponent(sid)}/compare/${encodeURIComponent(from)}/${encodeURIComponent(to)}/`;
+    return {
+      section_id: sid,
+      relationship: rel,
+      section_num_a: (item.section_num_a as string) || null,
+      section_num_b: (item.section_num_b as string) || null,
+      heading: (item.heading as string) || null,
+      legal_text_ops: (item.legal_text_ops as Op[]) || [],
+      href,
+    };
+  });
+
   return (
     <>
       <p className="meta">
         <Link href={`/instruments/${params.id}/`}>← Instrument</Link>
       </p>
       <h1 className="page-title">Transition explorer</h1>
-      <StatusNotice compact />
+      <StatusNotice variant="inline" />
       <p>
         <strong>{String(data.from_label)}</strong>
         <br />→ <strong>{String(data.to_label)}</strong>
       </p>
       <p className="meta">
         Unchanged: {String(data.unchanged_count)} · Ambiguous (not accepted):{" "}
-        {String(data.ambiguous_count)}
+        {String(data.ambiguous_count)} · Legal-text token flow: +{tokenAdd} / −
+        {tokenDel}
       </p>
       <p>
         {Object.entries(counts).map(([k, v]) => (
           <span key={k} className="pill" style={{ marginRight: "0.35rem" }}>
-            {relationshipLabel(k)}: {v}
+            {k}: {v}
           </span>
         ))}
       </p>
 
       <h2 className="section-title">Changed / added / removed sections</h2>
-      <div className="table-wrap" style={{ marginTop: "0.75rem" }}>
-        <table className="data">
-          <thead>
-            <tr>
-              <th>Section</th>
-              <th>Class</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {changed.map((item) => {
-              const sid = String(item.section_id);
-              const rel = String(item.relationship);
-              const num =
-                (item.section_num_b as string) ||
-                (item.section_num_a as string) ||
-                "—";
-              return (
-                <tr key={`${sid}-${rel}`}>
-                  <td>
-                    § {num}
-                    <div className="meta">
-                      <code>{sid}</code>
-                    </div>
-                  </td>
-                  <td>
-                    <span
-                      className={`pill ${
-                        rel === "added"
-                          ? "add"
-                          : rel === "removed"
-                            ? "del"
-                            : rel.includes("status") && !rel.includes("text")
-                              ? "status"
-                              : ""
-                      }`}
-                    >
-                      {relationshipLabel(rel)}
-                    </span>
-                  </td>
-                  <td>
-                    {rel === "added" || rel === "removed" ? (
-                      <Link
-                        href={`/instruments/${params.id}/sections/${encodeURIComponent(sid)}/`}
-                      >
-                        History
-                      </Link>
-                    ) : (
-                      <Link
-                        href={`/instruments/${params.id}/sections/${encodeURIComponent(sid)}/compare/${encodeURIComponent(from)}/${encodeURIComponent(to)}/`}
-                      >
-                        Compare
-                      </Link>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+      <TransitionFilter
+        rows={rows}
+        unchangedCount={Number(data.unchanged_count || 0)}
+      />
     </>
   );
 }

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans, Source_Serif_4 } from "next/font/google";
 import { SiteFooter, SiteHeader } from "@/components/Chrome";
-import { auditEnabled } from "@/lib/data";
+import { loadRootManifest, reviewEnabled } from "@/lib/data";
+import { rootModeBadge } from "@/lib/mode";
 import "./globals.css";
 
 const serif = Source_Serif_4({
@@ -27,7 +28,9 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const audit = auditEnabled();
+  const root = loadRootManifest();
+  const mode = rootModeBadge(root);
+  const review = reviewEnabled();
   return (
     <html lang="en" className={`${serif.variable} ${sans.variable}`}>
       <body
@@ -42,7 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <div className="shell">
-          <SiteHeader audit={audit} />
+          <SiteHeader mode={mode} review={review} />
           <main id="main" className="main">
             {children}
           </main>

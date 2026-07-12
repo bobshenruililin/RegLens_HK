@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { StatusNotice } from "@/components/StatusNotice";
 import { loadRootManifest, loadSectionDetail, loadSections } from "@/lib/data";
+import { FREQUENCY_NOTE } from "@/lib/disclaimer";
 import { relationshipLabel } from "@/lib/format";
 
 export function generateStaticParams() {
@@ -53,23 +54,21 @@ export default function SectionHistoryPage({
         Section history · § {latest?.num || "—"}
       </h1>
       <p className="lede">{latest?.heading}</p>
-      <StatusNotice compact />
+      <StatusNotice variant="inline" />
       <p className="meta">
         Stable @id: <code>{sectionId}</code>
         <br />
-        Descriptive change count (not legal importance):{" "}
+        Descriptive change count:{" "}
         <strong>{String(detail.descriptive_change_count)}</strong>
       </p>
-      {detail.frequency_disclaimer ? (
-        <p className="meta">{String(detail.frequency_disclaimer)}</p>
-      ) : null}
+      <p className="meta">{FREQUENCY_NOTE}</p>
 
       <h2 className="section-title">Appearances by snapshot</h2>
       <div className="table-wrap" style={{ marginTop: "0.75rem" }}>
         <table className="data">
           <thead>
             <tr>
-              <th>Snapshot file</th>
+              <th>Snapshot</th>
               <th>Number</th>
               <th>Status</th>
               <th>Renderability</th>
@@ -109,19 +108,11 @@ export default function SectionHistoryPage({
                 </td>
                 <td>{relationshipLabel(r.relationship)}</td>
                 <td>
-                  {r.relationship === "added" || r.relationship === "removed" ? (
-                    <Link
-                      href={`/instruments/${params.id}/transitions/${encodeURIComponent(r.from_version)}/${encodeURIComponent(r.to_version)}/`}
-                    >
-                      Transition
-                    </Link>
-                  ) : (
-                    <Link
-                      href={`/instruments/${params.id}/sections/${encodeURIComponent(sectionId)}/compare/${encodeURIComponent(r.from_version)}/${encodeURIComponent(r.to_version)}/`}
-                    >
-                      Compare
-                    </Link>
-                  )}
+                  <Link
+                    href={`/instruments/${params.id}/sections/${encodeURIComponent(sectionId)}/compare/${encodeURIComponent(r.from_version)}/${encodeURIComponent(r.to_version)}/`}
+                  >
+                    Compare
+                  </Link>
                 </td>
               </tr>
             ))}

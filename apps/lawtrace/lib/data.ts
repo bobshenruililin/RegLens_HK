@@ -34,6 +34,7 @@ export type InstrumentCard = {
     from_version: string;
     to_version: string;
     relationship: string;
+    heading?: string;
   };
 };
 
@@ -94,6 +95,7 @@ export function loadMethodology() {
   return readJson<Record<string, unknown>>("methodology.json");
 }
 
-export function auditEnabled(): boolean {
-  return process.env.NEXT_PUBLIC_LAWTRACE_AUDIT === "1";
+/** Local review workspace is opt-in at build time — not authentication. */
+export function reviewEnabled(): boolean {
+  return process.env.LAWTRACE_LOCAL_REVIEW === "1";
 }

@@ -1,0 +1,30 @@
+{
+  "acquisition_failures": [
+    {
+      "bytes_received": 7562,
+      "content_type": "text/html;charset=utf-8",
+      "error": "Response is HTML client-config interstitial, not XSD/ZIP. Non-interactive acquisition cannot complete without bypassing controls.",
+      "final_url": "https://www.elegislation.gov.hk/checkconfig/checkClientConfig.jsp?applicationId=RA001",
+      "sha256_of_response": "35A126F3118316BAF018F31BDD5EF8DF83E4D4053FC3FF0C2801839445538B89",
+      "status": "blocked_by_client_config"
+    }
+  ],
+  "bundle_status": "incomplete_acquisition_blocked",
+  "dependency_graph": {},
+  "entrypoint_url": "https://www.elegislation.gov.hk/file/get?openfile=hklm",
+  "expected_entrypoint_sha256": "4B0BA06E45F33BF97AC2C11CF9325764E8FCC92DE38E64FBD0ED8ED358DDB3BD",
+  "expected_entrypoint_size_bytes": 141312,
+  "files": [],
+  "howto_url": "https://www.elegislation.gov.hk/howtouseeleg",
+  "manual_acquisition_procedure": [
+    "Open https://www.elegislation.gov.hk/howtouseeleg in a browser.",
+    "Locate Hong Kong Legislation Model (HKLM) Version 1.0 download.",
+    "Download the schema package after any official client-config checks complete.",
+    "Verify SHA-256 of the entrypoint equals 4B0BA06E45F33BF97AC2C11CF9325764E8FCC92DE38E64FBD0ED8ED358DDB3BD.",
+    "Place all schema files (including include/import closure) under fixtures/lawtrace/schema/hklm/ and regenerate BUNDLE_MANIFEST.json.",
+    "Validate fixtures offline with network disabled."
+  ],
+  "notes": "Do not substitute GitHub or unofficial mirrors. Do not claim XSD validation passed without the official bundle.",
+  "offline_validation_possible": false,
+  "recorded_at": "2026-07-12T02:28:30Z"
+}

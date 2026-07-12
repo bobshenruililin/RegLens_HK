@@ -1,0 +1,2 @@
+# LawTrace spike dependencies (sibling package; do not merge into RegLens lock blindly)
+defusedxml>=0.7.1,<0.8

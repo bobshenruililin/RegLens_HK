@@ -20,18 +20,29 @@ They are not commencement or effective dates.
 
 ## Commands
 
+Preferred one-command access:
+
+```bash
+make lawtrace-doctor
+make lawtrace-open          # prefers Cap. 599G local-real when extracts exist
+make lawtrace-stop
+```
+
+See also `docs/LAWTRACE_OPERATIONS.md`, `docs/LAWTRACE_RELEASE_CHECKLIST.md`,
+and `docs/LAWTRACE_AGENT_STARTUP.md`.
+
 ```bash
 # Demo (CI / Cap. 614 committed fixtures)
 make lawtrace-web-data
 make lawtrace-ci
-make lawtrace-preview          # build + serve http://127.0.0.1:3010/
+make lawtrace-open-demo
 
 # Local-real Cap. 599G (complete export of all available EN snapshots)
 # Prerequisites:
 #   1) Official EN Cap. 301–600 ZIPs in data/lawtrace/raw/
 #   2) Extracted cap_599G_* XML under data/lawtrace/extracted/cap599g/
 make lawtrace-web-data-local
-make lawtrace-preview-local
+make lawtrace-open-local    # includes local review workspace at /review/ (not in nav)
 
 # Optional local review workspace (not authentication):
 LAWTRACE_LOCAL_REVIEW=1 make lawtrace-build-local

@@ -99,10 +99,12 @@ export function TransitionFilter({
         <table className="data">
           <thead>
             <tr>
-              <th>Section</th>
-              <th>Class</th>
-              <th>Token Δ</th>
-              <th />
+              <th scope="col">Section</th>
+              <th scope="col">Class</th>
+              <th scope="col">Token Δ</th>
+              <th scope="col">
+                <span className="visually-hidden">Evidence</span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -121,7 +123,7 @@ export function TransitionFilter({
                     +{delta.additions} / −{delta.deletions}
                   </td>
                   <td>
-                    <Link href={r.href}>Open evidence</Link>
+                    <Link href={r.href}>View comparison evidence</Link>
                   </td>
                 </tr>
               );

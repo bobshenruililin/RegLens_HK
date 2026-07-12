@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ComparePanels } from "@/components/ComparePanels";
+import { CopyUrlButton } from "@/components/CopyUrlButton";
 import { StatusNotice } from "@/components/StatusNotice";
 import { StatuteText } from "@/components/RedlineView";
 import {
@@ -213,14 +214,19 @@ export default function ComparePage({
       {isAdded ? (
         <>
           <h2 className="section-title">Added section</h2>
-          <p>Classification: added.</p>
+          <p>
+            Classification: added. The stable source identifier appears in the
+            later represented snapshot but not the earlier one.
+          </p>
           <div className="side-by-side">
             <div>
-              <h3>Snapshot A</h3>
-              <p className="muted">Section not present in this snapshot.</p>
+              <h3>Earlier represented snapshot</h3>
+              <p className="muted">
+                Section not present in this represented snapshot.
+              </p>
             </div>
             <div>
-              <h3>Snapshot B</h3>
+              <h3>Later represented snapshot</h3>
               <StatuteText text={String(item.plain_text_b || "")} />
             </div>
           </div>
@@ -230,15 +236,20 @@ export default function ComparePage({
       {isRemoved ? (
         <>
           <h2 className="section-title">Removed section</h2>
-          <p>Classification: removed.</p>
+          <p>
+            Classification: removed. The stable source identifier appears in the
+            earlier represented snapshot but not the later one.
+          </p>
           <div className="side-by-side">
             <div>
-              <h3>Snapshot A</h3>
+              <h3>Earlier represented snapshot</h3>
               <StatuteText text={String(item.plain_text_a || "")} />
             </div>
             <div>
-              <h3>Snapshot B</h3>
-              <p className="muted">Section not present in this snapshot.</p>
+              <h3>Later represented snapshot</h3>
+              <p className="muted">
+                Section not present in this represented snapshot.
+              </p>
             </div>
           </div>
         </>
@@ -282,10 +293,11 @@ export default function ComparePage({
         </>
       ) : null}
 
-      <p style={{ marginTop: "1rem" }}>
+      <p style={{ marginTop: "1rem" }} className="cta-row">
+        <CopyUrlButton />
         <a className="btn secondary" href={downloadHref} download={downloadName}>
           Download comparison JSON
-        </a>{" "}
+        </a>
         <a
           className="btn secondary"
           href={`/data/instruments/${params.id}/transitions/${tid}.json`}
@@ -295,8 +307,8 @@ export default function ComparePage({
         </a>
       </p>
       <p className="meta">
-        Stable URL: this page path survives refresh. Copy from the browser
-        address bar.
+        Stable URL: this page path survives refresh. Use Copy page URL or the
+        browser address bar.
       </p>
     </>
   );

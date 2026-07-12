@@ -4,10 +4,10 @@
     "source": "Department of Justice / HKeL via DATA.GOV.HK",
     "terms": "DATA.GOV.HK Terms of Use Version 1.2"
   },
-  "corrections_contact_placeholder": "corrections@example.invalid (placeholder — replace before public launch)",
+  "corrections_contact_placeholder": "Private research prototype — report errors via the project repository issues for this LawTrace branch. No public corrections inbox is published.",
   "date_semantics": "VERSION_TO_VERSION_COMPARATOR_ONLY",
   "disclaimer": "LawTrace displays transformations of open data obtained through DATA.GOV.HK. This comparison shows differences between two official open-data XML versions of a legislative section. It does not claim that displayed text was the law in force on a selected date, that version dates are commencement or effective dates, that LawTrace output is a verified copy, or that an automatically matched structural event is legally conclusive. For an official verified copy, consult Hong Kong e-Legislation (HKeL).",
-  "generation_timestamp": "2026-07-12T04:28:40Z",
+  "generation_timestamp": "2026-07-12T05:04:48Z",
   "identity": "top-level section @id only; nested nodes lack independent MVP identity",
   "product_promise": "Compare two official open-data versions of a Hong Kong legislative section and inspect what changed.",
   "review_status_policy": "Algorithm-generated comparisons are not human-confirmed gold unless an exported human review is deliberately imported.",

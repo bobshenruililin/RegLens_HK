@@ -1,6 +1,7 @@
 .PHONY: verify test lint typecheck fixtures web-ci studio-ci site-ci lock \
 	lawtrace-deps lawtrace-web-data lawtrace-web-data-local lawtrace-build lawtrace-ci \
 	lawtrace-preview lawtrace-preview-local lawtrace-build-local \
+	lawtrace-open lawtrace-open-demo lawtrace-open-local lawtrace-doctor lawtrace-stop \
 	demo-ingest demo-release demo-enqueue worker-once studio-dev site-dev \
 	site-build pages-artifact public-scan \
 	integration db-up db-down db-reset-local db-migrate db-status \
@@ -321,3 +322,19 @@ lawtrace-preview: lawtrace-build
 lawtrace-preview-local: lawtrace-build-local
 	@command -v python3 >/dev/null || (echo "python3 required" >&2; exit 1)
 	python3 scripts/lawtrace_static_server.py --dir apps/lawtrace/out --port 3010
+
+# One-command access: prefer Cap. 599G local-real when extracts exist.
+lawtrace-open:
+	@bash scripts/lawtrace_open.sh auto
+
+lawtrace-open-demo:
+	@bash scripts/lawtrace_open.sh demo
+
+lawtrace-open-local:
+	@bash scripts/lawtrace_open.sh local
+
+lawtrace-doctor:
+	@python3 scripts/lawtrace_doctor.py
+
+lawtrace-stop:
+	@bash scripts/lawtrace_stop.sh

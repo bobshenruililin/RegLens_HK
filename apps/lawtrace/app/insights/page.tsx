@@ -168,8 +168,8 @@ export default function InsightsPage() {
               <table className="data">
                 <thead>
                   <tr>
-                    <th>Section</th>
-                    <th>Count</th>
+                    <th scope="col">Section</th>
+                    <th scope="col">Count</th>
                     <th />
                   </tr>
                 </thead>

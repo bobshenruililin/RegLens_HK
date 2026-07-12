@@ -17,7 +17,7 @@ from psycopg.types.json import Jsonb
 
 from reglens_worker.pg.conn import transaction
 
-from .adapters.base import BaseSourceAdapter, SourceItem
+from .adapters.base import BaseSourceAdapter, FetchHtml, SourceItem
 from .adapters.dchk import DchkAdapter
 from .adapters.health import assert_parser_health, check_parser_health
 from .adapters.mchk import MchkAdapter
@@ -128,13 +128,15 @@ def sync_source(
         fixture_dir=Path(fixture_dir),
         client=live_client,
     )
+    fetch_html: FetchHtml
     if live:
         assert live_client is not None
 
-        def fetch_html(url: str) -> str:
+        def _live_fetch_html(url: str) -> str:
             result = live_client.fetch(url, purpose="index")
             return result.temp_path.read_text(encoding="utf-8")
 
+        fetch_html = _live_fetch_html
     else:
         fetch_html = _fixture_fetcher(adapter, Path(fixture_dir), index_url)
     items = list(adapter.discover(index_html, base_url=index_url, fetch_html=fetch_html))

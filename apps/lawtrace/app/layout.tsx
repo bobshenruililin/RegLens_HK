@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans, Source_Serif_4 } from "next/font/google";
 import { SiteFooter, SiteHeader } from "@/components/Chrome";
-import { loadRootManifest, reviewEnabled } from "@/lib/data";
+import { loadRootManifest } from "@/lib/data";
 import { rootModeBadge } from "@/lib/mode";
 import "./globals.css";
 
@@ -30,7 +30,6 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const root = loadRootManifest();
   const mode = rootModeBadge(root);
-  const review = reviewEnabled();
   return (
     <html lang="en" className={`${serif.variable} ${sans.variable}`}>
       <body
@@ -45,7 +44,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <div className="shell">
-          <SiteHeader mode={mode} review={review} />
+          {/* Local review workspace is never linked from ordinary navigation. */}
+          <SiteHeader mode={mode} review={false} />
           <main id="main" className="main">
             {children}
           </main>

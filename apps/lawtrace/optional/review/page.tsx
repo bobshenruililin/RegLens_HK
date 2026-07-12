@@ -93,5 +93,14 @@ function pickReviewPairs(): Array<{
 /** Copied into app/review only when LAWTRACE_LOCAL_REVIEW=1. */
 export default function ReviewPage() {
   const pairs = pickReviewPairs();
-  return <ReviewClient pairs={pairs} />;
+  return (
+    <>
+      <p className="meta">
+        This local review workspace is available only in explicit local-review
+        builds. It is not linked from ordinary navigation — open{" "}
+        <code>/review/</code> directly.
+      </p>
+      <ReviewClient pairs={pairs} />
+    </>
+  );
 }

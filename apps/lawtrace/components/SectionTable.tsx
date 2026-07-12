@@ -70,9 +70,9 @@ export function SectionTable({
         <table className="data">
           <thead>
             <tr>
-              <th>Section</th>
-              <th>Heading</th>
-              <th>Descriptive changes</th>
+              <th scope="col">Section</th>
+              <th scope="col">Heading</th>
+              <th scope="col">Descriptive changes</th>
               <th />
             </tr>
           </thead>

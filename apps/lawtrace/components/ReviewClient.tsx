@@ -100,10 +100,10 @@ export default function ReviewClient({ pairs }: { pairs: Pair[] }) {
         <table className="data">
           <thead>
             <tr>
-              <th>#</th>
-              <th>Pair</th>
-              <th>Reviewer decision</th>
-              <th>Note</th>
+              <th scope="col">#</th>
+              <th scope="col">Pair</th>
+              <th scope="col">Reviewer decision</th>
+              <th scope="col">Note</th>
             </tr>
           </thead>
           <tbody>

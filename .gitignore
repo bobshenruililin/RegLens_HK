@@ -35,3 +35,8 @@ apps/lawtrace/out/
 apps/lawtrace/tsconfig.tsbuildinfo
 apps/lawtrace/public/data/instruments/cap-599g/
 apps/lawtrace/public/data/.local-mode
+apps/lawtrace/.lawtrace-preview.pid
+apps/lawtrace/.lawtrace-preview.port
+apps/lawtrace/.lawtrace-preview.log
+apps/lawtrace/app/review/
+apps/lawtrace/app/audit/

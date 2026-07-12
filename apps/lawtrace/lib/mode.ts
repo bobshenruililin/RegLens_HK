@@ -32,10 +32,21 @@ export function instrumentCompletenessBadge(
     };
   }
   if (inst.sampling && !inst.sampling.complete) {
+    const n = inst.sampling.versions_included;
+    const m = inst.sampling.total_available_versions;
     return {
-      label: "Sampled",
+      label: `Sampled ${n}/${m}`,
       tone: "sampled",
-      detail: `${inst.sampling.versions_included}/${inst.sampling.total_available_versions} snapshots included — not complete.`,
+      detail: `Sampled collection — ${n} of ${m} available snapshots represented.`,
+    };
+  }
+  if (inst.sampling) {
+    const n = inst.sampling.versions_included;
+    const m = inst.sampling.total_available_versions;
+    return {
+      label: `Complete ${n}/${m}`,
+      tone: "complete",
+      detail: `All ${n} of ${m} available English top-level snapshots in this export are included.`,
     };
   }
   return {

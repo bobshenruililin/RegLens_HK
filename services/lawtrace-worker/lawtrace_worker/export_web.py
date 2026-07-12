@@ -550,25 +550,35 @@ def export_instrument(
         "normalization_version": NORMALIZATION_VERSION,
     }
 
-    # Example comparison for landing: first text_changed
+    # Example comparison for landing: prefer a real textual redline.
     example = None
+    fallback = None
     for tm in transitions_meta:
         tpath = transitions_dir / f"{tm['transition_id']}.json"
         data = json.loads(tpath.read_text(encoding="utf-8"))
         for item in data["items"]:
-            if item["relationship"] in {"text_changed", "text_and_status_changed"}:
-                example = {
-                    "instrument_id": instrument_id,
-                    "transition_id": tm["transition_id"],
-                    "section_id": item["section_id"],
-                    "from_version": tm["from_version"],
-                    "to_version": tm["to_version"],
-                    "relationship": item["relationship"],
-                    "heading": item.get("section_num_b") or item.get("section_num_a"),
-                }
+            if item["relationship"] not in {"text_changed", "text_and_status_changed"}:
+                continue
+            candidate = {
+                "instrument_id": instrument_id,
+                "transition_id": tm["transition_id"],
+                "section_id": item["section_id"],
+                "from_version": tm["from_version"],
+                "to_version": tm["to_version"],
+                "relationship": item["relationship"],
+                "heading": item.get("section_num_b") or item.get("section_num_a"),
+            }
+            highlights = item.get("highlight_legal_text") or []
+            ops = item.get("legal_text_ops") or []
+            if highlights or ops:
+                example = candidate
                 break
+            if fallback is None:
+                fallback = candidate
         if example:
             break
+    if example is None:
+        example = fallback
 
     manifest = {
         "schema_version": EXPORT_SCHEMA_VERSION,
@@ -651,7 +661,7 @@ def write_root_manifest(
             "terms": "DATA.GOV.HK Terms of Use Version 1.2",
             "file": "fixtures/lawtrace/ATTRIBUTION.md",
         },
-        "corrections_contact_placeholder": "corrections@example.invalid (placeholder — replace before public launch)",
+        "corrections_contact_placeholder": "Private research prototype — report errors via the project repository issues for this LawTrace branch. No public corrections inbox is published.",
         "generation_timestamp": utc_now(),
     }
     dump_json(out_root / "methodology.json", methodology, pretty=True)

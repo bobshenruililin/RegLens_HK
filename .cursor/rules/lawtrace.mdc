@@ -1,0 +1,93 @@
+---
+description: LawTrace HK product, trust, and isolation rules (path-scoped)
+globs:
+  - apps/lawtrace/**
+  - services/lawtrace-worker/**
+  - tests/lawtrace/**
+  - fixtures/lawtrace/**
+  - reports/lawtrace/**
+  - scripts/lawtrace_*
+  - docs/LAWTRACE*.md
+  - docs/adr/*lawtrace*
+alwaysApply: false
+---
+
+# LawTrace HK — agent rules
+
+These rules apply only to LawTrace paths. Do not change RegLens behaviour for unrelated paths.
+
+## Locked product claim
+
+Supported promise only:
+
+> Compare two official open-data versions of a Hong Kong legislative section and inspect what changed.
+
+Required status language:
+
+> LawTrace displays transformations of open data obtained through DATA.GOV.HK. LawTrace output is for information and research only and is not a verified copy of legislation. Users requiring an official verified copy should consult Hong Kong e-Legislation.
+
+Use: “Official open-data snapshot dated [date].”
+
+## Prohibited claims (binding)
+
+Do not claim or imply:
+
+- law in force on a selected date;
+- that a snapshot date is a commencement or effective date;
+- verified-copy status;
+- legal conclusiveness of automated identity matching;
+- legal advice or legislative intent;
+- normative importance from change frequency;
+- public-health effects inferred from textual changes;
+- completeness where a dataset is sampled.
+
+Never display a generic “complete” label for sampled data. If sampled, state the sample explicitly (e.g. “30 of 101”).
+
+## Provenance and comparison
+
+- Preserve source hashes and provenance on every comparison.
+- Comparisons must be deterministic for the same inputs and comparator version.
+- Reconstruction must pass for supported complete pairs before ordinary display.
+- Fail closed on unsupported / potentially_lossy renderability for ordinary complete redlines.
+- Do not accept ambiguous identity (splits, consolidations, fuzzy succession) as confirmed.
+- Prefer stable source `@id` for top-level section identity only.
+
+## Sources
+
+- Official DATA.GOV.HK / HKeL open-data XML only through the approved acquisition path.
+- Do not scrape HKeL HTML, use unofficial mirrors, or fabricate statutory text.
+- Cap. 599G local-real artifacts stay gitignored; Cap. 614 demo fixtures may be tracked.
+- No raw ZIP/bulk XML under `apps/lawtrace/public/data/`.
+
+## RegLens isolation
+
+- LawTrace is a sibling product: no RegLens domain schema, publication pipeline, or Pages coupling.
+- Worker lives under `services/lawtrace-worker/` only.
+- Do not auto-publish LawTrace to GitHub Pages or any public static host from ordinary workflows.
+
+## Local review workspace
+
+- Named “Local review workspace”; not in ordinary navigation.
+- Included only when explicitly enabled (`LAWTRACE_LOCAL_REVIEW=1` / `make lawtrace-open-local`).
+- Ordinary CI/demo builds must exclude `/review` and `/audit`.
+- Reviewer CONFIRM/REJECT/UNCERTAIN stays local; never write “human-confirmed” into source artifacts automatically.
+
+## Testing and release
+
+- Run `pytest tests/lawtrace` and reconstruction/determinism checks for worker changes.
+- Run `make lawtrace-ci` (or equivalent) before merge for LawTrace UI/data changes.
+- Keep RegLens `make verify` green when touching shared Makefile/CI surfaces.
+- No public product launch and no LLM explanation layer without an explicit separate approval.
+- Prefer `make lawtrace-doctor` then `make lawtrace-open` for local preview.
+
+## Agent startup (LawTrace work)
+
+1. Inspect branch and working tree.
+2. Run `make lawtrace-doctor`.
+3. Read latest Stage E / limitations and `docs/LAWTRACE_OPERATIONS.md`.
+4. Identify the smallest measurable objective.
+5. Implement.
+6. Run deterministic and reconstruction checks.
+7. Run product QA on the running site.
+8. Update LawTrace docs/reports.
+9. Never broaden legal claims autonomously.

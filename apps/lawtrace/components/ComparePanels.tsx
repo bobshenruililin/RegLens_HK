@@ -1,9 +1,8 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { RedlineView, StatuteText } from "@/components/RedlineView";
 import {
-  countTokenDelta,
   summarizeMetadataOps,
   summarizeRelationship,
   summarizeStructuralOps,
@@ -41,19 +40,9 @@ export function ComparePanels({
   const [tab, setTab] = useState<"text" | "structure" | "status" | "tech">(
     "text",
   );
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const meta = (metadataOps as Op[]) || [];
   const struct = (structuralOps as Op[]) || [];
-  const tokens = countTokenDelta(
-    relationship === "status_changed" ? [] : (([] as Op[]).concat(
-      // approximate from highlight only when ops not counted separately
-    )),
-  );
-  void tokens;
-  const legalDelta = countTokenDelta(
-    // Prefer ops if present via highlight length fallback handled in parent
-    meta,
-  );
-  void legalDelta;
 
   const tabs: Array<{ id: typeof tab; label: string }> = [
     { id: "text", label: "Legal text" },
@@ -68,6 +57,12 @@ export function ComparePanels({
     headingChanged: Boolean(headingA && headingB && headingA !== headingB),
   });
 
+  function focusTab(index: number) {
+    const next = tabs[index];
+    setTab(next.id);
+    tabRefs.current[index]?.focus();
+  }
+
   return (
     <div>
       <ul className="plain-list">
@@ -77,24 +72,33 @@ export function ComparePanels({
       </ul>
 
       <div className="tablist" role="tablist" aria-label="Comparison channels">
-        {tabs.map((t) => (
+        {tabs.map((t, idx) => (
           <button
             key={t.id}
             type="button"
             role="tab"
             id={`${baseId}-${t.id}`}
+            ref={(el) => {
+              tabRefs.current[idx] = el;
+            }}
             aria-selected={tab === t.id}
             aria-controls={`${baseId}-panel-${t.id}`}
+            tabIndex={tab === t.id ? 0 : -1}
             className={tab === t.id ? "tab active" : "tab"}
             onClick={() => setTab(t.id)}
             onKeyDown={(e) => {
-              const idx = tabs.findIndex((x) => x.id === tab);
               if (e.key === "ArrowRight") {
                 e.preventDefault();
-                setTab(tabs[(idx + 1) % tabs.length].id);
+                focusTab((idx + 1) % tabs.length);
               } else if (e.key === "ArrowLeft") {
                 e.preventDefault();
-                setTab(tabs[(idx - 1 + tabs.length) % tabs.length].id);
+                focusTab((idx - 1 + tabs.length) % tabs.length);
+              } else if (e.key === "Home") {
+                e.preventDefault();
+                focusTab(0);
+              } else if (e.key === "End") {
+                e.preventDefault();
+                focusTab(tabs.length - 1);
               }
             }}
           >
@@ -108,6 +112,7 @@ export function ComparePanels({
         id={`${baseId}-panel-text`}
         aria-labelledby={`${baseId}-text`}
         hidden={tab !== "text"}
+        tabIndex={0}
       >
         {relationship === "status_changed" ? (
           <p className="meta">
@@ -122,7 +127,10 @@ export function ComparePanels({
           </>
         ) : null}
         <h2 className="section-title">Side-by-side canonical text</h2>
-        <div className="side-by-side side-by-side-stack-mobile" style={{ marginTop: "0.75rem" }}>
+        <div
+          className="side-by-side side-by-side-stack-mobile"
+          style={{ marginTop: "0.75rem" }}
+        >
           <div>
             <h3>Snapshot A</h3>
             <StatuteText text={plainTextA} />
@@ -139,6 +147,7 @@ export function ComparePanels({
         id={`${baseId}-panel-structure`}
         aria-labelledby={`${baseId}-structure`}
         hidden={tab !== "structure"}
+        tabIndex={0}
       >
         <h2 className="section-title">Structure</h2>
         <ul className="plain-list">
@@ -153,6 +162,7 @@ export function ComparePanels({
         id={`${baseId}-panel-status`}
         aria-labelledby={`${baseId}-status`}
         hidden={tab !== "status"}
+        tabIndex={0}
       >
         <h2 className="section-title">Status / metadata</h2>
         <ul className="plain-list">
@@ -171,6 +181,7 @@ export function ComparePanels({
         id={`${baseId}-panel-tech`}
         aria-labelledby={`${baseId}-tech`}
         hidden={tab !== "tech"}
+        tabIndex={0}
       >
         <details>
           <summary>Technical record (raw deterministic operations)</summary>

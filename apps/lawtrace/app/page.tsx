@@ -12,7 +12,10 @@ import { instrumentCompletenessBadge } from "@/lib/mode";
 
 export default function HomePage() {
   const root = loadRootManifest();
-  const example = root.instruments.find((i) => i.available)?.example_comparison;
+  const example =
+    root.instruments.find((i) => i.available && i.slug === "cap-599g")
+      ?.example_comparison ||
+    root.instruments.find((i) => i.available)?.example_comparison;
   const exampleSlug = example
     ? example.instrument_id.replace(":", "-").toLowerCase()
     : null;

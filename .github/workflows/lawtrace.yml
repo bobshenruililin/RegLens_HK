@@ -8,9 +8,12 @@ on:
       - "tests/lawtrace/**"
       - "fixtures/lawtrace/**"
       - "scripts/lawtrace_static_server.py"
+      - "scripts/lawtrace_*.py"
+      - "scripts/lawtrace_*.sh"
       - "Makefile"
       - ".github/workflows/lawtrace.yml"
-      - "docs/LAWTRACE_MVP.md"
+      - "docs/LAWTRACE*.md"
+      - ".cursor/rules/lawtrace.mdc"
   push:
     branches: [main, "cursor/**"]
     paths:
@@ -19,8 +22,12 @@ on:
       - "tests/lawtrace/**"
       - "fixtures/lawtrace/**"
       - "scripts/lawtrace_static_server.py"
+      - "scripts/lawtrace_*.py"
+      - "scripts/lawtrace_*.sh"
       - "Makefile"
       - ".github/workflows/lawtrace.yml"
+      - "docs/LAWTRACE*.md"
+      - ".cursor/rules/lawtrace.mdc"
 
 jobs:
   lawtrace:
@@ -109,4 +116,18 @@ jobs:
           test -f apps/lawtrace/out/instruments/cap-614/index.html
           test ! -d apps/lawtrace/out/review
           test ! -d apps/lawtrace/out/audit
+          ! grep -R --include='*.html' -l 'href="/review/"' apps/lawtrace/out | grep -q .
           echo "LawTrace CI page checks OK"
+
+      - name: Static route smoke (demo export)
+        env:
+          PYTHONPATH: services/worker:services/lawtrace-worker
+        run: pytest tests/lawtrace/test_static_smoke.py tests/lawtrace/test_mode_labels.py -q
+
+      - name: Upload demo static-build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lawtrace-demo-static
+          path: apps/lawtrace/out
+          if-no-files-found: error
+          retention-days: 14

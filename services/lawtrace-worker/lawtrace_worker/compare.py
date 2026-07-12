@@ -218,7 +218,9 @@ def classify_relationship(
         # via legal_text false if structure markers are in full stream — structure_only label.
         return "text_changed", classifications
     if meta_ops and text_equal:
-        return "status_changed" if status_changed else "text_changed", classifications
+        # Any metadata-only delta (status, reason, start_period, etc.) is status/metadata —
+        # never label it text_changed when legal text is identical.
+        return "status_changed", classifications
     return "text_changed", classifications
 
 
@@ -283,6 +285,9 @@ def compare_sections(
         relationship = "section_number_changed"
     elif not struct_diff.equal:
         relationship = "text_changed"
+    elif m_ops and text_diff.equal:
+        # Period / other metadata-only changes belong on the status/metadata channel.
+        relationship = "status_changed"
 
     ordinary_ok, limitation = _ordinary_redline_ok(canon_a.renderability, canon_b.renderability)
     if not ordinary_ok:

@@ -1,0 +1,52 @@
+{
+  "bundle_status": "entrypoint_only_incomplete_import_closure",
+  "entrypoint_url": "https://www.elegislation.gov.hk/schemas/hklm.xsd",
+  "howto_url": "https://www.elegislation.gov.hk/howtouseeleg",
+  "alternate_download_url_blocked": "https://www.elegislation.gov.hk/file/get?openfile=hklm",
+  "expected_entrypoint_sha256": "4B0BA06E45F33BF97AC2C11CF9325764E8FCC92DE38E64FBD0ED8ED358DDB3BD",
+  "observed_entrypoint_sha256": "4B0BA06E45F33BF97AC2C11CF9325764E8FCC92DE38E64FBD0ED8ED358DDB3BD",
+  "sha256_match_published": true,
+  "expected_entrypoint_size_bytes": 141312,
+  "observed_size_bytes": 141373,
+  "offline_validation_possible": false,
+  "offline_validation_blocker": "hklm.xsd imports external namespaces without local schemaLocation closure (W3C xml.xsd, Dublin Core, XHTML, MathML). Those hosts are outside the spike network allowlist (data.gov.hk / elegislation.gov.hk / doj.gov.hk), so full offline validation cannot be completed without a separately approved schema-pinning process.",
+  "recorded_at": "2026-07-12T02:29:44Z",
+  "files": [
+    {
+      "path": "hklm.xsd",
+      "source_url": "https://www.elegislation.gov.hk/schemas/hklm.xsd",
+      "sha256": "4B0BA06E45F33BF97AC2C11CF9325764E8FCC92DE38E64FBD0ED8ED358DDB3BD",
+      "byte_size": 141373,
+      "role": "entrypoint"
+    }
+  ],
+  "dependency_graph": {
+    "hklm.xsd": [
+      {
+        "namespace": "http://www.w3.org/XML/1998/namespace",
+        "schemaLocation": "http://www.w3.org/2001/xml.xsd",
+        "acquired": false
+      },
+      {
+        "namespace": "http://purl.org/dc/terms/",
+        "schemaLocation": null,
+        "acquired": false
+      },
+      {
+        "namespace": "http://www.w3.org/1999/xhtml",
+        "schemaLocation": null,
+        "acquired": false
+      },
+      {
+        "namespace": "http://www.w3.org/1998/Math/MathML",
+        "schemaLocation": null,
+        "acquired": false
+      }
+    ]
+  },
+  "acquisition_failures": [],
+  "notes": [
+    "Entrypoint SHA-256 matches HKeL How-to-Use published checksum.",
+    "Do not claim full offline XSD validation until import closure is pinned from approved sources."
+  ]
+}

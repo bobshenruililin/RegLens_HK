@@ -1,0 +1,27 @@
+{
+  "pairs": 11,
+  "precision_errors": [],
+  "ordinary_successor_coverage": 1.0,
+  "ordinary_successor_matched": 392,
+  "ordinary_successor_slots": 392,
+  "totals": {
+    "matched_by_id": 392,
+    "matched_by_temporalId": 0,
+    "matched_by_unique_num": 0,
+    "added": 6,
+    "ambiguous": 0,
+    "unmatched_old": 0,
+    "text_changed": 34,
+    "status_changed": 34,
+    "renumber_candidate": 0
+  },
+  "renderability_counts": {
+    "complete": 429
+  },
+  "start_period_attr_coverage": "343/429",
+  "precision_reference": "agent_reviewed_candidate_set_not_independent_human_gold",
+  "candidate_gold_path": "fixtures/lawtrace/candidate_gold/cap_614_section_successions.provisional.jsonl",
+  "human_audit_packet": "reports/lawtrace/cap614_human_audit_packet.md",
+  "automatic_edge_precision_on_id_candidate_set": 1.0,
+  "id_candidate_edge_count": 392
+}

@@ -1,0 +1,43 @@
+{
+  "generated_at": "2026-07-12T02:38:42Z",
+  "archives": [
+    {
+      "archive": "hkel_c_leg_cap_301_cap_600_en.zip",
+      "archive_sha256": "7f4ea9a3ae0421bb07bcce8cdfa44fb014556ceb650e17c40f7bf7295f58b35c",
+      "source_member_count_cap599_family": 13,
+      "accepted_member_count": 13,
+      "rejected_member_count": 0,
+      "extracted_file_count": 13,
+      "collisions": [],
+      "identical_duplicate_skips": [],
+      "rejected_members": []
+    },
+    {
+      "archive": "hkel_p_leg_cap_401_cap_600_en.zip",
+      "archive_sha256": "9b476d1467f2994a306d1d8fca03eba3a119ea3c4e863b9635f32395badc929f",
+      "source_member_count_cap599_family": 760,
+      "accepted_member_count": 759,
+      "rejected_member_count": 1,
+      "extracted_file_count": 759,
+      "collisions": [],
+      "identical_duplicate_skips": [],
+      "rejected_members": [
+        {
+          "member": "cap_599_en_p\\images\\CAP599_en_s18_20080714_000000_0001.gif",
+          "reason": "unexpected_file_type",
+          "normalized_name": "cap_599_en_p/images/CAP599_en_s18_20080714_000000_0001.gif"
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "source_member_count": 773,
+    "accepted_member_count": 772,
+    "rejected_member_count": 1,
+    "extracted_file_count": 772,
+    "collision_count": 0,
+    "identical_duplicate_count": 0
+  },
+  "root_cause_of_prior_760_vs_759": "Not a silent basename overwrite. Past archive has 760 cap_599* members: 759 XML + 1 GIF (cap_599_en_p/images/CAP599_en_s18_20080714_000000_0001.gif). The previous extractor skipped non-.xml suffixes when filtering, writing 759 XML files.",
+  "hash_comparison_note": "No destination collisions occurred. The rejected GIF is a distinct asset type, not a duplicate XML member; hash comparison of colliding XML members is N/A."
+}

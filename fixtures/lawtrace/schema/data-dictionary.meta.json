@@ -1,0 +1,9 @@
+{
+  "asset": "hkel_data-dictionary_en.pdf",
+  "source_url": "https://www.elegislation.gov.hk/datagovhk/hkel_data-dictionary_en.pdf",
+  "sha256": "b073f43f4d1b30c724f3754bdb4c0cc7ec360f911e1bc3fcd6d9281f387f9ae2",
+  "byte_size": 387757,
+  "recorded_at": "2026-07-12T02:28:27Z",
+  "note": "Data dictionary metadata is separate from XSD bundle metadata.",
+  "version_label_from_document": "1.0 (October 2019) per document title/header when inspected"
+}

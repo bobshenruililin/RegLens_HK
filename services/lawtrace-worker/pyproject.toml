@@ -1,0 +1,12 @@
+[project]
+name = "lawtrace-worker"
+version = "0.1.0"
+description = "LawTrace HK feasibility-spike worker (sibling to reglens_worker)"
+requires-python = ">=3.12"
+dependencies = [
+  "defusedxml>=0.7.1,<0.8",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["lawtrace_worker*"]

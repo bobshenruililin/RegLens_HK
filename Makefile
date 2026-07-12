@@ -1,4 +1,5 @@
 .PHONY: verify test lint typecheck fixtures web-ci studio-ci site-ci lock \
+	lawtrace-deps \
 	demo-ingest demo-release demo-enqueue worker-once studio-dev site-dev \
 	site-build pages-artifact public-scan \
 	integration db-up db-down db-reset-local db-migrate db-status \
@@ -271,3 +272,9 @@ rc4-verify: verify core10-report
 lock:
 	pip install -r services/worker/requirements.txt
 	pip freeze > services/worker/requirements.lock.txt
+	@if [ -f services/lawtrace-worker/requirements.txt ]; then \
+		pip install -r services/lawtrace-worker/requirements.txt; \
+	fi
+
+lawtrace-deps:
+	pip install -r services/lawtrace-worker/requirements.txt

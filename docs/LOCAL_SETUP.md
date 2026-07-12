@@ -12,8 +12,11 @@ deploy of Studio; real `public` release blocked while policy is `internal_only`.
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r services/worker/requirements.txt
+# optional LawTrace sibling package (needed for tests/lawtrace):
+# pip install -r services/lawtrace-worker/requirements.txt
 # optional lock refresh: make lock
 export PYTHONPATH=services/worker
+# LawTrace tests also resolve via tests/lawtrace/conftest.py
 ```
 
 ## Make targets (preferred)

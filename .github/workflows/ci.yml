@@ -15,7 +15,11 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install
-        run: pip install -r services/worker/requirements.txt
+        run: |
+          pip install -r services/worker/requirements.txt
+          if [ -f services/lawtrace-worker/requirements.txt ]; then
+            pip install -r services/lawtrace-worker/requirements.txt
+          fi
       - name: Fixture safety
         run: python scripts/check_fixtures.py
       - name: Ruff
@@ -26,7 +30,7 @@ jobs:
         run: mypy
       - name: Pytest
         env:
-          PYTHONPATH: services/worker
+          PYTHONPATH: services/worker:services/lawtrace-worker
         run: pytest
       - name: Demo release + public scan
         env:
@@ -120,10 +124,16 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install
-        run: pip install -r services/worker/requirements.txt
+        run: |
+          pip install -r services/worker/requirements.txt
+          if [ -f services/lawtrace-worker/requirements.txt ]; then
+            pip install -r services/lawtrace-worker/requirements.txt
+          fi
       - name: Migrate
         run: python -m reglens_worker db migrate
       - name: Integration tests (marker)
+        env:
+          PYTHONPATH: services/worker:services/lawtrace-worker
         run: pytest -m integration
       - name: Postgres unit + job tests
         run: pytest tests/pg tests/test_jobs_postgres.py
